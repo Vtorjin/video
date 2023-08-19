@@ -1,0 +1,46 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "baseUrl": ".",
+    "importHelpers": true,
+    // "module": "commonjs",
+    // "target": "es2017",
+    "target": "ESNext",
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "strict": false,
+    "jsx": "preserve",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "paths": {
+      "@conf/*": [
+          "config/*"
+      ],
+      "~/*": [
+          "./*"
+      ]
+  }
+  },
+  "include": [
+    "package.json",
+    "interface.d.ts"
+  ],
+  "lib": [
+    "ESNext",
+    "DOM"
+  ],
+  "allowSyntheticDefaultImports": true,
+  "skipLibCheck": true,
+  "noEmit": true,
+  "references": [
+    // {
+    //   "path": "./tsconfig.node.json"
+    // },
+    // {
+    //   "path": "./tsconfig.app.json"
+    // }
+  ]
+}

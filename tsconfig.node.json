@@ -1,0 +1,36 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "composite": true,
+        "baseUrl": "./src/",
+        "outDir": "out",
+        "noUnusedLocals": false,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "noUnusedParameters": false,
+        "module": "commonjs",
+        "target": "ESNext",
+        "declaration": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "types": [
+            "node"
+        ],
+        "paths": {
+            "@conf/*": [
+                "config/*"
+            ],
+            "~/*": [
+                "./*"
+            ]
+        }
+    },
+    "include": [
+        "src/main/**/*.ts",
+        "src/preload/*.ts",
+        "config/default.json",
+        "types/**/*.d.ts",
+        "interface.d.ts"
+    ]
+}
