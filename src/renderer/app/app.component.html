@@ -1,5 +1,3 @@
-
-
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
@@ -7,5 +5,9 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * End of Placeholder * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<p>你好呀!</p>
+<ul class="v-nav-list  flex ja">
+    <li class="v-nav-item" *ngFor="let item of routes">
+        <a [routerLink]="[item.path]" routerLinkActive="router-link-active"  >{{item.title }}</a>
+    </li>
+</ul> 
 <router-outlet></router-outlet>

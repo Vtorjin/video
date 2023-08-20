@@ -1,0 +1,96 @@
+
+
+.v-nav-list {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background-color: #3498db;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transform-origin: center bottom;
+    color: white;
+    transform: translate(-40%, 30%);
+
+    &.hide {
+        animation: expandLinks 0.3s ease-in-out;
+    }
+
+    &::before {
+        content: "开始"; // 小球中间显示"开始"文本
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: bold;
+    }
+
+    .v-nav-item {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(100%);
+        z-index: 2222;
+        opacity: 1;
+        user-select: none;
+
+        &:nth-child(1) {
+            left: 90px;
+            top: -60px;
+        }
+
+        &:nth-child(2) {
+            left: 134px;
+            top: -40px;
+        }
+
+        &:nth-child(3) {
+            left: 170px;
+            top: -16px;
+
+
+        }
+
+        &:nth-child(4) {
+            left: 190px;
+            top: 20px;
+            width: 40px;
+        }
+
+    }
+
+    .v-nav-item a {
+        text-decoration: none;
+        color: #333;
+        display: block;
+        width: 100%;
+        text-align: center;
+        // transform: rotate(-90deg); // 将链接文本旋转90度
+
+        &:hover {
+            color: #75eb5b;
+        }
+    }
+}
+
+@keyframes expandLinks {
+    0% {
+        .v-nav-item {
+            opacity: 1;
+        }
+    }
+
+    100% {
+        .v-nav-item {
+            left: 90px;
+            top: 70px;
+            opacity: 1;
+        }
+
+    }
+}

@@ -5,6 +5,7 @@ const electron_1 = require("electron");
 const fileManager_1 = tslib_1.__importStar(require("./fileManager"));
 const index_1 = require("../index");
 const default_json_1 = tslib_1.__importDefault(require("../../../config/default.json"));
+const sessionManager_1 = tslib_1.__importDefault(require("./sessionManager"));
 class SystemManager {
     static instance = null;
     static getInstance() {
@@ -54,6 +55,7 @@ class SystemManager {
                 preload: (0, fileManager_1.joinFilePath)(__dirname, "../../preload/index.js"),
             },
         });
+        sessionManager_1.default.getInstance().overrideWebRequest();
         me.topWin = win;
         Promise.all([me.loadMainWINView(win), me.createCustomSystemMenu(win)]);
     }
@@ -96,7 +98,7 @@ class SystemManager {
                 label: "打开App控制台",
                 accelerator: "F6",
                 click: () => {
-                    win.webContents.executeJavaScript(`document.querySelector('.el-tab-pane[aria-hidden="false"] webview[finish="true"]').openDevTools()`);
+                    win.webContents.executeJavaScript(`document.querySelector('webview')&&document.querySelector('webview').openDevTools()`);
                 }
             }, {
                 label: "打开子窗口控制台",

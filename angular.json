@@ -30,7 +30,9 @@
               "src/renderer/assets"
             ],
             "styles": [
-              "src/renderer/styles.less"
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/renderer/styles.less",
+              "src/renderer/assets/css/global.less"
             ],
             "scripts": []
           },
@@ -93,6 +95,7 @@
               "src/renderer/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/renderer/styles.less"
             ],
             "scripts": []

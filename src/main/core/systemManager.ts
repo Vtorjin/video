@@ -2,6 +2,8 @@ import { app, dialog, Menu, Tray, BrowserWindow, } from "electron";
 import FileManager, { joinFilePath } from "./fileManager";
 import { isProduction } from "../index";
 import conf from "../../../config/default.json"
+import SessionManager from "./sessionManager";
+
 class SystemManager {
   static instance: SystemManager | null = null;
   static getInstance() {
@@ -63,7 +65,7 @@ class SystemManager {
     });
 
     //自定义请求头,是为了解决直接请求whatApp时服务器拿不到userAgent，出现版本号低的情况
-    // SessionManager.getInstance().overrideWebRequest();
+    SessionManager.getInstance().overrideWebRequest();
     // 加载line
     // SessionManager.getInstance().loadChromeLineExtension();
     // 绑定主进程的window对象
@@ -117,7 +119,7 @@ class SystemManager {
         accelerator: "F6",
         click: () => {
           // win.webContents.toggleDevTools();
-          win.webContents.executeJavaScript(`document.querySelector('.el-tab-pane[aria-hidden="false"] webview[finish="true"]').openDevTools()`)
+          win.webContents.executeJavaScript(`document.querySelector('webview')&&document.querySelector('webview').openDevTools()`)
         }
       }, {
         label: "打开子窗口控制台",
