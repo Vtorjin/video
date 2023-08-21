@@ -1,1 +1,28 @@
-<p>setting works!</p>
+<form id="site-form" [formGroup]="siteForm">
+
+    <div class="v-form-item">
+        <label for="first-name">名称: </label>
+        <input id="first-name" type="text" formControlName="name">
+
+    </div>
+    <div class="v-form-item">
+
+        <label for="href">地址: </label>
+        <input id="href" type="text" formControlName="href">
+    </div>
+    <div class="v-form-item">
+        <label for="icon">图片: </label>
+        <input id="icon" type="text" formControlName="icon">
+    </div>
+    <div class="v-form-item">
+        <label for="js">JS: </label>
+        <textarea id="js" type="text" formControlName="js">
+
+        </textarea>
+    </div>
+    <div class="v-form-item footer">
+        <button mat-flat-button color="primary" (click)="saveSite()" >保存</button>
+        <button mat-stroked-button>取消</button>
+        <button mat-flat-button color="primary">修改</button>
+    </div>
+</form>

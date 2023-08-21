@@ -15,6 +15,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
+    "experimentalDecorators": true,
     "paths": {
       "@conf/*": [
           "config/*"
@@ -26,7 +27,8 @@
   },
   "include": [
     "package.json",
-    "interface.d.ts"
+    "interface.d.ts",
+    "src/renderer/**/*.ts"
   ],
   "lib": [
     "ESNext",

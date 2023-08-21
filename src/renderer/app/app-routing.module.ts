@@ -10,7 +10,7 @@ export const routes: Routes = [
   { path: "home", component: HomeComponent, title: "首页" },
   { path: "download", component: DownloadComponent, title: "下载" },
   { path: "online", component: OnlineComponent, title: "爬虫" },
-  { path: "setting", component: OnlineComponent, title: "设置" },
+  { path: "setting", component: SettingComponent, title: "设置" },
   { path: "**", component: HomeComponent }
 
 ];
