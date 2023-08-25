@@ -42,13 +42,21 @@ class AppManager {
     // ipc通信
     ipcMain.handle('eventEmitter', (event: Electron.IpcMainInvokeEvent, eventInfo: string) => {
       // const { name, data } = JSON.parse(eventInfo) as IpcEventFormat;
-    
+
     })
-
-
     ipcMain.handle('getPreloadJs', (event: Electron.IpcMainInvokeEvent) => {
       SystemManager.getInstance().sendMessageToRender('getPreloadJs', FileManager.getInstance().getPreloadJsPath())
     })
+
+    ipcMain.on('drag-window', (event, offsetX, offsetY) => {
+      SystemManager.getInstance().updatePosition(offsetX, offsetY);
+    });
+
+    ipcMain.handle('hide-window', () => { SystemManager.getInstance().hideApp(); })
+    ipcMain.handle('show-window', () => { SystemManager.getInstance().showApp(); })
+    ipcMain.handle('quit', () => { SystemManager.getInstance().quitApp(); })
+    ipcMain.handle('minimize-window', () => { SystemManager.getInstance().minimizeApp(); })
+    ipcMain.handle('maxWindowScreen', () => { SystemManager.getInstance().maximizeApp() })
 
   }
 

@@ -34,9 +34,27 @@ electron_1.contextBridge.exposeInMainWorld(default_json_1.default.ipcRenderName,
     showConTextMenu() {
         electron_1.ipcRenderer.invoke('showConTextMenu');
     },
+    moveWindowPos(x, y) {
+        electron_1.ipcRenderer.send('drag-window', x, y);
+    },
     createChildWindow() {
         electron_1.ipcRenderer.invoke("createChildWindow", ...arguments);
     },
+    min() {
+        electron_1.ipcRenderer.invoke('minimize-window');
+    },
+    max() {
+        electron_1.ipcRenderer.invoke("maxWindowScreen", ...arguments);
+    },
+    hide() {
+        electron_1.ipcRenderer.invoke("hide-window", ...arguments);
+    },
+    show() {
+        electron_1.ipcRenderer.invoke('show-window');
+    },
+    quit() {
+        electron_1.ipcRenderer.invoke('quit');
+    }
 });
 global.sendMessageToHost = function () {
     console.log(...arguments, 'global');

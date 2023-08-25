@@ -36,6 +36,14 @@ class AppManager {
         electron_1.ipcMain.handle('getPreloadJs', (event) => {
             systemManager_1.default.getInstance().sendMessageToRender('getPreloadJs', fileManager_1.default.getInstance().getPreloadJsPath());
         });
+        electron_1.ipcMain.on('drag-window', (event, offsetX, offsetY) => {
+            systemManager_1.default.getInstance().updatePosition(offsetX, offsetY);
+        });
+        electron_1.ipcMain.handle('hide-window', () => { systemManager_1.default.getInstance().hideApp(); });
+        electron_1.ipcMain.handle('show-window', () => { systemManager_1.default.getInstance().showApp(); });
+        electron_1.ipcMain.handle('quit', () => { systemManager_1.default.getInstance().quitApp(); });
+        electron_1.ipcMain.handle('minimize-window', () => { systemManager_1.default.getInstance().minimizeApp(); });
+        electron_1.ipcMain.handle('maxWindowScreen', () => { systemManager_1.default.getInstance().maximizeApp(); });
     }
     registerAppEvent() {
         electron_1.app.on('activate', () => {

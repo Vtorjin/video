@@ -42,6 +42,7 @@ class SystemManager {
             height: 840,
             icon: fileManager_1.default.getInstance().getLogoIconPath(),
             autoHideMenuBar: default_json_1.default.hideMenu,
+            frame: false,
             webPreferences: {
                 sandbox: false,
                 webSecurity: false,
@@ -138,10 +139,26 @@ class SystemManager {
     loadChildWinFile(t) {
         this.childWin?.webContents?.openDevTools();
     }
+    updatePosition(offsetX, offsetY) {
+        if (this.topWin == null)
+            return;
+        const position = this.topWin.getPosition();
+        this.topWin.setPosition(position[0] + offsetX, position[1] + offsetY);
+    }
     popupMessage(text) {
         electron_1.dialog.showMessageBox({ message: text });
     }
+    showApp() {
+        this.topWin && this.topWin.show();
+    }
     hideApp() {
+        this.topWin && this.topWin.hide();
+    }
+    maximizeApp() {
+        this.topWin && (this.topWin.setFullScreen(!this.topWin.isFullScreen()));
+    }
+    minimizeApp() {
+        this.topWin && this.topWin.minimize();
     }
     quitApp() {
         this.childWin = null;

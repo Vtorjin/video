@@ -2,5 +2,5 @@
     "name": "下载器",
     "title": "下载器",
     "ipcRenderName": "videoApp",
-    "hideMenu": false
+    "hideMenu": true
 }

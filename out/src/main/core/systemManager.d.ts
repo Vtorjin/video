@@ -21,8 +21,12 @@ declare class SystemManager {
     createApplicationTray(): void;
     loadMainWINView(win: BrowserWindow): void;
     loadChildWinFile(t: string): void;
+    updatePosition(offsetX: any, offsetY: any): void;
     popupMessage(text: string): void;
+    showApp(): void;
     hideApp(): void;
+    maximizeApp(): void;
+    minimizeApp(): void;
     quitApp(): void;
     sendMessageToRender(name: CustomEventName, data: string | object | undefined): void;
     handleError(errInfo: Error): void;

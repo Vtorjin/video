@@ -1,4 +1,4 @@
-import { app, dialog, Menu, Tray, BrowserWindow, } from "electron";
+import { app, dialog, Menu, Tray, BrowserWindow, Screen } from "electron";
 import FileManager, { joinFilePath } from "./fileManager";
 import { isProduction } from "../index";
 import conf from "../../../config/default.json"
@@ -50,6 +50,7 @@ class SystemManager {
       height: 840,
       icon: FileManager.getInstance().getLogoIconPath(),
       autoHideMenuBar: conf.hideMenu,
+      frame: false, //去除默认的放大缩小关闭
       webPreferences: {
         sandbox: false,
         webSecurity: false, // 允许加载本地和远程的资源
@@ -170,14 +171,32 @@ class SystemManager {
     this.childWin?.webContents?.openDevTools();
   }
 
+  updatePosition(offsetX, offsetY) {
+    if (this.topWin == null) return;
+    const position = this.topWin.getPosition()
+    this.topWin.setPosition(position[0] + offsetX, position[1] + offsetY)
+  }
+
 
   //主进程弹出消息
   popupMessage(text: string) {
     dialog.showMessageBox({ message: text })
   }
 
-  hideApp() {
+  showApp() {
+    this.topWin && this.topWin.show();
+  }
 
+  hideApp() {
+    this.topWin && this.topWin.hide();
+  }
+
+  maximizeApp() {
+    this.topWin && (this.topWin.setFullScreen(!this.topWin.isFullScreen()))
+  }
+
+  minimizeApp() {
+    this.topWin && this.topWin.minimize()
   }
 
   quitApp() {

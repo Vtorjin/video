@@ -1,7 +1,7 @@
 import { ipcRenderer, contextBridge } from "electron";
 import _conf from "../../config/default.json";
- 
- let errorStack: string[] = [];
+
+let errorStack: string[] = [];
 
 ipcRenderer.on('mainError', function (e: Event, msg: string) {
   console.log(...arguments);
@@ -39,9 +39,35 @@ contextBridge.exposeInMainWorld(_conf.ipcRenderName, {
   showConTextMenu() {
     ipcRenderer.invoke('showConTextMenu')
   },
+
+  moveWindowPos(x: number, y: number) {
+    ipcRenderer.send('drag-window', x, y);
+  },
+
   createChildWindow() {
     ipcRenderer.invoke("createChildWindow", ...arguments);
   },
+
+  min(){
+    ipcRenderer.invoke('minimize-window')    
+  },
+
+  max(){
+    ipcRenderer.invoke("maxWindowScreen", ...arguments);
+  },
+
+  hide(){
+    ipcRenderer.invoke("hide-window", ...arguments);
+  },
+
+  show(){
+    ipcRenderer.invoke('show-window')
+  },
+
+  quit(){
+    ipcRenderer.invoke('quit');
+  }
+
 
 })
 
