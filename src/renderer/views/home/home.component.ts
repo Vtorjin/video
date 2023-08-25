@@ -20,7 +20,7 @@ interface CustomWebView extends HTMLElement {
   // 是否集成nodejs
   nodeintegration: string
   webContents: { executeJavaScript: (str: string) => {} }
-  allowpopups: string
+  allowpopups: string  
 }
 
 

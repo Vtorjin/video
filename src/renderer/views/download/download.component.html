@@ -1,1 +1,74 @@
-<p>download works!</p>
+<!-- <ul>
+    <li>
+        <div class="v-thumbnail">
+            <img src="image_url" alt="Video Thumbnail">
+        </div>
+        <div class="v-info">
+            <h3>视频名称</h3>
+            <div class="v-progress-bar">
+                <div class="v-progress"></div>
+            </div>
+            <div class="flex jb">
+                <div class="v-file-info flex ja">
+                    <p>时长: 00:10:00</p>
+                    <p>文件大小: 100MB</p>
+                    <p>视频格式: MP4</p>
+                </div>
+                <div class="v-download-info flex ja">
+                    <p>当前下载速度: 1MB/s</p>
+                    <p>完成个数/总数量: 5/10</p>
+                    <p>已完成进度: 50.00%</p>
+                </div>
+            </div>
+        </div>
+        <div class="v-actions flex ja">
+            <button class="v-download">下载</button>
+            <button class="v-pause">暂停</button>
+            <button class="v-delete">删除</button>
+        </div>
+    </li>
+ 
+</ul> -->
+
+<!-- ng -->
+<ul>
+    <li class="v-video-item" *ngFor="let item of  videos; let key = index">
+        <div class="v-thumbnail">
+            <img [src]="item.img" alt="Video Thumbnail">
+        </div>
+        <div class="v-info">
+            <h3>{{item.name}}</h3>
+            <div class="v-progress-bar">
+                <div class="v-progress" [style]='{width:(((item.finish/item.total)*100).toFixed(2))+"%"}'></div>
+            </div>
+            <div class="flex jb">
+                <div class="v-file-info flex ja">
+                    <p>时长: {{item.time  | videoTime}}</p>
+                    <p>文件大小: {{item.size | videoSize}}</p>
+                    <p>视频格式: {{item.mime}}</p>
+                </div>
+                <div class="v-download-info flex ja">
+                    <p>当前下载速度: {{item.speed | videoSize}}/s</p>
+                    <p>完成个数/总数量: {{item.finish}}个 / {{item.completed}}个</p>
+                    <p>已完成进度:{{(((item.finish/item.total)*100).toFixed(2))+"%"}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="v-actions flex ja">
+            <button class="v-download">下载</button>
+            <button class="v-pause">暂停</button>
+            <button class="v-delete">删除</button>
+        </div>
+    </li>
+
+</ul>
+<!-- {{videos}} -->
+
+<!-- 
+<ul>
+    <li *ngFor="let video of videos">
+       
+      {{ video.name }} - {{ video.time }} seconds
+    </li>
+  </ul>
+   -->
