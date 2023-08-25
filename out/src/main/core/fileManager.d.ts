@@ -1,5 +1,3 @@
-/// <reference types="node" />
-/// <reference types="node" />
 import fs from "fs";
 export declare const normalize: (_path: string) => string;
 export declare const isExist: (_path: string) => boolean;
@@ -31,6 +29,7 @@ declare class FileManager {
     getLogoIconPath(): string;
     getDevHtml(): string;
     getDistHtml(): string;
+    getDistHtml2(): string;
     getTestHtml(): string;
     getClientHtml(): string;
     getPreloadJsPath(): string;

@@ -2,26 +2,34 @@
 
     <div class="v-form-item">
         <label for="first-name">名称: </label>
-        <input id="first-name" type="text" formControlName="name">
-
+        <div class="searchbar">
+            <input class="search-input" type="text" name="wd" autocomplete="off" placeholder="输入操作视频网站名称...."
+                id="first-name" type="text" formControlName="name"/>
+        </div>
     </div>
     <div class="v-form-item">
-
         <label for="href">地址: </label>
-        <input id="href" type="text" formControlName="href">
+        <div class="searchbar">
+            <input id="href" type="text" formControlName="href" class="search-input" type="text" name="wd"
+                autocomplete="off" placeholder="输入操作视频网站地址...."/>
+        </div>
     </div>
     <div class="v-form-item">
         <label for="icon">图片: </label>
-        <input id="icon" type="text" formControlName="icon">
+        <div class="searchbar">
+            <input id="icon" type="text" formControlName="icon" class="search-input" type="text" name="wd"
+                autocomplete="off" placeholder="输入操作视频网站icon...."/>
+        </div>
     </div>
     <div class="v-form-item">
         <label for="js">JS: </label>
-        <textarea id="js" type="text" formControlName="js">
-
-        </textarea>
+        <div class="searchbar">
+            <textarea id="js" type="text" formControlName="js" class="search-input" type="text" name="wd"
+                autocomplete="off" placeholder="输入操作视频网站核心处理...."></textarea>
+        </div>
     </div>
     <div class="v-form-item footer">
-        <button mat-flat-button color="primary" (click)="saveSite()" >保存</button>
+        <button mat-flat-button color="primary" (click)="saveSite()">保存</button>
         <button mat-stroked-button>取消</button>
         <button mat-flat-button color="primary">修改</button>
     </div>

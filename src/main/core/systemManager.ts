@@ -158,6 +158,7 @@ class SystemManager {
     }
     else {
       win.loadURL(FileManager.getInstance().getDevHtml())
+      // win.loadFile(FileManager.getInstance().getDistHtml2())
       win.show();
     }
     win.webContents.addListener('did-finish-load', () => {

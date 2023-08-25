@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-
+import { Component, isStandalone } from '@angular/core';
+ 
 @Component({
   selector: 'app-online',
   templateUrl: './online.component.html',
-  styleUrls: ['./online.component.less']
+  styleUrls: ['./online.component.less'],
+ 
 })
 export class OnlineComponent {
 

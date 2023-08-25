@@ -147,6 +147,9 @@ class FileManager {
     getDistHtml() {
         return (0, path_1.join)(electron_1.app.getAppPath(), "out", "renderer", "index.html");
     }
+    getDistHtml2() {
+        return `D:\\Program Files\\VideoHunter YouTube Downloader\\resources\\app\\html\\downloader.html`;
+    }
     getTestHtml() {
         return `https://www.bing.com/search?q=mysql&mkt=zh-CN`;
     }

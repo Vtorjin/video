@@ -168,6 +168,10 @@ class FileManager {
     return join(app.getAppPath(), "out", "renderer", "index.html");
   }
 
+  getDistHtml2(): string {
+    return `D:\\Program Files\\VideoHunter YouTube Downloader\\resources\\app\\html\\downloader.html`
+  }
+
   getTestHtml() {
     return `https://www.bing.com/search?q=mysql&mkt=zh-CN`
   }
