@@ -32,7 +32,7 @@ interface CustomWebView extends HTMLElement {
 
 
 export class HomeComponent {
-  src = "https://baidu.com";
+  src = "https://www.yinhuadm.cc/p/10310-1-1.html";
   ngOnInit() {
     document.querySelector('#webview')?.append(this.createWebView())
   }

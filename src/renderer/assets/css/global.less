@@ -35,14 +35,12 @@
     }
 }
 
-.v-select {
-    user-select: none;
-}
+@media (max-width: 1549px) {
+    .module-poster-items-base .module-poster-item:nth-child(n+12) {
+        display: block;
+    }
 
-.v-body {
-    position: absolute;
-    top: var(--app-header-height);
-    height: var(--app-body-height);
-    width: 100vw;
-    box-sizing: border-box;
+    .module-poster-items-base .module-poster-item:nth-child(n+16) {
+        display: none;
+    }
 }

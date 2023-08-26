@@ -28,11 +28,13 @@ export class SiteService {
   }
 
   add(body: Body) {
-    console.log(body, '请求')
+    // console.log(body, '请求')
     this.http.post<RestfulResponse>(`http://localhost:3880/video/setting`, {
       ...body
     }).pipe(catchError(this.handleError<RestfulResponse>('addSite'))).subscribe(res => {
-      console.log(res)
+      const { status, msg } = res;
+      // status !== 200 ? alert(msg) : 
+      alert(msg);
     })
   }
 

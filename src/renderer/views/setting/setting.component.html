@@ -1,37 +1,56 @@
-<form id="site-form" [formGroup]="siteForm">
-
-    <div class="v-form-item">
-        <label for="first-name">名称: </label>
-        <div class="searchbar">
-            <input class="search-input" type="text" name="wd" autocomplete="off" placeholder="输入操作视频网站名称...."
-                id="first-name" type="text" formControlName="name" />
+<div class="v-body">
+    <form id="site-form" [formGroup]="siteForm">
+        <div class="v-form-item">
+            <label for="first-name">名称: </label>
+            <div class="searchbar">
+                <input class="search-input" type="text" name="wd" autocomplete="off" placeholder="输入操作视频网站名称...."
+                    id="first-name" type="text" formControlName="name" />
+            </div>
         </div>
-    </div>
-    <div class="v-form-item">
-
-        <label for="href">地址: </label>
-        <div class="searchbar">
-            <input id="href" type="text" formControlName="href" class="search-input" type="text" name="wd"
-                autocomplete="off" placeholder="输入操作视频网站地址...." />
+        <div class="v-form-item">
+            <label for="href">所属: </label>
+            <div class="searchbar">
+                <select class="search-input" placeholder="选择所属host" name="options" formControlName="belong">
+                    <option value="">选择所属host</option>
+                    <option value="one">One</option>
+                    <option value="two">Two</option>
+                    <option value="three">Three</option>
+                </select>
+                <!-- <mat-form-field>
+                    <mat-label>host列表</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let food of hosts" [value]="food.value">
+                            {{food.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            </div>
         </div>
-    </div>
-    <div class="v-form-item">
-        <label for="icon">图片: </label>
-        <div class="searchbar">
-            <input id="icon" type="text" formControlName="icon" class="search-input" type="text" name="wd"
-                autocomplete="off" placeholder="输入操作视频网站icon...." />
+        <div class="v-form-item">
+            <label for="href">地址: </label>
+            <div class="searchbar">
+                <input id="href" type="text" formControlName="href" class="search-input" type="text" name="wd"
+                    autocomplete="off" placeholder="输入操作视频网站地址...." />
+            </div>
         </div>
-    </div>
-    <div class="v-form-item">
-        <label for="js">JS: </label>
-        <div class="searchbar">
-            <textarea id="js" type="text" formControlName="js" class="search-input" type="text" name="wd"
-                autocomplete="off" placeholder="输入操作视频网站核心处理...."></textarea>
+        <div class="v-form-item">
+            <label for="icon">图片: </label>
+            <div class="searchbar">
+                <input id="icon" type="text" formControlName="icon" class="search-input" type="text" name="wd"
+                    autocomplete="off" placeholder="输入操作视频网站icon...." />
+            </div>
         </div>
-    </div>
-    <div class="v-form-item footer">
-        <button mat-flat-button color="primary" (click)="saveSite()">保存</button>
-        <button mat-stroked-button>取消</button>
-        <button mat-flat-button color="primary">修改</button>
-    </div>
-</form>
+        <div class="v-form-item">
+            <label for="js">JS: </label>
+            <div class="searchbar js">
+                <textarea id="js" type="text" formControlName="js" class="search-input-js" type="text" name="wd"
+                    autocomplete="off" rows="1" style="resize: vertical;" placeholder="输入操作视频网站核心处理...."></textarea>
+            </div>
+        </div>
+        <div class="v-form-item footer">
+            <button mat-flat-button color="primary" (click)="saveSite()">保存</button>
+            <button mat-stroked-button>取消</button>
+            <button mat-flat-button color="primary">修改</button>
+        </div>
+    </form>
+</div>

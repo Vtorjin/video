@@ -10,7 +10,9 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     --app-header-height: 60px;
     --app-body-height: calc(100vh - var(--app-header-height));
-    --app-sidebar-width: 200px;
+    --app-sidebar-width: 150px;
+    --app-search-header: 64px;
+    --app-fixed-search-height: calc(var(--app-header-height) + var(--app-search-header));
 }
 
 ul {
@@ -30,4 +32,24 @@ a {
     src: url('//at.alicdn.com/t/c/font_4225766_yfjq6l9vrqs.woff2?t=1692979753188') format('woff2'),
         url('//at.alicdn.com/t/c/font_4225766_yfjq6l9vrqs.woff?t=1692979753188') format('woff'),
         url('//at.alicdn.com/t/c/font_4225766_yfjq6l9vrqs.ttf?t=1692979753188') format('truetype');
+}
+
+.v-select {
+    user-select: none;
+}
+
+.v-body {
+    position: absolute;
+    top: var(--app-header-height);
+    height: var(--app-body-height);
+    width: 100vw;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.v-sidebar {
+    width: var(--app-sidebar-width);
+    height: 100%;
+    border-right: 1px solid #ccc;
+    box-sizing: border-box;
 }

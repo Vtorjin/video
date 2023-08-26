@@ -16,15 +16,19 @@ interface VideoItem {
 @Component({
   selector: 'app-download-local',
   templateUrl: './download-local.component.html',
-  styleUrls: ['../../views/download/download.component.less']
+  styleUrls: ['../../views/download/download.component.less'],
 })
 export class DownloadLocalComponent {
   videos: VideoItem[]
+  total = 1220;
+  size = 10
+  options = [5, 10, 25, 100]
+
   constructor() {
     this.videos = [
       {
         name: "画江湖之不良人 第6季 第10话",
-        img: "https://community.image.video.qpic.cn/app_community_bda48d-0_72566597_1683772537451713?imageView2/2/w/2000",
+        img: "http://localhost:3880/video/img/1685985670502.png",
         time: 1350,
         size: 1555022500,
         mime: "mp4",
@@ -45,7 +49,7 @@ export class DownloadLocalComponent {
         speed: 12255,
         completed: 53,
         state: 1
-      },      {
+      }, {
         name: "画江湖之不良人 第6季 第120话",
         img: "https://community.image.video.qpic.cn/app_community_bda48d-0_72566597_1683772537451713?imageView2/2/w/2000",
         time: 1350,
@@ -56,62 +60,7 @@ export class DownloadLocalComponent {
         speed: 12255,
         completed: 53,
         state: 1
-      },      {
-        name: "画江湖之不良人 第6季 第102话",
-        img: "https://community.image.video.qpic.cn/app_community_bda48d-0_72566597_1683772537451713?imageView2/2/w/2000",
-        time: 1350,
-        size: 1555022500,
-        mime: "mp4",
-        finish: 10,
-        total: 3600,
-        speed: 12255,
-        completed: 53,
-        state: 1
-      },      {
-        name: "画江湖之不良人 第6季 第110话",
-        img: "https://community.image.video.qpic.cn/app_community_bda48d-0_72566597_1683772537451713?imageView2/2/w/2000",
-        time: 1350,
-        size: 1555022500,
-        mime: "mp4",
-        finish: 10,
-        total: 3600,
-        speed: 12255,
-        completed: 53,
-        state: 1
-      },      {
-        name: "画江湖之不良人 第6季 第101话",
-        img: "https://community.image.video.qpic.cn/app_community_bda48d-0_72566597_1683772537451713?imageView2/2/w/2000",
-        time: 1350,
-        size: 1555022500,
-        mime: "mp4",
-        finish: 10,
-        total: 3600,
-        speed: 12255,
-        completed: 53,
-        state: 1
-      },      {
-        name: "画江湖之不良人 第6季 第11话",
-        img: "https://community.image.video.qpic.cn/app_community_bda48d-0_72566597_1683772537451713?imageView2/2/w/2000",
-        time: 135000,
-        size: 2555022500,
-        mime: "mp4",
-        finish: 10,
-        total: 3600,
-        speed: 12255,
-        completed: 53,
-        state: 1
-      },      {
-        name: "画江湖之不良人 第6季 第12话",
-        img: "https://community.image.video.qpic.cn/app_community_bda48d-0_72566597_1683772537451713?imageView2/2/w/2000",
-        time: 13500,
-        size: 1525022500,
-        mime: "mp4",
-        finish: 10,
-        total: 3600,
-        speed: 12255,
-        completed: 53,
-        state: 1
-      }, 
+      }
     ]
   }
 

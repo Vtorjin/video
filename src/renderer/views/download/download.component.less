@@ -1,13 +1,25 @@
-.v-sidebar {
-    width: var(--app-sidebar-width);
-    height: 100%;
-}
 
 .download-page-body {
     width: calc(100vw - var(--app-sidebar-width));
     height: 100%;
     box-sizing: border-box;
     overflow: auto;
+
+    &::-webkit-scrollbar-track-piece {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #dddddd;
+        // border-radius: 20px;
+    }
+
+    scrollbar-width: thin;
+    scrollbar-color: transparent;
 }
 
 ul.video-download-list {
@@ -18,9 +30,8 @@ li.v-video-item {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    padding:4px 10px;
 }
-
-
 
 
 .v-video-thumbnail {
@@ -31,10 +42,12 @@ li.v-video-item {
 .v-video-thumbnail img {
     width: 100px;
     height: auto;
+    border-radius: 4px;
 }
 
 .v-video-info {
     flex: 1;
+    padding: 4px 10px;
 }
 
 .v-video-progress-bar {

@@ -1,0 +1,60 @@
+.home-nav-body {
+
+    position: fixed;
+    top: calc(var(--app-fixed-search-height));
+    height: calc(100vh - var(--app-fixed-search-height));
+    overflow-y: scroll;
+    width: 100vw;
+
+    &::-webkit-scrollbar-track-piece {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #dddddd;
+        // border-radius: 20px;
+    }
+
+    scrollbar-width: thin;
+    scrollbar-color: transparent;
+}
+
+.module-heading {
+    padding-left: 1rem;
+    align-items: center;
+}
+
+.module-main {
+    padding: 0 1rem;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.module-items.module-poster-items-base {
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-right: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 20px;
+    justify-items: start;
+    /* 将所有元素左对齐 */
+    align-content: start;
+    /* 将所有行向上对齐 */
+
+    .module-poster-item {
+        width: 100% !important;
+    }
+
+    .module-item {
+        margin: 0;
+    }
+
+    .module-poster-item-title {
+        min-height: 20px;
+    }
+}

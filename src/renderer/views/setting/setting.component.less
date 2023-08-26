@@ -6,6 +6,9 @@
 
         .searchbar{
             height: 36px;
+            &.js{
+                height: auto;
+            }
         }
 
         label {
@@ -18,10 +21,16 @@
         }
 
         input,
-        textarea {
+        textarea,
+        select {
             width: 80%;
-            min-width: 300px;
-            max-width: 500px;
+            min-width: 650px;
+            max-width: 1200px;
+        }
+
+        textarea{
+            display: block;
+            min-height: 200px;
         }
 
         button{

@@ -46,6 +46,14 @@ module-items {
     .module-poster-item {
         width: calc(16.666667% - 18px);
     }
+
+    .module-poster-items-base .module-poster-item:nth-child(n+12){
+        display: block;
+    }
+
+    .module-poster-items-base .module-poster-item:nth-child(n+15){
+        display: none;
+    }
 }
 
 @media (max-width: 1789px) {

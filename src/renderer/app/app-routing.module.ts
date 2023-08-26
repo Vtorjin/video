@@ -6,6 +6,7 @@ import { OnlineComponent } from "../views/online/online.component"
 import { SettingComponent } from "../views/setting/setting.component"
 import { DownloadInprogressComponent } from '../components/download-inprogress/download-inprogress.component';
 import { DownloadLocalComponent } from '../components/download-local/download-local.component';
+import { PlayerComponent } from '../views/player/player.component';
 
 export const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -15,7 +16,7 @@ export const routes: Routes = [
       { path: "", component: DownloadInprogressComponent },
       {
         path: "inprogress", component: DownloadInprogressComponent,
-        title: "下载中", data: { icon: "iconfont icon-yunxiazai"}
+        title: "下载中", data: { icon: "iconfont icon-yunxiazai" }
       },
       {
         path: "local", component: DownloadLocalComponent,
@@ -25,7 +26,8 @@ export const routes: Routes = [
   },
   // {path:"",loadChildren:}
   { path: "online", component: OnlineComponent, title: "爬虫" },
-  { path: "setting", component: SettingComponent, title: "设置" },
+  { path: "setting", component: SettingComponent, title: "JS设置" },
+  { path: "player", component: PlayerComponent, title: "播放器" },
   { path: "**", component: HomeComponent }
 
 ];
