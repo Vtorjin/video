@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { SettingSystemComponent } from '../../components/setting-system/setting-system.component';
+import { SettingOtherComponent } from '../../components/setting-other/setting-other.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { SettingSystemComponent } from '../../components/setting-system/setting-
     SettingUserComponent,
     SettingVideoComponent,
     SettingExecutejsComponent,
-    SettingSystemComponent
+    SettingSystemComponent,
+    SettingOtherComponent
   ],
   imports: [
     CommonModule,

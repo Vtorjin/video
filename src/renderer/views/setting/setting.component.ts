@@ -28,7 +28,7 @@ export class SettingComponent {
     { label: "视频类型设置", value: 1 },
     { label: "角色设置", value: 2 },
     { label: "系统设置", value: 3 },
-    { label: "JS设置", value: 4 },
+    { label: "其他设置", value: 4 },
     { label: "JS设置", value: 5 },
   ]
 

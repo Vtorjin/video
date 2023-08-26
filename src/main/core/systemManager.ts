@@ -202,7 +202,8 @@ class SystemManager {
   quitApp() {
     this.childWin = null;
     this.topWin = null;
-    if (process.platform !== 'darwin') app.quit()
+    if (process.platform !== 'darwin') app.quit();
+    process.exit();
   }
 
   sendMessageToRender(name: CustomEventName, data: string | object | undefined) {

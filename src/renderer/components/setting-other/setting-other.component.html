@@ -1,0 +1,47 @@
+<form id="site-form" action="" [formGroup]="form">
+    <div class="v-form-item">
+        <label for="">视频Host:</label>
+        <div class="searchbar">
+            <input type="text" class="search-input" formControlName="host" />
+        </div>
+    </div>
+    <div class="v-form-item">
+        <label for="">种类:</label>
+        <div class="searchbar">
+            <input type="text" class="search-input" formControlName="type" />
+        </div>
+    </div>
+    <div class="v-form-item">
+        <label for="">演员:</label>
+        <div class="searchbar">
+            <input type="text" class="search-input" formControlName="actor" />
+        </div>
+    </div>
+    <div class="v-form-item">
+        <label for="">国家:</label>
+        <div class="searchbar">
+            <input type="text" class="search-input" formControlName="area" />
+        </div>
+    </div>
+    <div class="v-form-item">
+        <label for="">人物类型:</label>
+        <div class="searchbar">
+            <input type="text" class="search-input" formControlName="age" />
+        </div>
+    </div>
+    <div class="v-form-item"></div>
+    <div class="v-form-item"></div>
+    <div class="v-form-item"></div>
+    <div class="v-form-item"></div>
+    <div class="v-form-item"></div>
+    <div class="v-form-item"></div>
+    <div class="v-form-item"></div>
+    <div class="v-form-item"></div>
+    <div class="v-form-item"></div>
+    <div class="v-form-item"></div>
+    <div class="v-form-item"></div>
+    <div class="v-form-item footer">
+        <button mat-flat-button color="primary" (click)="save()">提交</button>
+        <button mat-flat-button color="primary" (click)="restore()">重置</button>
+    </div>
+</form>

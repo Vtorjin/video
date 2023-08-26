@@ -165,6 +165,7 @@ class SystemManager {
         this.topWin = null;
         if (process.platform !== 'darwin')
             electron_1.app.quit();
+        process.exit();
     }
     sendMessageToRender(name, data) {
         this.topWin?.webContents.send(name, typeof data === 'string' ? data : JSON.stringify(data));
