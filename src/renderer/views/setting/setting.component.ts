@@ -6,55 +6,35 @@ import { MatSelectModule } from '@angular/material/select';
 import { SiteService } from '../../service/site.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-interface LocationHosts {
-  value: string
-  viewValue: string
-}
+
 
 // import HttpC
 @Component({
   selector: 'app-setting',
   templateUrl: './setting.component.html',
   styleUrls: ['./setting.component.less'],
-  standalone: true,
-  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatSelectModule],
+  // standalone: true,
+  // imports: [
+  //   // ReactiveFormsModule,
+  //   // MatButtonModule,
+  //   // MatFormFieldModule,
+  //   // MatSelectModule,
+  // ],
 })
 
 export class SettingComponent {
-  siteForm: FormGroup
-  hosts: LocationHosts[] = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
-  constructor(private site: SiteService) {
-    this.siteForm = new FormGroup({
-      name: new FormControl(''),
-      href: new FormControl(''),
-      icon: new FormControl(''),
-      belong: new FormControl(''),
-      js: new FormControl(`
-      const app = new App();
-      `),
-    });
-  }
+  options = [
+    { label: "JS设置", value: 0 },
+    { label: "视频类型设置", value: 1 },
+    { label: "角色设置", value: 2 },
+    { label: "系统设置", value: 3 },
+    { label: "JS设置", value: 4 },
+    { label: "JS设置", value: 5 },
+  ]
 
-  ngOnInit() {
-    const dom = document.querySelector('#js') as HTMLTextAreaElement;
-    const lastChild = document.querySelector('.v-form-item.footer');
-    if (dom == null || lastChild === null) return;
-    dom.addEventListener('input', () => {
-      const lines = dom.value.split('\n').length;
-      if ((lastChild.getBoundingClientRect().bottom + 30) < document.body.clientHeight) {
-        dom.rows = lines;
-      }
-      // console.log();
-    });
-  }
+  activeIdx = 0;
 
-  saveSite() {
-
-    // fetch(``)
-    this.site.add(this.siteForm.value);
+  changeTab(idx: number) {
+    this.activeIdx = idx
   }
 }
