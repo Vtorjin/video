@@ -1,38 +1,19 @@
-.v-nav-item a.router-link-active {
-    color: var(--mdc-outlined-text-field-error-hover-outline-color)
+app-root{
+
 }
 
-.app-system-handle {
-    .iconfont {
-        margin: 1.5rem;
-    }
+#app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: var(--app-header-height);
+    box-sizing: border-box;
+    background-color: #ffffff;
+    z-index: 9999;
 }
 
-.v-nav-list {
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    transform-origin: center bottom;
-    color: white;
-
-
-    &.hide {
-        animation: expandLinks 0.3s ease-in-out;
-    }
-
-    &::before {
-        content: "开始"; // 小球中间显示"开始"文本
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-weight: bold;
-    }
-
-
-
+.module-tab-week {
     .v-nav-item a {
         text-decoration: none;
         color: #333;
@@ -40,11 +21,16 @@
         width: 100%;
         text-align: center;
         user-select: none;
-        // transform: rotate(-90deg); // 将链接文本旋转90度
 
-
-        &:hover {
-            color: #75eb5b;
+        &.router-link-active {
+            color: var(--mdc-outlined-text-field-error-hover-outline-color)
         }
+    }
+
+}
+
+.app-system-handle {
+    .iconfont {
+        margin: 1rem;
     }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { routes } from "./app-routing.module"
 
 
@@ -18,6 +19,11 @@ export class AppComponent {
   isDragging = false;
   offsetX = 0
   offsetY = 0;
+  constructor(
+    private routerInfo: ActivatedRoute,
+    private router: Router
+  ) { }
+
   ngOnInit() {
     let root = document.querySelector('app-root');
     let me = this;
@@ -40,11 +46,17 @@ export class AppComponent {
     });
   }
 
-  min(){
+
+
+  backHome() {
+    this.router.navigate([''])
+  }
+
+  min() {
     window['videoApp'].min();
   }
 
-  max(){
+  max() {
     window['videoApp'].max();
   }
 

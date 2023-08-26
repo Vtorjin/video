@@ -1,61 +1,81 @@
-ul {
+.v-sidebar {
+    width: var(--app-sidebar-width);
+    height: 100%;
+}
+
+.download-page-body {
+    width: calc(100vw - var(--app-sidebar-width));
+    height: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+ul.video-download-list {
     list-style-type: none;
 }
 
-li {
+li.v-video-item {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
 }
 
-.v-thumbnail {
+
+
+
+.v-video-thumbnail {
     flex: 0 0 auto;
     margin-right: 10px;
 }
 
-.v-thumbnail img {
+.v-video-thumbnail img {
     width: 100px;
     height: auto;
 }
 
-.v-info {
+.v-video-info {
     flex: 1;
 }
 
-.v-progress-bar {
+.v-video-progress-bar {
     width: 100%;
     height: 10px;
     background-color: gray;
 }
 
-.v-progress {
+.v-video-progress {
     height: 100%;
     background-color: green;
 }
 
-.v-info p {
-    margin: 5px 20px 5px 0;
+.v-video-info p {
+    margin: 4px 10px 4px 0;
 }
 
-.v-actions {
+.v-video-actions {
     flex: 0 0 auto;
 }
 
-.v-actions button {
+.v-video-actions button {
     margin-left: 10px;
 }
 
-.v-actions button.v-download {
+.v-video-actions button.v-video-play {
     background-color: #4CAF50;
     color: white;
 }
 
-.v-actions button.v-pause {
+.v-video-actions button.v-video-download {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.v-video-actions button.v-video-pause {
     background-color: #FF9800;
     color: white;
 }
 
-.v-actions button.v-delete {
+.v-video-actions button.v-video-delete {
     background-color: #F44336;
     color: white;
 }

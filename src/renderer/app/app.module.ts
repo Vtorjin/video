@@ -5,12 +5,12 @@ import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DownloadModule } from '../views/download/download.module';
- 
-import { OnlineModule } from '../views/online/online.module';
+ import { OnlineModule } from '../views/online/online.module';
 
 @NgModule({
   declarations: [
     AppComponent,
+
  
   ],
   imports: [
