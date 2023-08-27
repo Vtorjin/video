@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms'
+import { SettingService } from '../../service/setting.service';
 import { SiteService } from '../../service/site.service';
 
 interface LocationHosts {
@@ -19,7 +20,10 @@ export class SettingExecutejsComponent {
     { value: 'pizza-1', viewValue: 'Pizza' },
     { value: 'tacos-2', viewValue: 'Tacos' },
   ];
-  constructor(private site: SiteService) {
+  constructor(
+    private site: SiteService,
+    private setting: SettingService
+  ) {
     this.siteForm = new FormGroup({
       name: new FormControl(''),
       href: new FormControl(''),
@@ -42,6 +46,15 @@ export class SettingExecutejsComponent {
       }
       // console.log();
     });
+
+
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      console.log(this.setting)
+      this.hosts = this.setting.getHost() as LocationHosts[];
+    })
   }
 
   saveSite() {
@@ -49,5 +62,5 @@ export class SettingExecutejsComponent {
     // fetch(``)
     this.site.add(this.siteForm.value);
   }
- 
+
 }

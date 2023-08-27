@@ -1,0 +1,32 @@
+.custom-dropdown {
+    position: relative;
+
+    .selected-items {
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: transparent;
+        width: 80%;
+        overflow: hidden;
+        display: flex;
+        box-sizing: border-box;
+        color: #ccc;
+        z-index: -1;
+        height: 100%;
+        color: #ccc
+    }
+
+    .options-list {
+        position: absolute;
+        left: 0;
+        top: 20px;
+        z-index: 1000;
+        width: 100%;
+
+        li,
+        option {
+            background-color: #ffff;
+            cursor: pointer;
+        }
+    }
+}

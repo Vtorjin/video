@@ -12,9 +12,6 @@ type CustomEventName = "openOfficialWebsite" | "initApp" | 'translateWord' | "tr
     'translateBeforeSend' | 'beforeSendInApp' | "sendTransResponse" | 'updateSetting'
     | 'clearTransAppCache' | 'changeTransAppCache' | 'openBusinessLine' | 'getPreloadJs';
 
-
-
-
 interface CustomWindowAttr {
     platform: string
     extensionUrl: string
@@ -40,10 +37,19 @@ interface Window {
     videoApp: CustomWindowAttr
 }
 
+interface OptionsList {
+    value: string
+    viewValue: string
+}
 
-
-
-
+interface ConfigItem {
+    actor: string
+    confId: string
+    type: string
+    host: string
+    area: string
+    age: string
+}
 
 
 

@@ -11,9 +11,10 @@
         <div class="searchbar">
             <select class="search-input" placeholder="选择所属host" name="options" formControlName="belong">
                 <option value="">选择所属host</option>
-                <option value="one">One</option>
+                <option *ngFor="let item of hosts" [value]="item.value">{{item.viewValue}}</option>
+                <!-- <option value="one">One</option>
                 <option value="two">Two</option>
-                <option value="three">Three</option>
+                <option value="three">Three</option> -->
             </select>
             <!-- <mat-form-field>
                 <mat-label>host列表</mat-label>

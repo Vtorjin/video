@@ -26,12 +26,18 @@ export class SettingOtherComponent {
 
   }
 
+  
+  ngOnInit(){
+    
+  }
+
   save() {
     this.http.post('angular/type', this.form.value).subscribe(res => {
       console.log(res);
       alert(res.msg)
     });
   }
+
 
   restore() {
 

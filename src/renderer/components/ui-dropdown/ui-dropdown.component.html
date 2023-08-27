@@ -1,0 +1,17 @@
+<div class="custom-dropdown">
+    <input type="search" [(ngModel)]="searchText" [placeholder]="placeholder" (input)="filterItems()" (focus)="show($event)"
+        (change)="changeItems()" (blur)="hide($event)" />
+    <div class="selected-items">
+        <div *ngFor="let selectedOption of selectedOptions">{{ selectedOption.viewValue }}</div>
+    </div>
+    <ul class="options-list">
+        <!-- <option *ngFor="let option of filteredOptions" (click)="toggleOption(option)">
+            {{ option.viewValue }}
+        </option> -->
+
+        <li *ngFor="let option of filteredOptions" (click)="toggleOption(option)">
+            <input type="checkbox" [checked]="isSelected(option)" />
+            {{ option.viewValue }}
+        </li>
+    </ul>
+</div>

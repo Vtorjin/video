@@ -1,1 +1,50 @@
-<div id="webview" class="v-body"></div>
+<div id="webview" class="v-body">
+    <ul class="handle-area">
+        <li class="flex">
+            <label for="">开始时间:</label>
+        </li>
+        <li class="flex">
+            <label for="">结束时间:</label>
+        </li>
+        <li class="flex">
+            <label for="">区域时间:</label>
+        </li>
+        <li class="flex">
+            <label for="">视频地区:</label>
+            <!-- <app-custom-dropdown [options]="areas" [placeholder]="'请选择地区'"></app-custom-dropdown> -->
+            <select name="" id="">
+                <option value="">请选择视频地区</option>
+                <option [value]="item.value" *ngFor="let item of areas">{{item.viewValue}}</option>
+            </select>
+
+        </li>
+        <li class="flex">
+            <label for="">视频类型:</label>
+            <!-- <app-custom-dropdown [options]="types" [placeholder]="'请选择视频类型'"></app-custom-dropdown> -->
+            <select name="" id="">
+                <option value="">请选择视频类型</option>
+                <option [value]="item.value" *ngFor="let item of types">{{item.viewValue}}</option>
+            </select>
+        </li>
+        <li class="flex">
+            <label for="">演员:</label>
+            <select name="" id="">
+                <option value="">请选择演员</option>
+                <option [value]="item.value" *ngFor="let item of actors">{{item.viewValue}}</option>
+            </select>
+        </li>
+        <li class="flex">
+            <label for="">人员类型:</label>
+            <select name="" id="">
+                <option value="">请选择人员类型</option>
+                <option [value]="item.value" *ngFor="let item of ages">{{item.viewValue}}</option>
+            </select>
+        </li>
+        <li class="flex">
+            <label for="">布局: </label>
+            <select name="" id="">
+                <option [value]="item.value" *ngFor="let item of pos">{{item.viewValue}}</option>
+            </select>
+        </li>
+    </ul>
+</div>

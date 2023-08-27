@@ -5,15 +5,15 @@ import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DownloadModule } from '../views/download/download.module';
- import { OnlineModule } from '../views/online/online.module';
+import { OnlineModule } from '../views/online/online.module';
 import { SharedPipesModule } from '../pipe/share.module';
 import { PlayerModule } from '../views/player/player.module';
+import { HomeModule } from '../views/home/home.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -21,7 +21,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     SharedPipesModule,
     DownloadModule,
     OnlineModule,
-    PlayerModule
+    PlayerModule,
+    HomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

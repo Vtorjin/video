@@ -1,4 +1,4 @@
-appId: com.electron.app
+appId: angular.video.app
 productName: 翻译助手
 asar: true
 directories:
@@ -14,7 +14,7 @@ asarUnpack:
   - resources/**
 afterSign: build/notarize.js
 win:
-  executableName: translator
+  executableName: video
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
