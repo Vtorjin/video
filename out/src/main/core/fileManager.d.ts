@@ -33,6 +33,7 @@ declare class FileManager {
     getTestHtml(): string;
     getClientHtml(): string;
     getPreloadJsPath(): string;
+    getPreloadWebviewJsPath(): string;
     getMainLogPath(): string;
     getUserDataPath(name: 'home' | 'appData' | 'userData' | 'sessionData' | 'temp' | 'exe' | 'module' | 'desktop' | 'documents' | 'downloads' | 'music' | 'pictures' | 'videos' | 'recent' | 'logs' | 'crashDumps'): string;
     getExtensionsRoot(): string;

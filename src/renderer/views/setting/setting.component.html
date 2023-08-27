@@ -1,16 +1,17 @@
 <div class="v-body flex js">
     <div class="v-sidebar">
         <ul class="flex acc">
-            <li class="swiper-slide navbar-item v-pointer" *ngFor="let item of options" (click)="changeTab(item.value)">
+            <li [ngClass]="['v-pointer swiper-slide navbar-item  '  + (activeIdx === item.value && 'activeTab')]"
+                *ngFor="let item of options;let i = index;" (click)="changeTab(item.value)">
                 {{item.label}}
             </li>
         </ul>
     </div>
     <div class="setting-page-body  flex cc">
         <app-setting-executejs *ngIf="activeIdx === 0"></app-setting-executejs>
+        <app-setting-other *ngIf="activeIdx === 4"></app-setting-other>
+        <app-setting-system *ngIf="activeIdx === 3"></app-setting-system>
         <app-setting-video *ngIf="activeIdx === 1"></app-setting-video>
         <app-setting-user *ngIf="activeIdx === 2"></app-setting-user>
-        <app-setting-system *ngIf="activeIdx === 3"></app-setting-system>
-        <app-setting-other *ngIf="activeIdx === 4"></app-setting-other>
     </div>
 </div>

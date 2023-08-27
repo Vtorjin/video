@@ -15,7 +15,7 @@ export class SettingOtherComponent {
   // area = new FormControl('');
 
   form = new FormGroup({
-    host: new FormControl('vip'),
+    host: new FormControl(''),
     actor: new FormControl(''),
     type: new FormControl(''),
     area: new FormControl(''),

@@ -159,6 +159,9 @@ class FileManager {
     getPreloadJsPath() {
         return (0, path_1.join)(this.getChromeModulePath(), 'dist', 'browser', 'index.js');
     }
+    getPreloadWebviewJsPath() {
+        return (0, path_1.join)(electron_1.app.getAppPath());
+    }
     getMainLogPath() {
         return electron_1.app.isPackaged ? (0, exports.joinFilePath)(this.getUserDataPath('userData'), 'log', 'error.log') : (0, path_1.join)(electron_1.app.getAppPath(), 'logs/error.log');
     }

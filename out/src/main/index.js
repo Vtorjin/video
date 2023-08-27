@@ -44,6 +44,7 @@ class AppManager {
         electron_1.ipcMain.handle('quit', () => { systemManager_1.default.getInstance().quitApp(); });
         electron_1.ipcMain.handle('minimize-window', () => { systemManager_1.default.getInstance().minimizeApp(); });
         electron_1.ipcMain.handle('maxWindowScreen', () => { systemManager_1.default.getInstance().maximizeApp(); });
+        electron_1.ipcMain.handle('updateInfo', () => { systemManager_1.default.getInstance().sendMessageToRender('updateInfo', fileManager_1.default.getInstance().getPreloadWebviewJsPath()); });
     }
     registerAppEvent() {
         electron_1.app.on('activate', () => {

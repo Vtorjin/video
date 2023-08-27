@@ -25,7 +25,7 @@ export class AppComponent {
   ) { }
 
   ngOnInit() {
-    let root = document.querySelector('app-root');
+    let root = document.querySelector('#app-header');
     let me = this;
     if (root === null) return;
 

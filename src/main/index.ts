@@ -57,7 +57,7 @@ class AppManager {
     ipcMain.handle('quit', () => { SystemManager.getInstance().quitApp(); })
     ipcMain.handle('minimize-window', () => { SystemManager.getInstance().minimizeApp(); })
     ipcMain.handle('maxWindowScreen', () => { SystemManager.getInstance().maximizeApp() })
-
+    ipcMain.handle('updateInfo', () => { SystemManager.getInstance().sendMessageToRender('updateInfo', FileManager.getInstance().getPreloadWebviewJsPath()) })
   }
 
   registerAppEvent() {

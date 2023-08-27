@@ -4,12 +4,9 @@ const tslib_1 = require("tslib");
 const electron_1 = require("electron");
 const default_json_1 = tslib_1.__importDefault(require("../../config/default.json"));
 let errorStack = [];
-electron_1.ipcRenderer.on('mainError', function (e, msg) {
-    console.log(...arguments);
-});
-electron_1.contextBridge.exposeInMainWorld(default_json_1.default.ipcRenderName, {
+var word = {
     platform: process.platform,
-    extensionUrl: "",
+    webviewPreloadUrl: "",
     errStack: errorStack,
     pubEventEmitter(eventName, data) {
         electron_1.ipcRenderer.invoke('eventEmitter', JSON.stringify({ name: eventName, data }));
@@ -18,6 +15,9 @@ electron_1.contextBridge.exposeInMainWorld(default_json_1.default.ipcRenderName,
         electron_1.ipcRenderer.on(tag, (e, msg) => {
             cb(msg);
         });
+    },
+    invokeEvent(tag, data) {
+        electron_1.ipcRenderer.invoke(tag, JSON.stringify({ data }));
     },
     getPreloadJs() {
         return new Promise((r, j) => {
@@ -55,7 +55,15 @@ electron_1.contextBridge.exposeInMainWorld(default_json_1.default.ipcRenderName,
     quit() {
         electron_1.ipcRenderer.invoke('quit');
     }
+};
+electron_1.ipcRenderer.on('mainError', function (e, msg) {
+    console.log(...arguments);
 });
+electron_1.ipcRenderer.on('updateInfo', (e, msg) => {
+    console.log(typeof msg, msg);
+    word.webviewPreloadUrl = "aapapap";
+});
+electron_1.contextBridge.exposeInMainWorld(default_json_1.default.ipcRenderName, word);
 global.sendMessageToHost = function () {
     console.log(...arguments, 'global');
 };

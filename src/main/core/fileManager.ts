@@ -185,6 +185,11 @@ class FileManager {
     return join(this.getChromeModulePath(), 'dist', 'browser', 'index.js')
   }
 
+  getPreloadWebviewJsPath(){
+    return join(app.getAppPath())
+  }
+
+
 
   getMainLogPath() {
     return app.isPackaged ? joinFilePath(this.getUserDataPath('userData'), 'log', 'error.log') : join(app.getAppPath(), 'logs/error.log')

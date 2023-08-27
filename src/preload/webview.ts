@@ -81,7 +81,7 @@ ipcRenderer.on('updateInfo', (e: Event, msg: any) => {
 
 
 
-contextBridge.exposeInMainWorld(_conf.ipcRenderName, word);
+contextBridge.exposeInMainWorld('videoApp', word);
 
 global.sendMessageToHost = function () {
   console.log(...arguments, 'global');

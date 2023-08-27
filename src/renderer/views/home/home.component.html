@@ -46,5 +46,10 @@
                 <option [value]="item.value" *ngFor="let item of pos">{{item.viewValue}}</option>
             </select>
         </li>
+
+        <li class="flex">
+            <label for=""></label>
+            <button (click)="reload()">刷新</button>
+        </li>
     </ul>
 </div>

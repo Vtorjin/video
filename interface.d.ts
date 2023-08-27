@@ -8,9 +8,7 @@ interface errorMsg {
 }
 
 
-type CustomEventName = "openOfficialWebsite" | "initApp" | 'translateWord' | "translateInput" |
-    'translateBeforeSend' | 'beforeSendInApp' | "sendTransResponse" | 'updateSetting'
-    | 'clearTransAppCache' | 'changeTransAppCache' | 'openBusinessLine' | 'getPreloadJs';
+type CustomEventName = "openOfficialWebsite" | "initApp" | 'updateSetting' | 'getPreloadJs' | 'updateInfo';
 
 interface CustomWindowAttr {
     platform: string

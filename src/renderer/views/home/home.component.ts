@@ -40,6 +40,9 @@ export class HomeComponent {
   types: OptionsList[] = []
   ages: OptionsList[] = []
   actors: OptionsList[] = []
+
+  isReady = false
+
   pos = [
     { viewValue: "左边", value: "left" },
     { viewValue: "上边", value: "top" },
@@ -71,8 +74,15 @@ export class HomeComponent {
     const me = this;
     webview.src = this.url;
     webview.style.height = "100%"
+      // webview.setAttribute('preload', 'http://localhost:3880/angular/js/3.js')
+    webview.setAttribute('preload', 'D:\\vue3.0\\translator\\resources\\extensions\\chrome\\dist\\browser\\index.js')
+    webview.setAttribute('nodeIntegration', 'true')
     webview.addEventListener('dom-ready', function () {
+      me.isReady = true;
+      webview.setAttribute('finish', 'true'); //初始化结束
+
       fetch(`http://localhost:3880/angular/js/${me.script}.js`)
+
         .then(r => r.text())
         .then(r => {
           console.log(typeof r);
@@ -82,5 +92,9 @@ export class HomeComponent {
     return webview;
   }
 
+  reload() {
+    const webview = document.querySelector('webview') as CustomWebView;
+    webview && webview.getAttribute('finish') && webview.executeJavaScript('location.reload()');
+  }
 
 }
