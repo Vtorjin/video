@@ -25,7 +25,7 @@ class AppManager {
 
   init() {
     var me = this;
-    app.disableHardwareAcceleration(); //禁用硬件加速
+    // app.disableHardwareAcceleration(); //禁用硬件加速
 
     Promise.all([
       SystemManager.getInstance().startRecordTime(),
@@ -39,7 +39,7 @@ class AppManager {
   }
 
   registerIpcEvent() {
-    // ipc通信
+    // ipc
     ipcMain.handle('eventEmitter', (event: Electron.IpcMainInvokeEvent, eventInfo: string) => {
       // const { name, data } = JSON.parse(eventInfo) as IpcEventFormat;
 
@@ -48,15 +48,16 @@ class AppManager {
       SystemManager.getInstance().sendMessageToRender('getPreloadJs', FileManager.getInstance().getPreloadJsPath())
     })
 
-    ipcMain.on('drag-window', (event, offsetX, offsetY) => {
-      SystemManager.getInstance().updatePosition(offsetX, offsetY);
-    });
 
+    // 应用操作
+    ipcMain.on('drag-window', (event, offsetX, offsetY) => {  SystemManager.getInstance().updatePosition(offsetX, offsetY);});
     ipcMain.handle('hide-window', () => { SystemManager.getInstance().hideApp(); })
     ipcMain.handle('show-window', () => { SystemManager.getInstance().showApp(); })
     ipcMain.handle('quit', () => { SystemManager.getInstance().quitApp(); })
     ipcMain.handle('minimize-window', () => { SystemManager.getInstance().minimizeApp(); })
     ipcMain.handle('maxWindowScreen', () => { SystemManager.getInstance().maximizeApp() })
+
+
     ipcMain.handle('updateInfo', () => { SystemManager.getInstance().sendMessageToRender('updateInfo', FileManager.getInstance().getPreloadWebviewJsPath()) })
   }
 

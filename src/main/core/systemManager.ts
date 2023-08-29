@@ -68,7 +68,7 @@ class SystemManager {
     //自定义请求头,是为了解决直接请求whatApp时服务器拿不到userAgent，出现版本号低的情况
     SessionManager.getInstance().overrideWebRequest();
     // 加载line
-    // SessionManager.getInstance().loadChromeLineExtension();
+    SessionManager.getInstance().overrideWebResponse();
     // 绑定主进程的window对象
     me.topWin = win;
     // 自定义file协议操作

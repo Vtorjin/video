@@ -103,7 +103,7 @@ contextBridge.exposeInMainWorld('videoApp', {
   errStack: errorStack,
   getRandomColor,
   // 通信内容格式
-  pubEventEmitter(eventName: CustomEventName, data?: any) {
+  pubCrawlerEvent(eventName: CustomEventName, data?: any) {
     ipcRenderer.invoke('eventEmitter', JSON.stringify({ name: eventName, data }));
   },
 

@@ -24,7 +24,19 @@ class SessionManager {
                 },
             })
         })
+    }
 
+    overrideWebResponse() {
+        session.defaultSession.webRequest.onHeadersReceived({
+            urls: ['<all_urls>']
+        }, (details, callback) => {
+            details.url.includes('.m3u8') && console.log(details.url, '响应的地址')
+            callback({
+                responseHeaders: {
+                    ...details.responseHeaders
+                }
+            })
+        })
     }
 }
 

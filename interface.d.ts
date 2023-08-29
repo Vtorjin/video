@@ -12,12 +12,13 @@ type CustomEventName = "openOfficialWebsite" | "initApp" | 'updateSetting' | 'ge
 
 interface CustomWindowAttr {
     platform: string
-    extensionUrl: string
+    webviewPreloadUrl: string
     errStack: string[]
-    pubEventEmitter: Function
+    pubCrawlerEvent: Function
     addEventListener: Function
     getPreloadJs: Function
     loadWebView: Function
+    invokeEvent: Function
     showConTextMenu: Function
     moveWindowPos: Function
     createChildWindow: Function

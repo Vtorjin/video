@@ -3,12 +3,12 @@ import _conf from "../../config/default.json";
 
 let errorStack: string[] = [];
 
-var word = {
+var word: CustomWindowAttr = {
   platform: process.platform,
   webviewPreloadUrl: "",
   errStack: errorStack,
   // 通信内容格式
-  pubEventEmitter(eventName: CustomEventName, data?: any) {
+  pubCrawlerEvent(eventName: CustomEventName, data?: any) {
     ipcRenderer.invoke('eventEmitter', JSON.stringify({ name: eventName, data }));
   },
 
