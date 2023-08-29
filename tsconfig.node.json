@@ -28,10 +28,10 @@
         }
     },
     "include": [
+        "./interface.d.ts",
         "src/main/**/*.ts",
         "src/preload/*.ts",
         "config/default.json",
-        "types/**/*.d.ts",
-        "interface.d.ts"
+        "types/**/*.d.ts"
     ]
 }

@@ -1,5 +1,5 @@
 <div id="webview" class="v-body">
-    <ul class="handle-area">
+    <ul [class]="['handle-area',dir]">
         <li class="flex">
             <label for="">开始时间:</label>
         </li>
@@ -42,14 +42,13 @@
         </li>
         <li class="flex">
             <label for="">布局: </label>
-            <select name="" id="">
+            <select name="" id="" (change)="updatePos($event)">
                 <option [value]="item.value" *ngFor="let item of pos">{{item.viewValue}}</option>
             </select>
         </li>
 
-        <li class="flex">
-            <label for=""></label>
-            <button (click)="reload()">刷新</button>
+        <li class="flex cc v-pointer" (click)="reload()">    
+            刷新 
         </li>
     </ul>
 </div>

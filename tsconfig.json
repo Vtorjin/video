@@ -18,17 +18,19 @@
     "experimentalDecorators": true,
     "paths": {
       "@conf/*": [
-          "config/*"
+        "config/*"
       ],
       "~/*": [
-          "./*"
+        "./*"
       ]
-  }
+    }
   },
   "include": [
     "package.json",
-    "interface.d.ts",
-    "src/renderer/**/*.ts"
+    "./interface.d.ts",
+    "src/renderer/**/*.ts",
+    "src/preload/**/*.ts",
+    "src/main/**/*.ts",
   ],
   "lib": [
     "ESNext",

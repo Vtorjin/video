@@ -12,25 +12,22 @@
             <select class="search-input" placeholder="选择所属host" name="options" formControlName="belong">
                 <option value="">选择所属host</option>
                 <option *ngFor="let item of hosts" [value]="item.value">{{item.viewValue}}</option>
-                <!-- <option value="one">One</option>
-                <option value="two">Two</option>
-                <option value="three">Three</option> -->
+ 
             </select>
-            <!-- <mat-form-field>
-                <mat-label>host列表</mat-label>
-                <mat-select>
-                    <mat-option *ngFor="let food of hosts" [value]="food.value">
-                        {{food.viewValue}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field> -->
         </div>
     </div>
     <div class="v-form-item">
-        <label for="href">地址: </label>
+        <label for="href">网络地址: </label>
         <div class="searchbar">
             <input id="href" type="text" formControlName="href" class="search-input" type="text" name="wd"
                 autocomplete="off" placeholder="输入操作视频网站地址...." />
+        </div>
+    </div>
+    <div class="v-form-item">
+        <label for="icon">后缀名称: </label>
+        <div class="searchbar">
+            <input id="icon" type="text" formControlName="suffix" class="search-input" type="text" name="wd"
+                autocomplete="off" placeholder="输入文件后缀...." />
         </div>
     </div>
     <div class="v-form-item">
@@ -50,6 +47,6 @@
     <div class="v-form-item footer">
         <button mat-flat-button color="primary" (click)="saveSite()">保存</button>
         <button mat-stroked-button>取消</button>
-        <button mat-flat-button color="primary">修改</button>
+        <button mat-flat-button color="primary" (click)="putJs()" >修改</button>
     </div>
 </form>

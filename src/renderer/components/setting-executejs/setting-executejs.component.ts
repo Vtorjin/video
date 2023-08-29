@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms'
+import { HttpService } from '../../service/http.service';
 import { SettingService } from '../../service/setting.service';
 import { SiteService } from '../../service/site.service';
 
@@ -22,16 +23,16 @@ export class SettingExecutejsComponent {
   ];
   constructor(
     private site: SiteService,
-    private setting: SettingService
+    private setting: SettingService,
+    private http: HttpService
   ) {
     this.siteForm = new FormGroup({
       name: new FormControl(''),
       href: new FormControl(''),
       icon: new FormControl(''),
       belong: new FormControl(''),
-      js: new FormControl(`
-      const app = new App();
-      `),
+      suffix: new FormControl(''),
+      js: new FormControl(` const app = new App();`),
     });
   }
 
@@ -44,10 +45,29 @@ export class SettingExecutejsComponent {
       if ((lastChild.getBoundingClientRect().bottom + 30) < document.body.clientHeight) {
         dom.rows = lines;
       }
-      // console.log();
     });
+    this.getJs();
+  }
 
+  getJs() {
+    this.http.get('angular/info/yhdm.decode.js').subscribe(res => {
+      console.log(res);
+      res && Object.keys(res).forEach(key => {
+        console.log(key);
+        let a = {} as Record<string, string>;
+        a[key] = res[key]
+        this.siteForm.patchValue(a);
+      })
+    })
+  }
 
+  putJs() {
+    const val = this.siteForm.get('suffix');
+    console.log(val)
+    this.http.post(`angular/js/yhdm.decode.js`, this.siteForm.value).subscribe(res => {
+      console.log(res);
+      alert(res.msg);
+    })
   }
 
   ngAfterViewInit() {
