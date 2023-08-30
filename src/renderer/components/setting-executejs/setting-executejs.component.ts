@@ -50,7 +50,7 @@ export class SettingExecutejsComponent {
       }
     });
     this.rt.queryParams.subscribe((res: any) => {
-      console.log(res)
+      console.log(res, 'res.id', res.id)
       res.id && this.getJs(res.suffix);
       res.id && (this.suffix = res.id);
     })
@@ -58,12 +58,20 @@ export class SettingExecutejsComponent {
 
   getJs(suffix: string) {
     // this.suffix = suffix
+    console.log('请求了',suffix)
     this.http.get(`angular/info/${suffix}`).subscribe(res => {
-      // console.log(res);
+      console.log(res);
       res && Object.keys(res).forEach(key => {
         // console.log(key);
         let a = {} as Record<string, string>;
         a[key] = res[key]
+        this.siteForm.patchValue(a);
+      })
+
+      res.data && Object.keys(res.data).forEach(key => {
+        console.log(key);
+        let a = {} as Record<string, string>;
+        a[key] = res.data[key]
         this.siteForm.patchValue(a);
       })
     })

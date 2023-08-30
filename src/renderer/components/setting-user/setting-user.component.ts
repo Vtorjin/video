@@ -26,7 +26,7 @@ export class SettingUserComponent {
 
   loadDefault(e: any) {
     // console.log(e)
-    e.target.src = '/assets/img/true.png'
+    e.target.src = '/assets/img/default.png'
   }
 
   gotoJs(p?: { id: string, suffix: string }) {
