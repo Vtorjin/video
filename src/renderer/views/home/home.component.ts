@@ -58,8 +58,10 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    // console.log('hhhh ')
     document.querySelector('#webview')?.append(this.createWebView())
+    window.videoApp.addEventListener('captureM3u8Url', function (url: string) {
+      console.log(url)
+    })
   }
 
   ngAfterViewInit() {
@@ -89,20 +91,6 @@ export class HomeComponent {
     webview.addEventListener('dom-ready', function () {
       me.isReady = true;
       webview.setAttribute('finish', 'true'); //初始化结束
-      fetch('http://localhost:3880/angular/js/yhdm.decode.js?202201').then(t => t.text()).then(res => {
-        webview.executeJavaScript(`
-        ["https://player.ikmz.cc/asset/js/mui-player.min.js",
-        'https://player.ikmz.cc/asset/js/mui-player-desktop-plugin.min.js',
-        'https://player.ikmz.cc/asset/js/mui-player-mobile-plugin.min.js',
-        'https://player.ikmz.cc/asset/js/jquery.xctips.js',
-        "https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/crypto-js/4.0.0/crypto-js.min.js",
-        'https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/hls.js/0.8.8/hls.light.min.js',
-        'https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/flv.js/1.5.0/flv.min.js', 
-      ].map(u => globalFunction.createDOMElement({tag:"script",props:{src:u}})).forEach(s => document.head.appendChild(s))
-      
-      ${res};
-      `)
-      })
     })
     return webview;
   }

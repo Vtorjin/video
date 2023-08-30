@@ -1,1 +1,17 @@
-<p>setting-user works!</p>
+<div class="thumbnails-container">
+    <div class="thumbnail" *ngFor="let item of list" (click)="gotoJs({id:item.id,suffix:item.suffix})">
+        <img [src]="item.icon" (error)="loadDefault($event)" [alt]="item.name">
+<div class="website-info">A
+    
+            <h3>{{item.name}}</h3>
+            <p>{{item.href}}</p>
+        </div>
+    </div>
+
+    <div class="thumbnail flex acc" (click)="gotoJs()">
+        <img src="assets/img/true.png" alt="">
+        <div class="website-info">
+            <h3>添加</h3>
+        </div>
+    </div>
+</div>

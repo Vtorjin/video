@@ -206,7 +206,7 @@ class SystemManager {
     process.exit();
   }
 
-  sendMessageToRender(name: CustomEventName, data: string | object | undefined) {
+  sendMessageToRender(name: CustomEventName | CrawlerEventName, data: string | object | undefined) {
     this.topWin?.webContents.send(name, typeof data === 'string' ? data : JSON.stringify(data))
   }
 

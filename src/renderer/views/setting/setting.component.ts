@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { SiteService } from '../../service/site.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SettingService } from '../../service/setting.service';
+import { routes } from '../../app/app-routing.module';
 
 
 
@@ -17,14 +18,15 @@ import { SettingService } from '../../service/setting.service';
 })
 
 export class SettingComponent {
-  options = [
-    { label: "JS设置", value: 0 },
-    { label: "视频类型设置", value: 4 },
-    { label: "系统设置", value: 3 },
-    { label: "角色设置", value: 2 },
-    { label: "其他设置", value: 1 },
+  options = routes.find(r => r.path === 'setting')?.children || []
+  // [
+    // { label: "JS设置", value: 0 },
+    // { label: "视频类型设置", value: 4 },
+    // { label: "系统设置", value: 3 },
+    // { label: "JS管理", value: 2 },
+    // { label: "其他设置", value: 1 },
     // { label: "JS设置", value: 5 },
-  ]
+  // ]
 
   activeIdx = 0;
 

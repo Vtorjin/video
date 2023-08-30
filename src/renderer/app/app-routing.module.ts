@@ -7,6 +7,11 @@ import { SettingComponent } from "../views/setting/setting.component"
 import { DownloadInprogressComponent } from '../components/download-inprogress/download-inprogress.component';
 import { DownloadLocalComponent } from '../components/download-local/download-local.component';
 import { PlayerComponent } from '../views/player/player.component';
+import { SettingUserComponent } from '../components/setting-user/setting-user.component';
+import { SettingVideoComponent } from '../components/setting-video/setting-video.component';
+import { SettingExecutejsComponent } from '../components/setting-executejs/setting-executejs.component';
+import { SettingSystemComponent } from '../components/setting-system/setting-system.component';
+import { SettingOtherComponent } from '../components/setting-other/setting-other.component';
 
 export const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -26,7 +31,18 @@ export const routes: Routes = [
   },
   // {path:"",loadChildren:}
   { path: "online", component: OnlineComponent, title: "爬虫" },
-  { path: "setting", component: SettingComponent, title: "JS设置" },
+  {
+    path: "setting", component: SettingComponent, title: "JS设置",
+    children: [
+      { path: "", component: SettingExecutejsComponent },
+      { title: "JS管理", path: "manager", component: SettingUserComponent },
+      { title: "JS设置", path: "js", component: SettingExecutejsComponent },
+      { title: "视频类型设置", path: "video", component: SettingVideoComponent },
+      { title: "系统设置", path: "system", component: SettingSystemComponent },
+
+      { title: "其他设置", path: "other", component: SettingOtherComponent },
+    ]
+  },
   { path: "player", component: PlayerComponent, title: "播放器" },
   { path: "**", component: HomeComponent }
 

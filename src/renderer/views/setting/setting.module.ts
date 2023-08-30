@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { SettingSystemComponent } from '../../components/setting-system/setting-system.component';
 import { SettingOtherComponent } from '../../components/setting-other/setting-other.component';
+import { AppRoutingModule } from '../../app/app-routing.module';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { SettingOtherComponent } from '../../components/setting-other/setting-ot
     SettingOtherComponent
   ],
   imports: [
+    AppRoutingModule,
     CommonModule,
     ReactiveFormsModule,
     MatButtonModule,

@@ -10,12 +10,15 @@ interface errorMsg {
 
 type CustomEventName = "openOfficialWebsite" | "initApp" | 'updateSetting' | 'getPreloadJs' | 'updateInfo';
 
+type CrawlerEventName = "captureM3u8Url" | 'downloadPause' | 'downloadStart' | 'downloadFinish' | 'downloadError';
+
 interface CustomWindowAttr {
     platform: string
     webviewPreloadUrl: string
     errStack: string[]
     pubCrawlerEvent: Function
-    addEventListener: Function
+    // addEventListener: Function
+    addEventListener: (name: CrawlerEventName | CustomEventName, cb: Function) => void
     getPreloadJs: Function
     loadWebView: Function
     invokeEvent: Function

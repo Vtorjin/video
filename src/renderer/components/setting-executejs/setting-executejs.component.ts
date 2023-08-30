@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms'
+import { ActivatedRoute } from '@angular/router';
 import { HttpService } from '../../service/http.service';
 import { SettingService } from '../../service/setting.service';
 import { SiteService } from '../../service/site.service';
@@ -16,6 +17,7 @@ interface LocationHosts {
 })
 export class SettingExecutejsComponent {
   siteForm: FormGroup
+  suffix: string = ""
   hosts: LocationHosts[] = [
     { value: 'steak-0', viewValue: 'Steak' },
     { value: 'pizza-1', viewValue: 'Pizza' },
@@ -24,7 +26,8 @@ export class SettingExecutejsComponent {
   constructor(
     private site: SiteService,
     private setting: SettingService,
-    private http: HttpService
+    private http: HttpService,
+    private rt: ActivatedRoute
   ) {
     this.siteForm = new FormGroup({
       name: new FormControl(''),
@@ -46,14 +49,19 @@ export class SettingExecutejsComponent {
         dom.rows = lines;
       }
     });
-    this.getJs();
+    this.rt.queryParams.subscribe((res: any) => {
+      console.log(res)
+      res.id && this.getJs(res.suffix);
+      res.id && (this.suffix = res.id);
+    })
   }
 
-  getJs() {
-    this.http.get('angular/info/yhdm.decode.js').subscribe(res => {
-      console.log(res);
+  getJs(suffix: string) {
+    // this.suffix = suffix
+    this.http.get(`angular/info/${suffix}`).subscribe(res => {
+      // console.log(res);
       res && Object.keys(res).forEach(key => {
-        console.log(key);
+        // console.log(key);
         let a = {} as Record<string, string>;
         a[key] = res[key]
         this.siteForm.patchValue(a);
@@ -64,10 +72,16 @@ export class SettingExecutejsComponent {
   putJs() {
     const val = this.siteForm.get('suffix');
     console.log(val)
-    this.http.post(`angular/js/yhdm.decode.js`, this.siteForm.value).subscribe(res => {
+    this.suffix ? this.http.post(`angular/js/${this.suffix}`, this.siteForm.value).subscribe(res => {
       console.log(res);
       alert(res.msg);
-    })
+    }) : alert('没有内容无法更新')
+  }
+
+  remove() {
+    this.suffix ? this.http.get(`angular/d/${this.suffix}`).subscribe(res => {
+      res.status === 200 && alert('删除成功!');
+    }) : alert('没有id')
   }
 
   ngAfterViewInit() {

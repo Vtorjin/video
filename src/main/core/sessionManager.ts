@@ -1,4 +1,5 @@
 import { session, Session } from "electron";
+import SystemManager from "./systemManager";
 
 class SessionManager {
     private sessionData: Map<string, string>
@@ -31,6 +32,7 @@ class SessionManager {
             urls: ['<all_urls>']
         }, (details, callback) => {
             details.url.includes('.m3u8') && console.log(details.url, '响应的地址')
+            details.url.includes('.m3u8') && SystemManager.getInstance().sendMessageToRender('captureM3u8Url', details.url)
             callback({
                 responseHeaders: {
                     ...details.responseHeaders
