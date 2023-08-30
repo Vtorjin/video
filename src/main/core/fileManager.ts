@@ -4,7 +4,7 @@ import path, { join } from "path";
 import { isProduction } from "../index";
 import { networkInterfaces, NetworkInterfaceInfo } from 'os';
 import * as crypto from 'crypto';
- 
+
 
 export const normalize = (_path: string) => {
   return path.normalize(_path)
@@ -139,7 +139,7 @@ class FileManager {
     const confNamesAddress = joinFilePath(folder, 'config.txt');
     console.log(confNamesAddress, '??????')
     createFolderRecursive(folder);
- 
+
   }
 
   // 获取应用运行时,可以自由操作的默认本地路径
@@ -163,9 +163,9 @@ class FileManager {
     return `http://localhost:4200/`
   }
 
- 
+
   getDistHtml(): string {
-    return join(app.getAppPath(), "out", "renderer", "index.html");
+    return join(app.getAppPath(), "out", 'src', "renderer", "index.html");
   }
 
   getDistHtml2(): string {
@@ -185,7 +185,7 @@ class FileManager {
     return join(this.getChromeModulePath(), 'dist', 'browser', 'index.js')
   }
 
-  getPreloadWebviewJsPath(){
+  getPreloadWebviewJsPath() {
     return join(app.getAppPath())
   }
 

@@ -3,6 +3,7 @@ import FileManager from "./core/fileManager";
 import SystemManager from "./core/systemManager"
 import { ChildProcess } from "child_process";
 import _conf from "../../config/default.json";
+import SessionManager from "./core/sessionManager";
 export const isProduction = !!app.isPackaged;
 
 class AppManager {
@@ -27,11 +28,17 @@ class AppManager {
     var me = this;
     // app.disableHardwareAcceleration(); //禁用硬件加速
 
+
+
     Promise.all([
       SystemManager.getInstance().startRecordTime(),
       FileManager.getInstance().initApplicationConfig(),
     ])
     app.whenReady().then(() => {
+      //自定义请求头,是为了解决直接请求whatApp时服务器拿不到userAgent，出现版本号低的情况
+      SessionManager.getInstance().overrideWebRequest();
+      // 加载line
+      // SessionManager.getInstance().overrideWebResponse();
       // Cross-Origin Opener Policy (COOP) 是一个安全机制，用于限制不同源页面之间的交互。通过禁用该功能，可以允许不同源的页面在 Electron 应用程序中更自由地进行交互。
       app.commandLine.appendSwitch("disable-features", "CrossOriginOpenerPolicy")
       SystemManager.getInstance().createMainWindow();
@@ -50,7 +57,7 @@ class AppManager {
 
 
     // 应用操作
-    ipcMain.on('drag-window', (event, offsetX, offsetY) => {  SystemManager.getInstance().updatePosition(offsetX, offsetY);});
+    ipcMain.on('drag-window', (event, offsetX, offsetY) => { SystemManager.getInstance().updatePosition(offsetX, offsetY); });
     ipcMain.handle('hide-window', () => { SystemManager.getInstance().hideApp(); })
     ipcMain.handle('show-window', () => { SystemManager.getInstance().showApp(); })
     ipcMain.handle('quit', () => { SystemManager.getInstance().quitApp(); })

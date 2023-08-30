@@ -46,9 +46,7 @@
                 <option [value]="item.value" *ngFor="let item of pos">{{item.viewValue}}</option>
             </select>
         </li>
-
-        <li class="flex cc v-pointer" (click)="reload()">    
-            刷新 
-        </li>
+        <li class="flex cc v-pointer" (click)="reload()">刷新</li>
+        <li class="flex cc v-pointer" *ngIf="!!play_url" (click)="play()">播放</li>
     </ul>
 </div>

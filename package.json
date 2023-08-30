@@ -8,7 +8,7 @@
     "electron:dev": "chcp 65001 && electron .",
     "electron": "electron",
     "electron:serve-tsc": "tsc -p tsconfig.node.json",
-    "electron:serve": "wait-on tcp:4200 && npm run electron:serve-tsc && chcp 65001 && electron . --serve",
+    "electron:serve": "wait-on tcp:4200 -w && npm run electron:serve-tsc && chcp 65001 && electron . --watch --serve",
     "electron:hot": "electron-reloader .",
     "electron:local": "npm run build:prod && electron .",
     "build": "npm run electron:serve-tsc && ng build --base-href ./",

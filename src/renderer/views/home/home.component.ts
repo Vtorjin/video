@@ -41,7 +41,6 @@ export class HomeComponent {
   types: OptionsList[] = []
   ages: OptionsList[] = []
   actors: OptionsList[] = []
-
   isReady = false
 
   pos = [
@@ -53,14 +52,18 @@ export class HomeComponent {
 
   dir = "top"
 
+  play_url = "";
+
   constructor(private setting: SettingService) {
 
   }
 
   ngOnInit() {
+    const me = this;
     document.querySelector('#webview')?.append(this.createWebView())
     window.videoApp.addEventListener('captureM3u8Url', function (url: string) {
       console.log(url)
+      me.play_url = url;
     })
   }
 
@@ -98,6 +101,10 @@ export class HomeComponent {
   reload() {
     const webview = document.querySelector('webview') as CustomWebView;
     webview && webview.getAttribute('finish') && webview.executeJavaScript('location.reload()');
+  }
+
+  play() {
+    alert(this.play_url)
   }
 
 

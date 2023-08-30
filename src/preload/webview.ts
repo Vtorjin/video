@@ -3,7 +3,7 @@ import _conf from "../../config/default.json";
 
 
 let errorStack: string[] = [];
- 
+
 
 setInterval(() => {
   document.querySelectorAll('a').forEach(a => { a.target = "_self"; })
@@ -72,7 +72,7 @@ contextBridge.exposeInMainWorld('globalFunction', {
   },
   createVideoCover() {
     let video = this.getVideo && this.getVideo();
-    if(!video ){
+    if (!video) {
       console.log('视频无法获取')
       return;
     }
@@ -106,12 +106,12 @@ contextBridge.exposeInMainWorld('globalFunction', {
       // 绘制缩放后的视频帧到Canvas上
       ctx.drawImage(video, cropX, cropY, cropWidth, cropHeight, 0, 0, targetWidth, targetHeight);
       // 将Canvas生成的图片数据URL设置为视频的封面
-      const dataURL = canvas.toDataURL('image/png', 1.0); 
-      video.setAttribute('poster', dataURL); 
+      const dataURL = canvas.toDataURL('image/png', 1.0);
+      video.setAttribute('poster', dataURL);
     })();
   },
 
-  createVideoIntoPage(containerSelector){
+  createVideoIntoPage(containerSelector) {
 
   }
 })
@@ -119,6 +119,12 @@ contextBridge.exposeInMainWorld('globalFunction', {
 global.sendMessageToHost = function () {
   console.log(...arguments, 'global');
 }
+
+const a: CrawlerEventName = "captureM3u8Url";
+
+ipcRenderer.on(a, function () {
+  console.log(...arguments,'webview')
+})
 
 process.on('uncaughtException', function (m) {
   console.log(m.message)
