@@ -52,7 +52,6 @@ class SystemManager {
       autoHideMenuBar: conf.hideMenu,
       frame: false, //去除默认的放大缩小关闭
       webPreferences: {
-      
         sandbox: false,
         webSecurity: false, // 允许加载本地和远程的资源
         allowRunningInsecureContent: true, // 允许加载不安全的内容
@@ -108,14 +107,16 @@ class SystemManager {
       },
       {
         label: "重新加载",
-        click: () => { win.reload()},
+        click: () => {
+          console.log("QQQQQQQ")
+          isProduction ? this.afterRecordHistoryRefresh(win) : win.reload()
+        },
         "accelerator": "F5"
       }, {
         label: "打开App控制台",
         accelerator: "F6",
         click: () => {
           // win.webContents.toggleDevTools();
-          win.webContents.executeJavaScript(`document.querySelector('webview')&&document.querySelector('webview').openDevTools()`)
         }
       }, {
         label: "打开子窗口控制台",
@@ -127,6 +128,19 @@ class SystemManager {
     Menu.setApplicationMenu(mainMenu);
   }
 
+  afterRecordHistoryRefresh(win: BrowserWindow) {
+    console.log("????????????")
+    win.webContents.executeJavaScript('localStorage.setItem("path",location.href)')
+    setTimeout(() => {
+      win.webContents.loadFile(FileManager.getInstance().getDistHtml())
+    })
+    // win.reload();
+    // .then(() => win.webContents.loadFile(FileManager.getInstance().getDistHtml()))
+    //   .catch(() => {
+    //     win.webContents.loadFile(FileManager.getInstance().getDistHtml())
+    //   })
+
+  }
 
   // 创建托盘
   createApplicationTray() {

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { SettingService } from '../../service/setting.service';
 
 interface CustomWebView extends HTMLElement {
@@ -54,7 +55,10 @@ export class HomeComponent {
 
   play_url = "";
 
-  constructor(private setting: SettingService) {
+  constructor(
+    private setting: SettingService,
+    private router: Router
+  ) {
 
   }
 
@@ -65,6 +69,24 @@ export class HomeComponent {
       console.log(url)
       me.play_url = url;
     })
+    window.videoApp.isProd && this.recordRouter()
+  }
+
+  recordRouter() {
+    console.log(window.videoApp,'??????????????????')
+    localStorage.getItem('path') && location.replace(localStorage.getItem('path') as string);
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        // 路由导航开始
+        console.log('开始', location.href)
+      }
+      if (event instanceof NavigationEnd) {
+        // 路由导航成功完成
+        // console.log('结束', location.href)
+        localStorage.setItem('path',location.href);
+      }
+      // 还可以监听其他类型的路由事件
+    });
   }
 
   ngAfterViewInit() {

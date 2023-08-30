@@ -13,6 +13,8 @@ type CustomEventName = "openOfficialWebsite" | "initApp" | 'updateSetting' | 'ge
 type CrawlerEventName = "captureM3u8Url" | 'downloadPause' | 'downloadStart' | 'downloadFinish' | 'downloadError';
 
 interface CustomWindowAttr {
+    // a:any
+    isProd: boolean
     platform: string
     webviewPreloadUrl: string
     errStack: string[]

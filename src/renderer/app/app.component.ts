@@ -22,7 +22,30 @@ export class AppComponent {
   constructor(
     private routerInfo: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {
+    console.log(localStorage.getItem('path'));
+    window.addEventListener('hashchange', function () {
+      console.log(...arguments, '路由有变化1');
+    })
+
+
+    window.addEventListener('popstate', function () {
+      console.log(...arguments, '路由有变化');
+    })
+
+    window.onhashchange = function () {
+      console.log(...arguments, '路由有变化3');
+    }
+
+    window.onpopstate = function () {
+      console.log(...arguments, '路由有变化4');
+    }
+
+    window.onbeforeunload = () => {
+      alert('jhahahha')
+    }
+
+  }
 
   ngOnInit() {
     let root = document.querySelector('#app-header');

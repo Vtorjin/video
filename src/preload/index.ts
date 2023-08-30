@@ -4,6 +4,8 @@ import _conf from "../../config/default.json";
 let errorStack: string[] = [];
 
 var word: CustomWindowAttr = {
+  // a: process,
+  isProd: location.protocol.includes('file'),
   platform: process.platform,
   webviewPreloadUrl: "",
   errStack: errorStack,
