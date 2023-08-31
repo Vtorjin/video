@@ -1,27 +1,37 @@
 import { app, BrowserWindow, ipcMain, protocol, Session, shell } from "electron";
 import FileManager from "./core/fileManager";
 import SystemManager from "./core/systemManager"
-import { ChildProcess } from "child_process";
+import { ChildProcess, exec, execSync, fork, spawn } from "child_process";
 import _conf from "../../config/default.json";
 import SessionManager from "./core/sessionManager";
+import axios from "axios";
 export const isProduction = !!app.isPackaged;
 
 class AppManager {
 
   public appTitle: string;
   public serverProcess: null | ChildProcess = null
+  private child: ChildProcess
+
   constructor(appTitle: string) {
+    var me = this;
     this.appTitle = appTitle;
     // 开启日志处理
     this.setupLogMiddleware();
-    // 创建系统
-    this.init();
-
-    // 注册通信事件
-    this.registerIpcEvent();
-    this.registerAppEvent();
-
     process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+    // exec('cd D:\\nodeElectron\\nest-m3u8-downloader\\server && dev.bat')  
+    // this.child = spawn('cmd', ['/c', 'cd', 'D:\\nodeElectron\\nest-m3u8-downloader\\server', '&', 'dev.bat'])
+    me.registerAppEvent();
+    // this.child.stdout.on('data', function (d) {
+    //     console.log(d.toString())
+    //   d.toString().includes('Nest application successfully started') && (() => {
+    // 创建系统
+    me.init();
+    // 注册通信事件
+    me.registerIpcEvent();
+
+    // })()
+    // })
   }
 
   init() {
@@ -49,10 +59,27 @@ class AppManager {
     // ipc
     ipcMain.handle('eventEmitter', (event: Electron.IpcMainInvokeEvent, eventInfo: string) => {
       // const { name, data } = JSON.parse(eventInfo) as IpcEventFormat;
-
     })
+
+
+
     ipcMain.handle('getPreloadJs', (event: Electron.IpcMainInvokeEvent) => {
       SystemManager.getInstance().sendMessageToRender('getPreloadJs', FileManager.getInstance().getPreloadJsPath())
+    })
+
+    ipcMain.handle("insertLibrary", function (event: Electron.IpcMainInvokeEvent) {
+      Promise.allSettled([
+        axios.get('http://localhost:3880/angular/js/hls.min.js'),
+        axios.get('http://localhost:3880/angular/js/dplayer.min.css'),
+        axios.get('http://localhost:3880/angular/js/DPlayer.min.js')
+      ]).then(([hls, css, js]) => {
+        // console.log(res);
+        event.sender.send('insertLibrary', JSON.stringify({
+          hls: (hls as any).value.data,
+          css: (css as any).value.data,
+          js: (js as any).value.data,
+        }))
+      })
     })
 
 
@@ -83,6 +110,7 @@ class AppManager {
     })
 
     app.on('before-quit', () => {
+      // this.child.kill();
     })
   }
 

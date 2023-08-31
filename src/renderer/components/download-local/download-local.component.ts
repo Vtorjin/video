@@ -28,7 +28,8 @@ export class DownloadLocalComponent {
     this.videos = [
       {
         name: "画江湖之不良人 第6季 第10话",
-        img: "http://localhost:3880/video/img/1685985670502.png",
+        // img: "http://localhost:3880/video/img/1685985670502.png",
+        img: "https://community.image.video.qpic.cn/app_community_bda48d-0_72566597_1683772537451713?imageView2/2/w/2000",
         time: 1350,
         size: 1555022500,
         mime: "mp4",

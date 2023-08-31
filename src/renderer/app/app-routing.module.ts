@@ -34,7 +34,7 @@ export const routes: Routes = [
   {
     path: "setting", component: SettingComponent, title: "JS设置",
     children: [
-      { path: "", component: SettingExecutejsComponent },
+      { path: "", component: SettingUserComponent },
       { title: "JS管理", path: "manager", component: SettingUserComponent },
       { title: "JS设置", path: "js", component: SettingExecutejsComponent },
       { title: "视频类型设置", path: "video", component: SettingVideoComponent },
@@ -49,7 +49,11 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, useHash: true })],
+  imports: [RouterModule.forRoot(routes, {
+    // electron 里面不能提前预加载
+    // preloadingStrategy: PreloadAllModules,
+    useHash: true
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

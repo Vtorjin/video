@@ -1,7 +1,5 @@
 import { ipcRenderer, contextBridge } from "electron";
 import _conf from "../../config/default.json";
-
-
 let errorStack: string[] = [];
 
 
@@ -12,8 +10,6 @@ setInterval(() => {
 ipcRenderer.on('mainError', function (e: Event, msg: string) {
   console.log(...arguments);
 })
-
-
 
 
 contextBridge.exposeInMainWorld('videoApp', {
@@ -36,6 +32,23 @@ contextBridge.exposeInMainWorld('videoApp', {
     ipcRenderer.invoke(tag, JSON.stringify({ data }));
   },
 
+  insertLibrary() {
+    ipcRenderer.on('insertLibrary', function (e, data) {
+      console.log(data);
+      const { hls, js, css } = JSON.parse(data);
+      const d1 = document.createElement('script')
+      const d2 = document.createElement('script')
+      const d3 = document.createElement('style')
+      d1.innerHTML = hls;
+      d2.innerHTML = js;
+      d3.innerHTML = css
+      document.head.append(d3);
+      document.head.append(d1)
+      document.head.append(d2);
+      console.log(hls, js, css);
+    })
+    ipcRenderer.invoke('insertLibrary');
+  }
 });
 
 
@@ -111,9 +124,29 @@ contextBridge.exposeInMainWorld('globalFunction', {
     })();
   },
 
-  createVideoIntoPage(containerSelector) {
+  createVideoIntoPage(containerSelector, url) {
+    console.log(containerSelector, url)
+    var scr = document.createElement('script');
+    scr.innerHTML = `new DPlayer({
+      container: document.querySelector("${containerSelector}"),
+      theme: '#4C8FE8',
+      volume: 1.0,
+      preload: 'auto',
+      // logo: logo,
+      autoplay: true,
+      video: {
+        url:"${url}",
+        type: 'auto'
+      }
+    })`
+    document.head.append(scr);
+  },
+})
 
-  }
+contextBridge.exposeInMainWorld('videoLibrary', {
+  css: ``,
+  hls: ``,
+  DPlayer: ``
 })
 
 global.sendMessageToHost = function () {
@@ -123,11 +156,38 @@ global.sendMessageToHost = function () {
 const a: CrawlerEventName = "captureM3u8Url";
 
 ipcRenderer.on(a, function () {
-  console.log(...arguments,'webview')
+  console.log(...arguments, 'webview')
 })
+
+
 
 process.on('uncaughtException', function (m) {
   console.log(m.message)
   // m && console.log(...arguments);
   m.message.includes('Blocked a frame with origin ')
 })
+
+
+function insertLibrary() {
+  ipcRenderer.on('insertLibrary', function (e, data) {
+    console.log(data);
+    const { hls, js, css } = JSON.parse(data);
+    const d1 = document.createElement('script')
+    const d2 = document.createElement('script')
+    const d3 = document.createElement('style')
+
+    // DPlayer = eval(js);
+
+
+    d1.innerHTML = hls;
+    d2.innerHTML = js;
+    d3.innerHTML = css
+    document.head.append(d3);
+    document.head.append(d1)
+    document.head.append(d2);
+    console.log(hls, js, css);
+  })
+  ipcRenderer.invoke('insertLibrary');
+}
+
+insertLibrary();

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { HttpService } from '../../service/http.service';
 import { SettingService } from '../../service/setting.service';
 
 interface CustomWebView extends HTMLElement {
@@ -37,6 +38,8 @@ export class HomeComponent {
   url = "https://www.yinhuadm.cc/p/10310-1-1.html";
   // url = "https://www.baidu.com";
   // url = "https://player.ikmz.cc/yinhua/?url=MCZY-811cvqPQS2zC5rbONU8d0dYQ9JdawLxQ5KPzXKZugieRBN67iyH7DWusroMgoAxen-rz52f8kxY53WEAD15DjBHdldZIP2n-BgjneCyRmECDi3su3MwQ&next=&title=%E6%96%B0%E7%81%B0%E5%A7%91%E5%A8%982%20HD%E4%B8%AD%E5%AD%97%E5%9C%A8%E7%BA%BF%E6%92%AD%E6%94%BE"
+  // url = "http://hsck.cc";
+
   script = 2;
   areas: OptionsList[] = []
   types: OptionsList[] = []
@@ -57,7 +60,8 @@ export class HomeComponent {
 
   constructor(
     private setting: SettingService,
-    private router: Router
+    private router: Router,
+    private http: HttpService
   ) {
 
   }
@@ -69,25 +73,10 @@ export class HomeComponent {
       console.log(url)
       me.play_url = url;
     })
-    window.videoApp.isProd && this.recordRouter()
+
   }
 
-  recordRouter() {
-    console.log(window.videoApp,'??????????????????')
-    localStorage.getItem('path') && location.replace(localStorage.getItem('path') as string);
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        // 路由导航开始
-        console.log('开始', location.href)
-      }
-      if (event instanceof NavigationEnd) {
-        // 路由导航成功完成
-        // console.log('结束', location.href)
-        localStorage.setItem('path',location.href);
-      }
-      // 还可以监听其他类型的路由事件
-    });
-  }
+
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -112,12 +101,20 @@ export class HomeComponent {
     webview.setAttribute('allowtransparency', 'true');
     webview.setAttribute('disablewebsecurity', 'true');
     webview.setAttribute('plugin', 'true');
-
     webview.addEventListener('dom-ready', function () {
       me.isReady = true;
       webview.setAttribute('finish', 'true'); //初始化结束
+      me.executeJs(webview, me)
     })
     return webview;
+  }
+
+  executeJs(webview: CustomWebView, context: this) {
+    context.http.get('angular/js/hsck.cc.js').subscribe(res => {
+      console.log(res);
+     webview.executeJavaScript(res.data)
+    })
+
   }
 
   reload() {
@@ -126,7 +123,11 @@ export class HomeComponent {
   }
 
   play() {
-    alert(this.play_url)
+    // alert(this.play_url);
+    (document.querySelector('webview') as CustomWebView).executeJavaScript(`
+    console.log(videoApp)
+    globalFunction && globalFunction.createVideoIntoPage('.player-box-main', '${this.play_url}')
+    `)
   }
 
 

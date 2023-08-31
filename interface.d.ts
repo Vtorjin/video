@@ -8,7 +8,7 @@ interface errorMsg {
 }
 
 
-type CustomEventName = "openOfficialWebsite" | "initApp" | 'updateSetting' | 'getPreloadJs' | 'updateInfo';
+type CustomEventName = "openOfficialWebsite" | "initApp" | 'updateSetting' | 'getPreloadJs' | 'updateInfo' | 'insertLibrary';
 
 type CrawlerEventName = "captureM3u8Url" | 'downloadPause' | 'downloadStart' | 'downloadFinish' | 'downloadError';
 
@@ -39,6 +39,7 @@ interface CustomWindowAttr {
 
 interface Window {
     videoApp: CustomWindowAttr
+    DPlayer: any
 }
 
 interface OptionsList {

@@ -115,9 +115,7 @@ class SystemManager {
       }, {
         label: "打开App控制台",
         accelerator: "F6",
-        click: () => {
-          // win.webContents.toggleDevTools();
-        }
+        click: () => { win.webContents.executeJavaScript(`document.querySelector('webview').openDevTools()`); }
       }, {
         label: "打开子窗口控制台",
         accelerator: "F7",
@@ -134,12 +132,6 @@ class SystemManager {
     setTimeout(() => {
       win.webContents.loadFile(FileManager.getInstance().getDistHtml())
     })
-    // win.reload();
-    // .then(() => win.webContents.loadFile(FileManager.getInstance().getDistHtml()))
-    //   .catch(() => {
-    //     win.webContents.loadFile(FileManager.getInstance().getDistHtml())
-    //   })
-
   }
 
   // 创建托盘

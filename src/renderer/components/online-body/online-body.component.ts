@@ -32,7 +32,7 @@ export class OnlineBodyComponent {
   }
 
   ngOnInit() {
-    this.getHomeList()
+    // this.getHomeList()
   }
 
   getHomeList() {
