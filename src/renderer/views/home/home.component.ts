@@ -37,8 +37,7 @@ interface CustomWebView extends HTMLElement {
 export class HomeComponent {
   url = "https://www.yinhuadm.cc/p/10310-1-1.html";
   // url = "https://www.baidu.com";
-  // url = "https://player.ikmz.cc/yinhua/?url=MCZY-811cvqPQS2zC5rbONU8d0dYQ9JdawLxQ5KPzXKZugieRBN67iyH7DWusroMgoAxen-rz52f8kxY53WEAD15DjBHdldZIP2n-BgjneCyRmECDi3su3MwQ&next=&title=%E6%96%B0%E7%81%B0%E5%A7%91%E5%A8%982%20HD%E4%B8%AD%E5%AD%97%E5%9C%A8%E7%BA%BF%E6%92%AD%E6%94%BE"
-  // url = "http://hsck.cc";
+
 
   script = 2;
   areas: OptionsList[] = []
@@ -70,15 +69,18 @@ export class HomeComponent {
     const me = this;
     document.querySelector('#webview')?.append(this.createWebView())
     window.videoApp.addEventListener('captureM3u8Url', function (url: string) {
-      console.log(url)
+      if (me.play_url == url) return;
       me.play_url = url;
+      console.log(url)
     })
 
   }
 
-
-
   ngAfterViewInit() {
+    this.initVideoOptions();
+  }
+
+  initVideoOptions() {
     setTimeout(() => {
       console.log('aa', this.setting);
       this.actors = this.setting.getActor();
@@ -88,6 +90,7 @@ export class HomeComponent {
     });
   }
 
+  // create a webview dom
   createWebView() {
     const webview = document.createElement('webview') as unknown as CustomWebView;
     const me = this;
@@ -112,27 +115,83 @@ export class HomeComponent {
   executeJs(webview: CustomWebView, context: this) {
     context.http.get('angular/js/hsck.cc.js').subscribe(res => {
       console.log(res);
-     webview.executeJavaScript(res.data)
+      webview.executeJavaScript(res.data)
     })
 
   }
 
+  // reload webview
   reload() {
     const webview = document.querySelector('webview') as CustomWebView;
     webview && webview.getAttribute('finish') && webview.executeJavaScript('location.reload()');
   }
-
-  play() {
-    // alert(this.play_url);
-    (document.querySelector('webview') as CustomWebView).executeJavaScript(`
-    console.log(videoApp)
-    globalFunction && globalFunction.createVideoIntoPage('.player-box-main', '${this.play_url}')
-    `)
-  }
-
-
+  // update direction
   updatePos(e: any) {
     console.log(e.target.value);
     this.dir = e.target.value
+  }
+
+  // create a playing video dom
+  play() {
+    // alert(this.play_url);
+    let js = `globalFunction && globalFunction.createVideoIntoPage('.player-box-main', '${this.play_url}')`;
+    (document.querySelector('webview') as CustomWebView).executeJavaScript(js);
+    fetch(this.play_url).then(r => r.text()).then(res => {
+      console.log('本地地址', res)
+    }).catch(e => {
+      alert(e.message)
+    })
+  }
+
+  //生成网络请求地址队列
+  generateNetworkRequests(m3u8Text: string, prefix: string) {
+    const lines = m3u8Text.split('\n');
+    const networkRequests = [];
+    for (const line of lines) {
+
+      if (line.includes('.ts')) {
+        const filename = line.trim();
+        networkRequests.push(`${prefix}${filename}`);
+      } else if (line.includes('.key')) {
+        const uriMatch = line.match(/URI="([^"]+)"/);
+        if (uriMatch) {
+          const uri = uriMatch[1];
+          const uriParts = uri.split('/');
+          const filenameWithQuery = uriParts.pop();
+          if (filenameWithQuery) {
+            const filename = filenameWithQuery.split('?')[0];
+            networkRequests.push(`${prefix}${filename}`);
+          }
+        }
+      }
+    }
+
+    console.log(networkRequests);
+  }
+
+  generateLocalM3U8Text(m3u8Text: string): string {
+    const lines = m3u8Text.split('\n');
+    const rewrittenLines: string[] = [];
+    for (const line of lines) {
+      if (line.startsWith('#EXT-X-KEY')) {
+        const uriMatch = line.match(/URI="([^"]+)"/);
+        if (!uriMatch) { continue; }
+        const uri = uriMatch[1];
+        const uriParts = uri.split('/');
+        const poppedPart = uriParts.pop();
+        if (!poppedPart) { continue; }
+        const filename = poppedPart.split('?')[0];
+        const rewrittenLine = line.replace(uri, filename);
+        rewrittenLines.push(rewrittenLine);
+      } else if (line.includes('.ts')) {
+        const filenameWithQuery = line.split('/').pop();
+        if (!filenameWithQuery) { continue; }
+        const filename = filenameWithQuery.split('?')[0];
+        rewrittenLines.push(filename);
+      } else {
+        rewrittenLines.push(line);
+      }
+    }
+    return rewrittenLines.join('\n');
   }
 }

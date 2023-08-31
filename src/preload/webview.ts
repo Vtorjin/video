@@ -127,7 +127,7 @@ contextBridge.exposeInMainWorld('globalFunction', {
   createVideoIntoPage(containerSelector, url) {
     console.log(containerSelector, url)
     var scr = document.createElement('script');
-    scr.innerHTML = `new DPlayer({
+    scr.innerHTML = `document.querySelector("${containerSelector}") && new DPlayer({
       container: document.querySelector("${containerSelector}"),
       theme: '#4C8FE8',
       volume: 1.0,
