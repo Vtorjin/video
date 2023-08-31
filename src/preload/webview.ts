@@ -3,9 +3,9 @@ import _conf from "../../config/default.json";
 let errorStack: string[] = [];
 
 
-setInterval(() => {
-  document.querySelectorAll('a').forEach(a => { a.target = "_self"; })
-}, 50);
+// setInterval(() => {
+//   document.querySelectorAll('a').forEach(a => { a.target = "_self"; })
+// }, 50);
 
 ipcRenderer.on('mainError', function (e: Event, msg: string) {
   console.log(...arguments);
@@ -34,18 +34,16 @@ contextBridge.exposeInMainWorld('videoApp', {
 
   insertLibrary() {
     ipcRenderer.on('insertLibrary', function (e, data) {
-      console.log(data);
-      const { hls, js, css } = JSON.parse(data);
+      const { hls, js, css }: { hls: { data: string }, js: { data: string }, css: { data: string } } = JSON.parse(data);
       const d1 = document.createElement('script')
       const d2 = document.createElement('script')
       const d3 = document.createElement('style')
-      d1.innerHTML = hls;
-      d2.innerHTML = js;
-      d3.innerHTML = css
+      d1.innerHTML = hls.data;
+      d2.innerHTML = js.data;
+      d3.innerHTML = css.data
       document.head.append(d3);
       document.head.append(d1)
       document.head.append(d2);
-      console.log(hls, js, css);
     })
     ipcRenderer.invoke('insertLibrary');
   }
@@ -76,15 +74,17 @@ contextBridge.exposeInMainWorld('globalFunction', {
     }
     doms.map(dom => document.head.appendChild(dom));
   },
-  getVideoElement() {
-    let video = document.querySelector('video');
-    !video && Array.from(document.querySelectorAll('iframe')).forEach(iframe => {
-      if (!!iframe.contentWindow.document.querySelector('video')) { video = iframe.contentWindow.document.querySelector('video') }
-    })
-    return video;
-  },
+
   createVideoCover() {
-    let video = this.getVideo && this.getVideo();
+    let video = (() => {
+      let el = document.querySelector('video');
+      !el && Array.from(document.querySelectorAll('iframe')).forEach(iframe => {
+        if (!!iframe.contentWindow.document.querySelector('video')) {
+          el = iframe.contentWindow.document.querySelector('video')
+        }
+      })
+      return el;
+    })();
     if (!video) {
       console.log('视频无法获取')
       return;
@@ -121,6 +121,8 @@ contextBridge.exposeInMainWorld('globalFunction', {
       // 将Canvas生成的图片数据URL设置为视频的封面
       const dataURL = canvas.toDataURL('image/png', 1.0);
       video.setAttribute('poster', dataURL);
+
+      console.log('本地地址哟', dataURL)
     })();
   },
 
@@ -170,18 +172,14 @@ process.on('uncaughtException', function (m) {
 
 function insertLibrary() {
   ipcRenderer.on('insertLibrary', function (e, data) {
-    console.log(data);
-    const { hls, js, css } = JSON.parse(data);
+    // console.log(data);
+    const { hls, js, css }: { hls: { data: string }, js: { data: string }, css: { data: string } } = JSON.parse(data);
     const d1 = document.createElement('script')
     const d2 = document.createElement('script')
     const d3 = document.createElement('style')
-
-    // DPlayer = eval(js);
-
-
-    d1.innerHTML = hls;
-    d2.innerHTML = js;
-    d3.innerHTML = css
+    d1.innerHTML = hls.data;
+    d2.innerHTML = js.data;
+    d3.innerHTML = css.data
     document.head.append(d3);
     document.head.append(d1)
     document.head.append(d2);

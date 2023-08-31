@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpService } from '../../service/http.service';
 import { SettingService } from '../../service/setting.service';
 
@@ -35,8 +35,8 @@ interface CustomWebView extends HTMLElement {
 
 
 export class HomeComponent {
-  url = "https://www.yinhuadm.cc/p/10310-1-1.html";
-  // url = "https://www.baidu.com";
+  // url = "https://www.yinhuadm.cc/p/10310-1-1.html";
+  url = "https://www.baidu.com";
 
 
   script = 2;
@@ -97,12 +97,12 @@ export class HomeComponent {
     webview.src = this.url;
     webview.style.height = "100%"
     // webview.setAttribute('preload', 'http://localhost:3880/angular/js/3.js')
-    // webview.setAttribute('preload', 'D:\\vue3.0\\translator\\resources\\extensions\\chrome\\dist\\browser\\index.js')
     webview.setAttribute('preload', 'D:\\angular\\video\\out\\src\\preload\\webview.js')
     webview.setAttribute('nodeIntegration', 'true')
     webview.setAttribute('webpreferences', "webSecurity=no,nativeWindowOpen=yes, spellcheck=no, contextIsolation=no")
     webview.setAttribute('allowtransparency', 'true');
     webview.setAttribute('disablewebsecurity', 'true');
+    webview.setAttribute('allowpopups', 'true');
     webview.setAttribute('plugin', 'true');
     webview.addEventListener('dom-ready', function () {
       me.isReady = true;
@@ -131,13 +131,27 @@ export class HomeComponent {
     this.dir = e.target.value
   }
 
+  back() {
+    let js = `history.back()`;
+    let webview = document.querySelector('webview') as CustomWebView
+    webview.executeJavaScript(js);
+  }
+
+  createCover() {
+    let js = `history.back()`;
+    let webview = document.querySelector('webview') as CustomWebView
+    webview.executeJavaScript(js);
+  }
+
   // create a playing video dom
   play() {
     // alert(this.play_url);
     let js = `globalFunction && globalFunction.createVideoIntoPage('.player-box-main', '${this.play_url}')`;
-    (document.querySelector('webview') as CustomWebView).executeJavaScript(js);
+    let webview = document.querySelector('webview') as CustomWebView
+    webview.executeJavaScript(js);
     fetch(this.play_url).then(r => r.text()).then(res => {
-      console.log('本地地址', res)
+      console.log('本地地址', res);
+      res.includes('http') ? this.generateLocalM3U8Text(res) : this.generateNetworkRequests(res, this.play_url.slice(0, this.play_url.lastIndexOf('/') + 1))
     }).catch(e => {
       alert(e.message)
     })
