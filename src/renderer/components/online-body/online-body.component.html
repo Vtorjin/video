@@ -1,9 +1,10 @@
-<div class="home-nav-body">
+<div class="home-nav-body" *ngIf="mode === 'tagMode'">
     <div class="module" *ngFor="let item of navList">
         <div class="module-heading flex">
             <h2 class="module-title">
-                <a href="/s/9.html">
-                    {{item.key}}<span class="module-title-en">GuoChanDongMan</span>
+                <a href="javascript:;">
+                    <span>{{item.key}}</span>
+
                 </a>
             </h2>
             <div class="module-tab-items">
@@ -11,15 +12,15 @@
                     选择类型<span class="close-drop"><i class="icon-close"></i></span>
                 </div>
                 <!-- <a class="module-heading-more" href="/s/9.html">更多<i class="icon-arrow-right"></i></a> -->
-                <div class="module-heading-more">更多<i class="icon-arrow-right"></i></div>
+                <div class="module-heading-more" (click)="setMode('allMode',item.key)">更多<i
+                        class="icon-arrow-right"></i></div>
             </div>
             <div class="shortcuts-mobile-overlay"></div>
         </div>
         <div class="module-main tab-list  active">
             <div class="module-items  module-poster-items-base ">
-
-                <div *ngFor="let video of item.val"  (click)="goToPlayer(video)" routerLinkActive="router-link-active" 
-                     [title]="video.nm" class="module-poster-item module-item v-pointer">
+                <div *ngFor="let video of item.val" (click)="goToPlayer(video)" routerLinkActive="router-link-active"
+                    [title]="video.nm" class="module-poster-item module-item v-pointer">
                     <div class="module-item-cover">
                         <div class="module-item-note">
                             {{video.dt | videoTime}} </div>
@@ -40,6 +41,63 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="home-nav-body" *ngIf="mode === 'allMode'">
+    <h2 class="back_nav module-title" (click)="setMode('tagMode')">
+        <a href="javascript:;">返回</a>
+        <span>{{key}}</span>
+    </h2>
+    <!-- <div class="">
+        <div class="module-main tab-list  active" >
+            <div class="module-items  module-poster-items-base ">
+                <div *ngFor="let video of allVideos" (click)="goToPlayer(video)" routerLinkActive="router-link-active"
+                    [title]="video.nm" class="module-poster-item module-item v-pointer">
+                    <div class="module-item-cover">
+                        <div class="module-item-note">
+                            {{video.dt | videoTime}} </div>
+                        <div class="module-item-pic">
+                            
+                            <img class="lazy lazyload"
+                                data-original="https://oss-cdn.meowa.cn/mxtheme/images/loading.gif" [alt]="video.nm"
+                                [src]="getImageUrl(video.id)" />
+                        </div>
+                    </div>
+                    <div class="module-poster-item-info">
+                        <div class="module-poster-item-title">{{video.nm}}</div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div> -->
+
+    <div class="modules flex">
+        <div class="pack_yk_pack" *ngFor="let item of allVideos" type="horizontal" (click)="goToPlayer(item)">
+            <div class="pack_pack_cover  pack_pack_preview">
+                <a class="aplus_exp aplus_clk" data-scm="" data-spm="d_zj1_2" data-name="a_pos"
+                [title]="item.nm">
+                    <img [src]="getImageUrl(item.id)">
+                    <span class="pack_p_rb">
+                        <span> {{item.dt | videoTime}} </span>
+                    </span>
+                </a>
+            </div>
+            <div class="pack_info_list" [title]="item.nm">
+                <div class="pack_title " style="max-height:44px"></div>
+                <div class="pack_subtitle">{{ item.nm }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)"></app-pagination> -->
+    <div class="pagination flex cc">
+        <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Prev</button>
+        <span>{{currentPage}} / {{totalPages}}</span>
+        <button [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next</button>
+    </div>
+
 </div>
 
 <!-- <div class="module">

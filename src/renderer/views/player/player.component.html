@@ -1,5 +1,5 @@
 <div class="v-body video-player-container flex">
-    <div id="v-player" [ngClass]="{'video-player': true, 'w-80': true}">
+    <div id="v-player" [ngClass]="{'video-player': true, 'w-80': true}" [style]="{'background-image': getBackgroundImage()}">
 
     </div>
 
@@ -16,7 +16,8 @@
             <p>视频时长: {{ video.dt }}</p>
             <p class="module-poster-item-title">视频类型: {{ video.tg }}</p>
             <p>来源App: {{ video.fr.slice(0, video.fr.indexOf('_')) }}</p>
-            <p class="module-poster-item-title" copyText [title]=" video.lo + video.lp + video.ls">来源网址: {{ video.lo + video.lp + video.ls }}</p>
+            <p class="module-poster-item-title" copyText [title]=" video.lo + video.lp + video.ls">来源网址: {{ video.lo +
+                video.lp + video.ls }}</p>
             <p class="flex cc"><button class="v-background-light">更新信息</button></p>
             <p class="flex cc" *ngIf="video.ok == false"><button class="v-background-dark">点击下载</button></p>
         </div>

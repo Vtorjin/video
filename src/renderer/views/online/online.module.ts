@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { OnlineBodyComponent } from '../../components/online-body/online-body.component';
 import { OnlineHeaderComponent } from '../../components/online-header/online-header.component';
+// import { PaginationComponent } from '../../components/ui/pagination/pagination.component';
 // import { FileSizePipe, FormatPipe } from '../../pipe/format.pipe';
 import { SharedPipesModule } from '../../pipe/share.module';
 import { OnlineComponent } from './online.component';
@@ -12,6 +13,7 @@ import { OnlineComponent } from './online.component';
     OnlineComponent,
     OnlineHeaderComponent,
     OnlineBodyComponent,
+    // PaginationComponent
     // FormatPipe,
     // FileSizePipe
   ],

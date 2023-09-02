@@ -12,6 +12,7 @@ export class PlayerComponent {
   video: VideoInfo
   relatedVideos: any[]
   showVideoInfo: boolean
+
   constructor(
     private route: ActivatedRoute,
     private http: HttpService
@@ -76,5 +77,9 @@ export class PlayerComponent {
         type: 'auto'
       }
     })
+  }
+
+  getBackgroundImage() {
+    return window.videoApp.isProd ? " url('assets/img/load.jpg')" : "url('/assets/img/load.jpg')"
   }
 }
