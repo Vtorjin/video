@@ -32,7 +32,8 @@ export class PlayerComponent {
       lo: '',
       ls: "",
       lp: '',
-      tg: ''
+      tg: '',
+      ud: false
     }
   }
 

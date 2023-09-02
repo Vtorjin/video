@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <div class="module-poster-item-info">
-                        <div class="module-poster-item-title">{{video.nm}}</div>
+                        <div [class]="['module-poster-item-title',getVideoState(video)]">{{video.nm}}</div>
                     </div>
                 </div>
 

@@ -67,6 +67,7 @@ interface NavCoverItem {
     ok: boolean
     qs: number
     img: string
+    ud: boolean
 }
 
 

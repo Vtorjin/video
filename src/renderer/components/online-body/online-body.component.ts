@@ -25,7 +25,7 @@ export class OnlineBodyComponent {
   key: string = localStorage.getItem('videoKey') || ''
 
   currentPage: number = Number(localStorage.getItem('page')) || 1;
-  totalPages: number = Number(localStorage.getItem('count')) || 10;
+  totalPages: number = 0;
 
   constructor(
     private http: HttpService,
@@ -66,6 +66,13 @@ export class OnlineBodyComponent {
     return `http://localhost:3880/video/img/${id}.png`
   }
 
+  getVideoState(video:NavCoverItem){
+    // return video.
+    if(video.ok) return 'ok'
+    if(video.ud) return 'err'
+    return 'normal'
+  }
+
   goToPlayer(video: NavCoverItem) {
     console.log(video)
     this.route.navigate(['player'], { queryParams: { id: video.id, from: "home" } })
@@ -87,9 +94,11 @@ export class OnlineBodyComponent {
 
   setMode(mode: Mode, key?: string) {
     this.mode = mode;
+    var size = 20;
     localStorage.setItem('mode', mode)
     if (key) {
-      var size = 20;
+    
+      this.totalPages = 0;
       localStorage.setItem('videoKey', key)
       this.key = key;
       this.http.post('angular/types', {
@@ -101,9 +110,10 @@ export class OnlineBodyComponent {
         const [list, count]: [NavCoverItem[], number] = data;
         console.log(list, count);
         this.allVideos = list;
-        this.totalPages = count
+        this.totalPages = Math.ceil(count/size); 
       })
+    }else{
+      this.getHomeList();
     }
-
   }
 }
