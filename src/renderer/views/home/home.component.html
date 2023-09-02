@@ -1,12 +1,12 @@
 <div id="webview" class="v-body">
     <ul [class]="['handle-area',dir]">
-        <li class="flex">
+        <li class="flex" (click)="setTime('start')">
             <label for="">开始时间:</label>
         </li>
-        <li class="flex">
+        <li class="flex" (click)="setTime('end')">
             <label for="">结束时间:</label>
         </li>
-        <li class="flex">
+        <li class="flex" (click)="setTime('multiple')">
             <label for="">区域时间:</label>
         </li>
         <li class="flex">

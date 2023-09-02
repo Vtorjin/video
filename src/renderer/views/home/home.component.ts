@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from '../../service/http.service';
 import { SettingService } from '../../service/setting.service';
 
@@ -37,7 +37,7 @@ interface CustomWebView extends HTMLElement {
 export class HomeComponent {
   // url = "https://www.yinhuadm.cc/p/10310-1-1.html";
   url = "https://www.baidu.com";
-
+  js = "";
 
   script = 2;
   areas: OptionsList[] = []
@@ -59,7 +59,7 @@ export class HomeComponent {
 
   constructor(
     private setting: SettingService,
-    private router: Router,
+    private router: ActivatedRoute,
     private http: HttpService
   ) {
 
@@ -67,10 +67,19 @@ export class HomeComponent {
 
   ngOnInit() {
     const me = this;
-    document.querySelector('#webview')?.append(this.createWebView())
+    const root = document.querySelector('#webview');
+    this.router.queryParams.subscribe((res: any) => {
+      this.url = res.href || localStorage.getItem('url') || "https://www.baidu.com";
+      this.js = res.js || localStorage.getItem('js') || '';
+      localStorage.setItem('url', this.url);
+      localStorage.setItem('js', this.js)
+    })
+
+    root && root.append(this.createWebView())
     window.videoApp.addEventListener('captureM3u8Url', function (url: string) {
       if (me.play_url == url) return;
       me.play_url = url;
+
       console.log(url)
     })
 
@@ -104,20 +113,21 @@ export class HomeComponent {
     webview.setAttribute('disablewebsecurity', 'true');
     webview.setAttribute('allowpopups', 'true');
     webview.setAttribute('plugin', 'true');
-    webview.addEventListener('dom-ready', function () {
+    // webview.addEventListener('did-finish-load', async function () {
+    webview.addEventListener('dom-ready', async function () {
+
       me.isReady = true;
+      // alert(2343)
       webview.setAttribute('finish', 'true'); //初始化结束
-      me.executeJs(webview, me)
+      await me.executeJs(webview, me)
     })
     return webview;
   }
 
   executeJs(webview: CustomWebView, context: this) {
-    context.http.get('angular/js/hsck.cc.js').subscribe(res => {
-      console.log(res);
-      webview.executeJavaScript(res.data)
-    })
-
+    console.log(context.js)
+    this.js = this.js || localStorage.getItem('js') || '';
+    context.js && webview.executeJavaScript(context.js)
   }
 
   // reload webview
@@ -138,7 +148,7 @@ export class HomeComponent {
   }
 
   createCover() {
-    let js = `history.back()`;
+    let js = `globalFunction.createVideoCover()`;
     let webview = document.querySelector('webview') as CustomWebView
     webview.executeJavaScript(js);
   }
@@ -207,5 +217,20 @@ export class HomeComponent {
       }
     }
     return rewrittenLines.join('\n');
+  }
+
+  setTime(str: "start" | 'end' | 'multiple') {
+    const webview = document.querySelector('webview') as CustomWebView;
+    webview && webview.executeJavaScript(`globalFunction.setTime('${str}')`)
+  }
+
+  createGlobal() {
+    return `
+    var my_setting = {
+      start:0,
+      end: 0,
+      times:[] 
+    }
+    `
   }
 }

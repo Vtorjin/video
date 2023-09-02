@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms'
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from '../../service/http.service';
 import { SettingService } from '../../service/setting.service';
 import { SiteService } from '../../service/site.service';
@@ -27,7 +27,8 @@ export class SettingExecutejsComponent {
     private site: SiteService,
     private setting: SettingService,
     private http: HttpService,
-    private rt: ActivatedRoute
+    private rt: ActivatedRoute,
+    private router: Router
   ) {
     this.siteForm = new FormGroup({
       name: new FormControl(''),
@@ -58,7 +59,7 @@ export class SettingExecutejsComponent {
 
   getJs(suffix: string) {
     // this.suffix = suffix
-    console.log('请求了',suffix)
+    console.log('请求了', suffix)
     this.http.get(`angular/info/${suffix}`).subscribe(res => {
       console.log(res);
       res && Object.keys(res).forEach(key => {
@@ -69,7 +70,7 @@ export class SettingExecutejsComponent {
       })
 
       res.data && Object.keys(res.data).forEach(key => {
-        console.log(key);
+        // console.log(key);
         let a = {} as Record<string, string>;
         a[key] = res.data[key]
         this.siteForm.patchValue(a);
@@ -86,6 +87,13 @@ export class SettingExecutejsComponent {
     }) : alert('没有内容无法更新')
   }
 
+  goToPage() {
+    console.log(this.siteForm.value.href, this.siteForm.value.js)
+    const { href, js } = this.siteForm.value;
+    if (href === '') return;
+    this.router.navigate(['home'], { queryParams: { href, js } })
+  }
+
   remove() {
     this.suffix ? this.http.get(`angular/d/${this.suffix}`).subscribe(res => {
       res.status === 200 && alert('删除成功!');
@@ -100,8 +108,6 @@ export class SettingExecutejsComponent {
   }
 
   saveSite() {
-
-    // fetch(``)
     this.site.add(this.siteForm.value);
   }
 

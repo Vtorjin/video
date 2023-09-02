@@ -2,11 +2,6 @@ import { ipcRenderer, contextBridge } from "electron";
 import _conf from "../../config/default.json";
 let errorStack: string[] = [];
 
-
-// setInterval(() => {
-//   document.querySelectorAll('a').forEach(a => { a.target = "_self"; })
-// }, 50);
-
 ipcRenderer.on('mainError', function (e: Event, msg: string) {
   console.log(...arguments);
 })
@@ -89,11 +84,13 @@ contextBridge.exposeInMainWorld('globalFunction', {
       console.log('视频无法获取')
       return;
     }
-    let canvas; let ctx;
+    let canvas, result; let ctx;
     if (document.querySelector('canvas')) {
       canvas = document.querySelector('canvas')
+      result = document.querySelector('img#result')
     } else {
       canvas = document.createElement('canvas'); document.body.append('canvas');
+      result = document.createElement('img'); result.id = "result"; result.style.cssText = `position:fixed;right:0;top:0;width:200px`; document.body.append(result);
     }
     canvas.style.opacity = "0";
     ctx = canvas.getContext('2d');
@@ -121,7 +118,7 @@ contextBridge.exposeInMainWorld('globalFunction', {
       // 将Canvas生成的图片数据URL设置为视频的封面
       const dataURL = canvas.toDataURL('image/png', 1.0);
       video.setAttribute('poster', dataURL);
-
+      result.src = dataURL;
       console.log('本地地址哟', dataURL)
     })();
   },
@@ -143,6 +140,12 @@ contextBridge.exposeInMainWorld('globalFunction', {
     })`
     document.head.append(scr);
   },
+
+  setTime(str: "start" | 'end' | 'multiple') {
+
+  },
+
+ 
 })
 
 contextBridge.exposeInMainWorld('videoLibrary', {

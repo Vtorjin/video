@@ -65,6 +65,7 @@ class SystemManager {
       },
     });
 
+// win.webContents.addListener('did-finish-load')
 
     // 绑定主进程的window对象
     me.topWin = win;
