@@ -9,11 +9,6 @@ interface Body {
   js: string
 }
 
-interface RestfulResponse {
-  status: number
-  msg: string
-  data: any
-}
 
 interface PatchBody {
 

@@ -56,8 +56,32 @@ interface ConfigItem {
     age: string
 }
 
+interface NavCoverItem {
+    ar: string
+    dt: number
+    fr: string
+    id: string
+    local: string
+    nm: string
+    ok: boolean
+    qs: number
+    img: string
+}
 
 
+interface VideoInfo extends NavCoverItem {
+    lp: string
+    ls: string
+    lo: string
+    tg: string
+}
+
+
+interface RestfulResponse {
+    status: number
+    msg: string
+    data: any
+}
 
 
 

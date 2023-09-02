@@ -1,17 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormatPipe } from '../../pipe/format.pipe';
 import { HttpService } from '../../service/http.service';
-interface NavCoverItem {
-  ar: string
-  dt: number
-  fr: string
-  id: string
-  local: string
-  nm: string
-  ok: boolean
-  qs: number
-  img: string
-}
 
 interface NavList {
   key: string,
@@ -27,23 +17,32 @@ interface NavList {
 export class OnlineBodyComponent {
   navList: NavList[] = []
 
-  constructor(private http: HttpService) {
+  constructor(
+    private http: HttpService,
+    private route: Router
+
+  ) {
 
   }
 
   ngOnInit() {
-    // this.getHomeList()
+    this.getHomeList()
   }
 
   getHomeList() {
     this.http.get("angular/home").subscribe(res => {
       const { data } = res as { data: NavList[] };
       console.log(data);
-      this.navList = data; 
+      this.navList = data;
     })
   }
 
-  getImageUrl(id:string){
+  getImageUrl(id: string) {
     return `http://localhost:3880/video/img/${id}.png`
+  }
+
+  goToPlayer(video: NavCoverItem) {
+    console.log(video)
+    this.route.navigate(['player'], { queryParams: { id: video.id, from: "home" } })
   }
 }

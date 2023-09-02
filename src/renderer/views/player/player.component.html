@@ -1,1 +1,18 @@
-<div class="v-body">player works!</div>
+<div class="v-body video-player-container flex">
+    <div id="v-player" [ngClass]="{'video-player': true, 'w-80': true}">
+
+    </div>
+
+    <!-- 视频信息块，占20%宽度 -->
+    <div [ngClass]="{'video-info': true, 'w-20': true}">
+        <h2>视频信息</h2>
+        <!-- 添加视频信息内容 -->
+        <p>视频名称: {{video.nm}}</p>
+        <p>视频时长: {{video.dt}}</p>
+        <p>视频类型: {{video.tg}}</p>
+        <p>来源App: {{video.fr.slice(0,video.fr.indexOf('_'))}}</p>
+        <p>来源网址: {{video.lo+video.lp+video.ls}}</p>
+        <p class="flex cc"><button>更新信息</button></p>
+        <p class="flex cc" *ngIf="video.ok == false"><button>点击下载</button></p>
+    </div>
+</div>
