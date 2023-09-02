@@ -5,14 +5,32 @@
 
     <!-- 视频信息块，占20%宽度 -->
     <div [ngClass]="{'video-info': true, 'w-20': true}">
-        <h2>视频信息</h2>
-        <!-- 添加视频信息内容 -->
-        <p>视频名称: {{video.nm}}</p>
-        <p>视频时长: {{video.dt}}</p>
-        <p>视频类型: {{video.tg}}</p>
-        <p>来源App: {{video.fr.slice(0,video.fr.indexOf('_'))}}</p>
-        <p>来源网址: {{video.lo+video.lp+video.ls}}</p>
-        <p class="flex cc"><button>更新信息</button></p>
-        <p class="flex cc" *ngIf="video.ok == false"><button>点击下载</button></p>
+        <div class="tab">
+            <span (click)="showVideoInfo = true" [ngClass]="{'active': showVideoInfo}">视频信息</span>
+            <span (click)="showVideoInfo = false" [ngClass]="{'active': !showVideoInfo}">相关视频</span>
+        </div>
+
+        <div *ngIf="showVideoInfo" class="tab-content">
+
+            <p class="long-title" [title]="video.nm">视频名称: {{ video.nm }}</p>
+            <p>视频时长: {{ video.dt }}</p>
+            <p class="module-poster-item-title">视频类型: {{ video.tg }}</p>
+            <p>来源App: {{ video.fr.slice(0, video.fr.indexOf('_')) }}</p>
+            <p class="module-poster-item-title" copyText [title]=" video.lo + video.lp + video.ls">来源网址: {{ video.lo + video.lp + video.ls }}</p>
+            <p class="flex cc"><button class="v-background-light">更新信息</button></p>
+            <p class="flex cc" *ngIf="video.ok == false"><button class="v-background-dark">点击下载</button></p>
+        </div>
+
+        <!-- 相关视频内容 -->
+        <div *ngIf="!showVideoInfo" class="tab-content">
+
+            <!-- 这里可以添加相关视频列表，以及相应的模板 -->
+            <!-- 例如，您可以使用 *ngFor 指令来循环渲染相关视频列表 -->
+            <ul>
+                <li *ngFor="let relatedVideo of relatedVideos">
+                    <a href="{{ relatedVideo.link }}">{{ relatedVideo.title }}</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

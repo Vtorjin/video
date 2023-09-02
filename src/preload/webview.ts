@@ -1,51 +1,11 @@
 import { ipcRenderer, contextBridge } from "electron";
 import _conf from "../../config/default.json";
 let errorStack: string[] = [];
-
 ipcRenderer.on('mainError', function (e: Event, msg: string) {
   console.log(...arguments);
 })
 
-
-contextBridge.exposeInMainWorld('videoApp', {
-  platform: process.platform,
-  webviewPreloadUrl: "",
-  errStack: errorStack,
-
-  // 通信内容格式
-  pubCrawlerEvent(eventName: CustomEventName, data?: any) {
-    ipcRenderer.invoke('eventEmitter', JSON.stringify({ name: eventName, data }));
-  },
-
-  addEventListener(tag: CustomEventName | CrawlerEventName, cb: Function) {
-    ipcRenderer.on(tag, (e: Event, msg: string) => {
-      cb(msg);
-    })
-  },
-
-  invokeEvent(tag: string, data: any) {
-    ipcRenderer.invoke(tag, JSON.stringify({ data }));
-  },
-
-  insertLibrary() {
-    ipcRenderer.on('insertLibrary', function (e, data) {
-      const { hls, js, css }: { hls: { data: string }, js: { data: string }, css: { data: string } } = JSON.parse(data);
-      const d1 = document.createElement('script')
-      const d2 = document.createElement('script')
-      const d3 = document.createElement('style')
-      d1.innerHTML = hls.data;
-      d2.innerHTML = js.data;
-      d3.innerHTML = css.data
-      document.head.append(d3);
-      document.head.append(d1)
-      document.head.append(d2);
-    })
-    ipcRenderer.invoke('insertLibrary');
-  }
-});
-
-
-contextBridge.exposeInMainWorld('globalFunction', {
+var globalFunction = {
   createDOMElement({ tag, id, classList, text, props }) {
     const element = document.createElement(tag);
     id && (element.id = id);
@@ -70,6 +30,15 @@ contextBridge.exposeInMainWorld('globalFunction', {
     doms.map(dom => document.head.appendChild(dom));
   },
 
+  getVideoEl() {
+    let el = document.querySelector('video');
+    !el && Array.from(document.querySelectorAll('iframe')).forEach(iframe => {
+      if (!!iframe.contentWindow.document.querySelector('video')) {
+        el = iframe.contentWindow.document.querySelector('video')
+      }
+    })
+    return el;
+  },
   createVideoCover() {
     let video = (() => {
       let el = document.querySelector('video');
@@ -142,11 +111,50 @@ contextBridge.exposeInMainWorld('globalFunction', {
   },
 
   setTime(str: "start" | 'end' | 'multiple') {
+    console.log(globalFunction.getVideoEl && globalFunction.getVideoEl(),globalFunction)
+  },
+}
 
+
+contextBridge.exposeInMainWorld('videoApp', {
+  platform: process.platform,
+  webviewPreloadUrl: "",
+  errStack: errorStack,
+
+  // 通信内容格式
+  pubCrawlerEvent(eventName: CustomEventName, data?: any) {
+    ipcRenderer.invoke('eventEmitter', JSON.stringify({ name: eventName, data }));
   },
 
- 
-})
+  addEventListener(tag: CustomEventName | CrawlerEventName, cb: Function) {
+    ipcRenderer.on(tag, (e: Event, msg: string) => {
+      cb(msg);
+    })
+  },
+
+  invokeEvent(tag: string, data: any) {
+    ipcRenderer.invoke(tag, JSON.stringify({ data }));
+  },
+
+  insertLibrary() {
+    ipcRenderer.on('insertLibrary', function (e, data) {
+      const { hls, js, css }: { hls: { data: string }, js: { data: string }, css: { data: string } } = JSON.parse(data);
+      const d1 = document.createElement('script')
+      const d2 = document.createElement('script')
+      const d3 = document.createElement('style')
+      d1.innerHTML = hls.data;
+      d2.innerHTML = js.data;
+      d3.innerHTML = css.data
+      document.head.append(d3);
+      document.head.append(d1)
+      document.head.append(d2);
+    })
+    ipcRenderer.invoke('insertLibrary');
+  }
+});
+
+
+contextBridge.exposeInMainWorld('globalFunction', globalFunction)
 
 contextBridge.exposeInMainWorld('videoLibrary', {
   css: ``,

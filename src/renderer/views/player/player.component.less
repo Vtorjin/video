@@ -20,4 +20,93 @@
         box-sizing: border-box;
         /* 设置视频信息块的宽度为20% */
     }
+
+    .tab {
+        // overflow: hidden;
+
+        span {
+            cursor: pointer;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        span.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        overflow: visible;
+
+    }
+
+    .tab-content {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f7f7f7;
+        margin-top: 20px;
+        min-height: 50vh;
+        max-height: 1000px;
+    }
+
+    .module-poster-item-title {
+        text-align: left;
+    }
+
+    .long-title {
+        // display: -webkit-box;
+        // display: -moz-box;
+        // display: -ms-flexbox;
+        // display: -webkit-flex;
+        // display: flex;
+        // -webkit-box-orient: vertical;
+        // -moz-box-orient: vertical;
+        // -webkit-flex-direction: column;
+        // -ms-flex-direction: column;
+        // flex-direction: column;
+        // -webkit-box-pack: start;
+        // -moz-box-pack: start;
+        // -webkit-justify-content: flex-start;
+        // -ms-flex-pack: start;
+        // justify-content: flex-start;
+        // -webkit-box-align: start;
+        // -moz-box-align: start;
+        // -webkit-align-items: flex-start;
+        // -ms-flex-align: start;
+        // align-items: flex-start;
+        // overflow: hidden;
+        // /* 添加省略号样式 */
+        // text-overflow: ellipsis;
+        // /* 设置为多行显示 */
+        // -webkit-line-clamp: 3;
+        // /* 设置为冒号冒号模式*/
+        // -webkit-box-orient: vertical;
+        // /* 设置最大高度 */
+        // max-height: 3em;
+        // /* 设置行高，需要和最大高度相匹配 */
+        // line-height: 1em;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .tab-content button{
+        padding: 8px 12px;
+    }
+
+    .v-background-light {
+        background-color: #f2f2f2;
+        border: 1px solid #333;
+        color:#333;
+        border-radius: 5px;
+    }
+
+    .v-background-dark {
+        background-color: #333;
+        color:#fff;
+        border-radius: 5px;
+    }
 }

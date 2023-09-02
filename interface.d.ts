@@ -40,6 +40,7 @@ interface CustomWindowAttr {
 interface Window {
     videoApp: CustomWindowAttr
     DPlayer: any
+    randomColor: () => string
 }
 
 interface OptionsList {

@@ -9,10 +9,14 @@ import { OnlineModule } from '../views/online/online.module';
 import { SharedPipesModule } from '../pipe/share.module';
 import { PlayerModule } from '../views/player/player.module';
 import { HomeModule } from '../views/home/home.module';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouteReuseStrategy } from '@angular/router';
+import { RouteStrategyService } from '../service/router.service';
+ 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -24,7 +28,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     PlayerModule,
     HomeModule
   ],
-  providers: [],
+  providers: [
+    // {
+    //   provide:RouteReuseStrategy,
+    //   useClass:RouteStrategyService
+    // }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
