@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { HttpService } from '../../service/http.service';
+import { SettingService } from '../../service/setting.service';
 
 @Component({
   selector: 'app-player',
@@ -13,9 +14,12 @@ export class PlayerComponent {
   relatedVideos: any[]
   showVideoInfo: boolean
 
+  actors: OptionsList[] = []
+
   constructor(
     private route: ActivatedRoute,
-    private http: HttpService
+    private http: HttpService,
+    private setting: SettingService
   ) {
     this.showVideoInfo = true
     this.relatedVideos = [];
@@ -25,7 +29,7 @@ export class PlayerComponent {
       fr: '',
       id: '',
       local: '',
-      nm: '20小时核弹！丰满性感台湾御姐疯狂喷水 丰满性感台湾御姐疯狂喷水丰满性感台湾御姐疯狂喷水 丰满性感台湾御姐疯狂喷水 丰满性感台湾御姐疯狂喷水！~2',
+      nm: '',
       ok: false,
       qs: 0,
       img: '',
@@ -33,7 +37,9 @@ export class PlayerComponent {
       ls: "",
       lp: '',
       tg: '',
-      ud: false
+      ud: false,
+      vh: 0,
+      vw: 0
     }
   }
 
@@ -44,6 +50,10 @@ export class PlayerComponent {
       id && this.getVideoInfo(id);
 
     })
+  }
+
+  ngAfterViewInit() {
+    this.actors = this.setting.getActor();
   }
 
   private getVideoInfo(id: string) {
@@ -82,5 +92,28 @@ export class PlayerComponent {
 
   getBackgroundImage() {
     return window.videoApp.isProd ? " url('assets/img/load.jpg')" : "url('/assets/img/load.jpg')"
+  }
+
+  updateVideo(tag: 'time' | 'title' | 'mix') {
+    switch (tag) {
+      case "time": {
+        const el = document.querySelector('video');
+        if (el && el.duration) {
+          this.video.dt = Math.ceil(el.duration);
+        }
+        return;
+      }
+      case "title": {
+        // alert(0);
+        navigator.clipboard.readText().then(res => {
+          // console.log(res)
+          this.video.nm = res;
+        })
+        return;
+      }
+      case "mix":{
+        return;
+      } 
+    }
   }
 }

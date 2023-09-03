@@ -53,7 +53,7 @@ export class HomeComponent {
     { viewValue: "底部", value: "bottom" },
   ]
 
-  dir = "top"
+  dir = "bottom"
 
   play_url = "";
 
@@ -79,7 +79,7 @@ export class HomeComponent {
     window.videoApp.addEventListener('captureM3u8Url', function (url: string) {
       if (me.play_url == url) return;
       me.play_url = url;
-
+      me.autoJs(`globalFunction.createVideoIntoPage(g.insertEl,"${url}")`)
       console.log(url)
     })
 
@@ -111,7 +111,7 @@ export class HomeComponent {
     webview.setAttribute('webpreferences', "webSecurity=no,nativeWindowOpen=yes, spellcheck=no, contextIsolation=no")
     webview.setAttribute('allowtransparency', 'true');
     webview.setAttribute('disablewebsecurity', 'true');
-    webview.setAttribute('allowpopups', 'true');
+    // webview.setAttribute('allowpopups', 'true');
     webview.setAttribute('plugin', 'true');
     // webview.addEventListener('did-finish-load', async function () {
     webview.addEventListener('dom-ready', async function () {
@@ -119,14 +119,16 @@ export class HomeComponent {
       me.isReady = true;
       // alert(2343)
       webview.setAttribute('finish', 'true'); //初始化结束
+      await me.autoJs(`window.g = ${JSON.stringify(window.g)}`)
       await me.executeJs(webview, me)
     })
     return webview;
   }
 
   executeJs(webview: CustomWebView, context: this) {
+    
+    context.js = context.js || localStorage.getItem('js') || '';
     console.log(context.js)
-    this.js = this.js || localStorage.getItem('js') || '';
     context.js && webview.executeJavaScript(context.js)
   }
 
@@ -165,6 +167,11 @@ export class HomeComponent {
     }).catch(e => {
       alert(e.message)
     })
+  }
+
+  autoJs(js: string) {
+    let webview = document.querySelector('webview') as CustomWebView
+    webview.executeJavaScript(js);
   }
 
   //生成网络请求地址队列

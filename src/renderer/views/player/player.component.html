@@ -1,5 +1,6 @@
 <div class="v-body video-player-container flex">
-    <div id="v-player" [ngClass]="{'video-player': true, 'w-80': true}" [style]="{'background-image': getBackgroundImage()}">
+    <div id="v-player" [ngClass]="{'video-player': true, 'w-80': true}"
+        [style]="{'background-image': getBackgroundImage()}">
 
     </div>
 
@@ -12,13 +13,15 @@
 
         <div *ngIf="showVideoInfo" class="tab-content">
 
-            <p class="long-title" [title]="video.nm">视频名称: {{ video.nm }}</p>
-            <p>视频时长: {{ video.dt }}</p>
+            <p class="long-title" [title]="video.nm" (contextmenu)="updateVideo('title')">视频名称: {{ video.nm }}</p>
+            <p (contextmenu)="updateVideo('time')">视频时长: {{ video.dt }}</p>
+            <p>分辨率: {{video.vw}}x{{video.vh}}</p>
             <p class="module-poster-item-title">视频类型: {{ video.tg }}</p>
             <p>来源App: {{ video.fr.slice(0, video.fr.indexOf('_')) }}</p>
             <p class="module-poster-item-title" copyText [title]=" video.lo + video.lp + video.ls">来源网址: {{ video.lo +
                 video.lp + video.ls }}</p>
-            <p class="flex cc"><button class="v-background-light">更新信息</button></p>
+            <p class="localInfo long-title" *ngIf="video.ok" [title]="video.local">本地路径:{{video.local}}</p>
+            <p class="flex cc"><button class="v-background-light" (click)="updateVideo('mix')">更新信息</button></p>
             <p class="flex cc" *ngIf="video.ok == false"><button class="v-background-dark">点击下载</button></p>
         </div>
 

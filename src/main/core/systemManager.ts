@@ -47,7 +47,7 @@ class SystemManager {
     const win = new BrowserWindow({
       title: "翻译助手",
       width: 1280,
-      height: 840,
+      height: 860,
       icon: FileManager.getInstance().getLogoIconPath(),
       autoHideMenuBar: conf.hideMenu,
       frame: false, //去除默认的放大缩小关闭

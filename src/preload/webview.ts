@@ -1,6 +1,13 @@
 import { ipcRenderer, contextBridge } from "electron";
 import _conf from "../../config/default.json";
 let errorStack: string[] = [];
+
+setInterval(() => {
+  document.querySelectorAll('a').forEach(a => {
+    a.target = "_self";
+  })
+})
+
 ipcRenderer.on('mainError', function (e: Event, msg: string) {
   console.log(...arguments);
 })
@@ -94,7 +101,11 @@ var globalFunction = {
 
   createVideoIntoPage(containerSelector, url) {
     console.log(containerSelector, url)
+    if (document.querySelector(`script[url="${url}"]`)) return;
+    // document.querySelectorAll('.multiplayer').forEach(s => s.remove())
     var scr = document.createElement('script');
+    scr.setAttribute('url',url);
+    scr.className = "multiplayer"
     scr.innerHTML = `document.querySelector("${containerSelector}") && new DPlayer({
       container: document.querySelector("${containerSelector}"),
       theme: '#4C8FE8',
@@ -111,7 +122,7 @@ var globalFunction = {
   },
 
   setTime(str: "start" | 'end' | 'multiple') {
-    console.log(globalFunction.getVideoEl && globalFunction.getVideoEl(),globalFunction)
+    console.log(globalFunction.getVideoEl && globalFunction.getVideoEl(), globalFunction)
   },
 }
 

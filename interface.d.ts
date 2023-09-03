@@ -41,6 +41,17 @@ interface Window {
     videoApp: CustomWindowAttr
     DPlayer: any
     randomColor: () => string
+    g: {
+        nm: string,
+        fr: string,
+        fn: string,
+        vw: number,
+        vh: number,
+        lo: string,
+        lp: string
+        ls: string,
+        insertEl:string
+    }
 }
 
 interface OptionsList {
@@ -76,6 +87,8 @@ interface VideoInfo extends NavCoverItem {
     ls: string
     lo: string
     tg: string
+    vh: number
+    vw: number
 }
 
 
