@@ -35,8 +35,8 @@ interface CustomWebView extends HTMLElement {
 
 
 export class HomeComponent {
-  // url = "https://www.yinhuadm.cc/p/10310-1-1.html";
-  url = "https://www.baidu.com";
+  url = "https://www.yinhuadm.cc/p/10310-1-1.html";
+  // url = "https://www.baidu.com";
   js = "";
 
   script = 2;
@@ -45,6 +45,7 @@ export class HomeComponent {
   ages: OptionsList[] = []
   actors: OptionsList[] = []
   isReady = false
+
 
   pos = [
     { viewValue: "左边", value: "left" },
@@ -56,6 +57,10 @@ export class HomeComponent {
   dir = "bottom"
 
   play_url = "";
+
+  tags: string[] = []
+
+  size = 0
 
   constructor(
     private setting: SettingService,
@@ -73,13 +78,13 @@ export class HomeComponent {
       this.js = res.js || localStorage.getItem('js') || '';
       localStorage.setItem('url', this.url);
       localStorage.setItem('js', this.js)
+      root && root.append(this.createWebView())
     })
 
-    root && root.append(this.createWebView())
     window.videoApp.addEventListener('captureM3u8Url', function (url: string) {
       if (me.play_url == url) return;
       me.play_url = url;
-      me.autoJs(`globalFunction.createVideoIntoPage(g.insertEl,"${url}")`)
+      me.autoJs(`globalFunction.createVideoIntoPage(basic.insertEl,"${url}")`)
       console.log(url)
     })
 
@@ -102,6 +107,7 @@ export class HomeComponent {
   // create a webview dom
   createWebView() {
     const webview = document.createElement('webview') as unknown as CustomWebView;
+
     const me = this;
     webview.src = this.url;
     webview.style.height = "100%"
@@ -115,18 +121,17 @@ export class HomeComponent {
     webview.setAttribute('plugin', 'true');
     // webview.addEventListener('did-finish-load', async function () {
     webview.addEventListener('dom-ready', async function () {
-
+      console.log('dom准备欧克')
+      const basic = await fetch(`http://localhost:3880/angular/file/basic.js`).then(r => r.text())
       me.isReady = true;
-      // alert(2343)
       webview.setAttribute('finish', 'true'); //初始化结束
-      await me.autoJs(`window.g = ${JSON.stringify(window.g)}`)
+      await me.autoJs(basic)
       await me.executeJs(webview, me)
     })
     return webview;
   }
 
   executeJs(webview: CustomWebView, context: this) {
-    
     context.js = context.js || localStorage.getItem('js') || '';
     console.log(context.js)
     context.js && webview.executeJavaScript(context.js)
@@ -137,6 +142,12 @@ export class HomeComponent {
     const webview = document.querySelector('webview') as CustomWebView;
     webview && webview.getAttribute('finish') && webview.executeJavaScript('location.reload()');
   }
+
+  resetTime() {
+    this.autoJs(`globalFunction.resetTime()`)
+  }
+
+
   // update direction
   updatePos(e: any) {
     console.log(e.target.value);
@@ -155,54 +166,71 @@ export class HomeComponent {
     webview.executeJavaScript(js);
   }
 
+  execute() {
+
+  }
+
   // create a playing video dom
   play() {
     // alert(this.play_url);
     let js = `globalFunction && globalFunction.createVideoIntoPage('.player-box-main', '${this.play_url}')`;
     let webview = document.querySelector('webview') as CustomWebView
     webview.executeJavaScript(js);
-    fetch(this.play_url).then(r => r.text()).then(res => {
-      console.log('本地地址', res);
-      res.includes('http') ? this.generateLocalM3U8Text(res) : this.generateNetworkRequests(res, this.play_url.slice(0, this.play_url.lastIndexOf('/') + 1))
-    }).catch(e => {
-      alert(e.message)
+    return new Promise((r) => {
+      fetch(this.play_url).then(r => r.text()).then(res => {
+        const isMixed = res.includes('http');
+        const prefix = this.play_url.slice(0, this.play_url.lastIndexOf('/') + 1)
+        // console.log('本地地址', res, res.indexOf('http'),prefix);
+        r(isMixed ? this.generateLocalM3U8Text(res) : this.generateNetworkRequests(res, prefix))
+      }).catch(e => {
+        alert(e.message)
+        r('')
+      })
     })
   }
 
   autoJs(js: string) {
     let webview = document.querySelector('webview') as CustomWebView
-    webview.executeJavaScript(js);
+    return webview.executeJavaScript(js);
   }
 
   //生成网络请求地址队列
   generateNetworkRequests(m3u8Text: string, prefix: string) {
     const lines = m3u8Text.split('\n');
     const networkRequests = [];
+    let i = 0;
     for (const line of lines) {
 
       if (line.includes('.ts')) {
         const filename = line.trim();
         networkRequests.push(`${prefix}${filename}`);
+        ++i;
       } else if (line.includes('.key')) {
         const uriMatch = line.match(/URI="([^"]+)"/);
         if (uriMatch) {
           const uri = uriMatch[1];
           const uriParts = uri.split('/');
           const filenameWithQuery = uriParts.pop();
+          ++i;
           if (filenameWithQuery) {
             const filename = filenameWithQuery.split('?')[0];
             networkRequests.push(`${prefix}${filename}`);
           }
         }
+      } else {
+        networkRequests.push(line)
       }
     }
-
-    console.log(networkRequests);
+    // console.log(networkRequests);
+    this.size = i
+    console.log('前缀', networkRequests)
+    return networkRequests.join('\n');
   }
 
   generateLocalM3U8Text(m3u8Text: string): string {
     const lines = m3u8Text.split('\n');
     const rewrittenLines: string[] = [];
+    let i = 0;
     for (const line of lines) {
       if (line.startsWith('#EXT-X-KEY')) {
         const uriMatch = line.match(/URI="([^"]+)"/);
@@ -214,21 +242,24 @@ export class HomeComponent {
         const filename = poppedPart.split('?')[0];
         const rewrittenLine = line.replace(uri, filename);
         rewrittenLines.push(rewrittenLine);
+        ++i;
       } else if (line.includes('.ts')) {
         const filenameWithQuery = line.split('/').pop();
         if (!filenameWithQuery) { continue; }
         const filename = filenameWithQuery.split('?')[0];
         rewrittenLines.push(filename);
+        i++;
       } else {
         rewrittenLines.push(line);
       }
     }
+    console.log('原始', rewrittenLines)
     return rewrittenLines.join('\n');
   }
 
   setTime(str: "start" | 'end' | 'multiple') {
     const webview = document.querySelector('webview') as CustomWebView;
-    webview && webview.executeJavaScript(`globalFunction.setTime('${str}')`)
+    webview && webview.executeJavaScript(`globalFunction.setTime('${str}','${str === 'multiple' ? 'a' : ''}')`)
   }
 
   createGlobal() {
@@ -239,5 +270,31 @@ export class HomeComponent {
       times:[] 
     }
     `
+  }
+
+  async saveVideo() {
+    const config = await this.autoJs('videoApp.getWebViewGlobal()');
+    const info = await this.autoJs('basic');
+    const m3u8 = await this.play();
+    const id = Date.now() + '';
+    const body = {
+      ...config,
+      ...info,
+      text: m3u8,
+      ci: id + '.png',
+      cd: "", //code
+      dt: 0,
+      dl: true,
+      ou: this.play_url,
+      sz: 0,
+      tm: JSON.stringify(config.times),
+      tg: this.tags.join(","),
+      qs: this.size
+    }
+
+    console.log(body)
+    // this.autoJs('videoApp.getWebViewGlobal()').then(res => {
+    //   console.log(res);
+    // })
   }
 }

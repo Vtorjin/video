@@ -2,6 +2,14 @@ import { ipcRenderer, contextBridge } from "electron";
 import _conf from "../../config/default.json";
 let errorStack: string[] = [];
 
+window.addEventListener('error', function () {
+  console.log(...arguments)
+})
+
+window.addEventListener('unhandledrejection', function () {
+  console.log('async', ...arguments)
+})
+
 setInterval(() => {
   document.querySelectorAll('a').forEach(a => {
     a.target = "_self";
@@ -11,6 +19,19 @@ setInterval(() => {
 ipcRenderer.on('mainError', function (e: Event, msg: string) {
   console.log(...arguments);
 })
+
+window.g = {
+  vw: document.querySelector('video')?.videoWidth || 0,
+  vh: document.querySelector('video')?.videoHeight || 0, 
+  cv:"",
+  times: {
+    s: 0,
+    e: 9999,
+    r: []
+  }
+}
+
+ 
 
 var globalFunction = {
   createDOMElement({ tag, id, classList, text, props }) {
@@ -32,7 +53,9 @@ var globalFunction = {
   },
   createHeader(doms: HTMLMetaElement[] | HTMLLinkElement[] | HTMLScriptElement[]) {
     if (Object.prototype.toString.call(doms).slice(8, -1) !== 'Array') {
-      throw new Error('参数必须是数组!')
+      // throw new Error('参数必须是数组!')
+      console.log('必须是数组')
+      return;
     }
     doms.map(dom => document.head.appendChild(dom));
   },
@@ -60,13 +83,20 @@ var globalFunction = {
       console.log('视频无法获取')
       return;
     }
-    let canvas, result; let ctx;
-    if (document.querySelector('canvas')) {
-      canvas = document.querySelector('canvas')
+    let canvas, result, videoInfo; let ctx;
+    if (document.querySelector('img#result')) {
       result = document.querySelector('img#result')
     } else {
+      result = document.createElement('img');
+      result.id = "result";
+      result.style.cssText = `position:fixed;right:0;top:0;width:200px;z-index:2300`;
+      document.body.append(result);
+    }
+
+    if (document.querySelector('canvas')) {
+      canvas = document.querySelector('canvas')
+    } else {
       canvas = document.createElement('canvas'); document.body.append('canvas');
-      result = document.createElement('img'); result.id = "result"; result.style.cssText = `position:fixed;right:0;top:0;width:200px`; document.body.append(result);
     }
     canvas.style.opacity = "0";
     ctx = canvas.getContext('2d');
@@ -91,11 +121,14 @@ var globalFunction = {
       canvas.height = targetHeight;
       // 绘制缩放后的视频帧到Canvas上
       ctx.drawImage(video, cropX, cropY, cropWidth, cropHeight, 0, 0, targetWidth, targetHeight);
+      window.g.vh = height;
+      window.g.vw = width;
       // 将Canvas生成的图片数据URL设置为视频的封面
       const dataURL = canvas.toDataURL('image/png', 1.0);
       video.setAttribute('poster', dataURL);
       result.src = dataURL;
       console.log('本地地址哟', dataURL)
+      window.g.cv = dataURL;
     })();
   },
 
@@ -104,7 +137,7 @@ var globalFunction = {
     if (document.querySelector(`script[url="${url}"]`)) return;
     // document.querySelectorAll('.multiplayer').forEach(s => s.remove())
     var scr = document.createElement('script');
-    scr.setAttribute('url',url);
+    scr.setAttribute('url', url);
     scr.className = "multiplayer"
     scr.innerHTML = `document.querySelector("${containerSelector}") && new DPlayer({
       container: document.querySelector("${containerSelector}"),
@@ -121,12 +154,50 @@ var globalFunction = {
     document.head.append(scr);
   },
 
-  setTime(str: "start" | 'end' | 'multiple') {
-    console.log(globalFunction.getVideoEl && globalFunction.getVideoEl(), globalFunction)
+  setTime(d: "start" | 'end' | 'multiple', tag?: 'a' | 'p' | 'l') {
+    let video = globalFunction.getVideoEl();
+    if (video === null) {
+      Error();
+      return;
+    };
+    console.log(window.g?.times)
+    if (d === 'start' && !tag) {
+      window.g.times.s = Math.floor(video.currentTime);
+      window.g.times.e = window.g.times.e || Math.ceil(video.duration);
+      delete window.g.times.r
+      // btn.innerText = '开' + g.times.s
+    } else if (d === 'end' && !tag) {
+      window.g.times.e = (video.currentTime > window.g.times.s) ? Math.ceil(video.currentTime) : Math.ceil(video.duration);
+      window.g.times.s = window.g.times.s || 0;
+      delete window.g.times.r
+      // btn.innerText = '结' + g.times.e
+    } else {
+      window.g.times.r = window.g.times.r || [];
+      tag == 'a' && window.g.times.r.push(Math.floor(video.currentTime));
+      tag === 'p' && window.g.times.r.unshift(Math.floor(0));
+      tag === "l" && window.g.times.r.push(Math.ceil(video.duration))
+      window.g.times.r.sort((a, b) => a - b);
+      delete window.g.times.s;
+      delete window.g.times.e
+    }
+    Success();
+    setTitle();
+    console.log(window.g.times)
   },
+  evalJs(js: string) {
+    js && window.eval(js);
+  },
+
+  resetTime() {
+    window.g.times = {
+      s: 0,
+      e: 0,
+      r: []
+    }
+
+    setTitle();
+  }
 }
-
-
 contextBridge.exposeInMainWorld('videoApp', {
   platform: process.platform,
   webviewPreloadUrl: "",
@@ -161,7 +232,12 @@ contextBridge.exposeInMainWorld('videoApp', {
       document.head.append(d2);
     })
     ipcRenderer.invoke('insertLibrary');
-  }
+  },
+
+  getWebViewGlobal() {
+    return window.g
+  },
+
 });
 
 
@@ -194,7 +270,6 @@ process.on('uncaughtException', function (m) {
 
 function insertLibrary() {
   ipcRenderer.on('insertLibrary', function (e, data) {
-    // console.log(data);
     const { hls, js, css }: { hls: { data: string }, js: { data: string }, css: { data: string } } = JSON.parse(data);
     const d1 = document.createElement('script')
     const d2 = document.createElement('script')
@@ -205,9 +280,29 @@ function insertLibrary() {
     document.head.append(d3);
     document.head.append(d1)
     document.head.append(d2);
-    console.log(hls, js, css);
+    // console.log(hls, js, css);
   })
   ipcRenderer.invoke('insertLibrary');
 }
 
 insertLibrary();
+
+
+function Error() {
+  document.body.style.backgroundColor = "#333333";
+  document.body.style.opacity = "0.8"
+}
+
+function Success() {
+  document.body.style.opacity = "1"
+}
+
+function setTitle() {
+  const img = document.querySelector('img#result') as HTMLImageElement;
+  if (img == null) return
+  img.title = `{\n
+    开始: "${window.g.times.s}",\n
+    结束: "${window.g.times.e}",\n
+    范围: "${window.g.times.r}",\n
+  }`
+}

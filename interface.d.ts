@@ -42,15 +42,24 @@ interface Window {
     DPlayer: any
     randomColor: () => string
     g: {
+        vw: number,
+        vh: number,
+        cv:string,
+        times: {
+            s: number,
+            e: number,
+            r: number[]
+        }
+    }
+    basic:{
         nm: string,
         fr: string,
         fn: string,
-        vw: number,
-        vh: number,
         lo: string,
         lp: string
         ls: string,
-        insertEl:string
+        tg: string[],
+        insertEl: string
     }
 }
 

@@ -47,8 +47,10 @@
             </select>
         </li>
         <li class="flex cc v-pointer handle" (click)="reload()">刷新</li>
-        <li class="flex cc v-pointer handle"  (click)="back()">返回</li>
-        <li class="flex cc v-pointer handle"  (click)="createCover()">生成图片</li>
-        <li class="flex cc v-pointer handle" *ngIf="!!play_url" (click)="play()">播放</li>
+        <li class="flex cc v-pointer handle" (click)="back()">返回</li>
+        <li class="flex cc v-pointer handle" (click)="createCover()">生成图片</li>
+        <li class="flex cc v-pointer handle" (click)="autoJs(js)">强制执行</li>
+        <li class="flex cc v-pointer handle" (click)="resetTime()">重置时间</li>
+        <li class="flex cc v-pointer handle" *ngIf="!!play_url" (click)="saveVideo()">保存</li>
     </ul>
 </div>
