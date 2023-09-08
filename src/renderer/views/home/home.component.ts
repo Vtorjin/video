@@ -58,9 +58,14 @@ export class HomeComponent {
 
   play_url = "";
 
-  tags: string[] = []
+  tags: string[] = []   //视频类型
 
   size = 0
+
+  ai: string = ""; //actor id
+  ar: string = "" //area id
+  ud: boolean = false
+  selectedOption = 'false'
 
   constructor(
     private setting: SettingService,
@@ -84,7 +89,7 @@ export class HomeComponent {
     window.videoApp.addEventListener('captureM3u8Url', function (url: string) {
       if (me.play_url == url) return;
       me.play_url = url;
-      me.autoJs(`globalFunction.createVideoIntoPage(basic.insertEl,"${url}")`)
+      me.autoJs(`window.basic && globalFunction.createVideoIntoPage(basic.insertEl,"${url}")`)
       console.log(url)
     })
 
@@ -223,7 +228,7 @@ export class HomeComponent {
     }
     // console.log(networkRequests);
     this.size = i
-    console.log('前缀', networkRequests)
+    // console.log('前缀', networkRequests)
     return networkRequests.join('\n');
   }
 
@@ -272,25 +277,106 @@ export class HomeComponent {
     `
   }
 
+  changeOption(e: any, type: "ar" | 'ai' | 'tg' | 'age' | 'ud') {
+    const val = e.target.value
+    switch (type) {
+      case "ai": {
+        if (val == '') return;
+
+        this.ai = val;
+        return;
+      }
+      case "ar": {
+        if (val == '') return;
+
+        this.ar = val;
+        return;
+      }
+      case "tg": {
+        if (val == '') return;
+
+        const desc = this.types.find(t => t.value === val)?.viewValue || ''
+        if (desc) {
+          this.tags.push(desc);
+        }
+        return
+      }
+      case "age": {
+        if (val == '') return;
+
+        const desc = this.ages.find(t => t.value === val)?.viewValue || ''
+        if (desc) {
+          this.tags.push(desc);
+        }
+        return
+
+      }
+      case "ud": {
+        // console.log(e.target.getAttribute('value'))
+        // this.
+        return
+      }
+
+    }
+  }
+
   async saveVideo() {
     const config = await this.autoJs('videoApp.getWebViewGlobal()');
     const info = await this.autoJs('basic');
     const m3u8 = await this.play();
     const id = Date.now() + '';
+    const name = info.nm;
+    const code = info.nm.match(/[\w]+[_-][\w]+/gi)?.shift() || info.nm.match(/[\w]{4,}/g)?.shift();
     const body = {
       ...config,
       ...info,
+      fn: info.fr + info.nm.replace(code + code, code),
       text: m3u8,
-      ci: id + '.png',
-      cd: "", //code
+      ci: id + '.png', //cover id
+      cd: code || `unknown-${id}`, //code
       dt: 0,
       dl: true,
       ou: this.play_url,
       sz: 0,
       tm: JSON.stringify(config.times),
       tg: this.tags.join(","),
-      qs: this.size
+      qs: this.size,
+      qs_ok: 0,
+      ai: this.ai, //actor id
+      ar: this.ar,  //area
+      // ud: false,
+      local: "",
+      ok: false,
+      m3u8Mid: id + '.m3u8',
+      srcCid: id + 'png',
     }
+
+    const query = name.match(/[\w]+[_-][\w]+/gi)?.shift() || name.match(/[\w]{4,}/g)?.shift()?.length >= 5 ? name.match(/[\w]{4,}/g)?.shift() : name;
+    if (query === '') {
+      alert('搜索的内容是空的!')
+      return;
+    }
+    fetch(`http://localhost:3880/video/query?name=${query}`)
+      .then(res => res.json())
+      .then(res => {
+        if (res.data.length !== 0) {
+          alert('已存在查看')
+          return;
+        }
+
+        fetch(`http://localhost:3880/video/save`, {
+          method: "post",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body)
+        }).then(res => res.json())
+          .then((res: RestfulResponse) => {
+            alert(JSON.stringify(res))
+            console.log(res.status, res)
+          })
+        console.log(res);
+      })
 
     console.log(body)
     // this.autoJs('videoApp.getWebViewGlobal()').then(res => {

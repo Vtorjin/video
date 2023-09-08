@@ -12,7 +12,7 @@
         <li class="flex">
             <label for="">视频地区:</label>
             <!-- <app-custom-dropdown [options]="areas" [placeholder]="'请选择地区'"></app-custom-dropdown> -->
-            <select name="" id="">
+            <select name="" id="" (change)="changeOption($event,'ar')">
                 <option value="">请选择视频地区</option>
                 <option [value]="item.value" *ngFor="let item of areas">{{item.viewValue}}</option>
             </select>
@@ -21,21 +21,21 @@
         <li class="flex">
             <label for="">视频类型:</label>
             <!-- <app-custom-dropdown [options]="types" [placeholder]="'请选择视频类型'"></app-custom-dropdown> -->
-            <select name="" id="">
+            <select name="" id="" (change)="changeOption($event,'tg')">
                 <option value="">请选择视频类型</option>
                 <option [value]="item.value" *ngFor="let item of types">{{item.viewValue}}</option>
             </select>
         </li>
         <li class="flex">
             <label for="">演员:</label>
-            <select name="" id="">
+            <select name="" id="" (change)="changeOption($event,'ai')">
                 <option value="">请选择演员</option>
                 <option [value]="item.value" *ngFor="let item of actors">{{item.viewValue}}</option>
             </select>
         </li>
         <li class="flex">
             <label for="">人员类型:</label>
-            <select name="" id="">
+            <select name="" id="" (change)="changeOption($event,'age')">
                 <option value="">请选择人员类型</option>
                 <option [value]="item.value" *ngFor="let item of ages">{{item.viewValue}}</option>
             </select>
@@ -46,6 +46,13 @@
                 <option [value]="item.value" *ngFor="let item of pos">{{item.viewValue}}</option>
             </select>
         </li>
+        <!-- <li class="flex">
+            <label for="udp" (click)="changeOption($event,'ud')" value="false">不更新</label>
+            <input type="radio" id="udp" name="option" value="true" [ngModel]="selectedOption"
+                style="margin-right: 20px;" />
+            <label for="nudp" (click)="changeOption($event,'ud')" value="true">更新</label>
+            <input type="radio" id="nudp" name="option" value="false" [ngModel]="selectedOption" />
+        </li> -->
         <li class="flex cc v-pointer handle" (click)="reload()">刷新</li>
         <li class="flex cc v-pointer handle" (click)="back()">返回</li>
         <li class="flex cc v-pointer handle" (click)="createCover()">生成图片</li>

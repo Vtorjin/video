@@ -20,18 +20,18 @@ ipcRenderer.on('mainError', function (e: Event, msg: string) {
   console.log(...arguments);
 })
 
-window.g = {
+var g = {
   vw: document.querySelector('video')?.videoWidth || 0,
-  vh: document.querySelector('video')?.videoHeight || 0, 
-  cv:"",
+  vh: document.querySelector('video')?.videoHeight || 0,
+  cv: "",
   times: {
     s: 0,
-    e: 9999,
+    e: 9999999,
     r: []
   }
 }
 
- 
+
 
 var globalFunction = {
   createDOMElement({ tag, id, classList, text, props }) {
@@ -121,14 +121,14 @@ var globalFunction = {
       canvas.height = targetHeight;
       // 绘制缩放后的视频帧到Canvas上
       ctx.drawImage(video, cropX, cropY, cropWidth, cropHeight, 0, 0, targetWidth, targetHeight);
-      window.g.vh = height;
-      window.g.vw = width;
+      g.vh = height;
+      g.vw = width;
       // 将Canvas生成的图片数据URL设置为视频的封面
       const dataURL = canvas.toDataURL('image/png', 1.0);
       video.setAttribute('poster', dataURL);
       result.src = dataURL;
       console.log('本地地址哟', dataURL)
-      window.g.cv = dataURL;
+      g.cv = dataURL;
     })();
   },
 
@@ -160,38 +160,38 @@ var globalFunction = {
       Error();
       return;
     };
-    console.log(window.g?.times)
+    console.log(g?.times)
     if (d === 'start' && !tag) {
-      window.g.times.s = Math.floor(video.currentTime);
-      window.g.times.e = window.g.times.e || Math.ceil(video.duration);
-      delete window.g.times.r
+      g.times.s = Math.floor(video.currentTime);
+      g.times.e = g.times.e || Math.ceil(video.duration);
+      delete g.times.r
       // btn.innerText = '开' + g.times.s
     } else if (d === 'end' && !tag) {
-      window.g.times.e = (video.currentTime > window.g.times.s) ? Math.ceil(video.currentTime) : Math.ceil(video.duration);
-      window.g.times.s = window.g.times.s || 0;
-      delete window.g.times.r
+      g.times.e = (video.currentTime > g.times.s) ? Math.ceil(video.currentTime) : Math.ceil(video.duration);
+      g.times.s = g.times.s || 0;
+      delete g.times.r
       // btn.innerText = '结' + g.times.e
     } else {
-      window.g.times.r = window.g.times.r || [];
-      tag == 'a' && window.g.times.r.push(Math.floor(video.currentTime));
-      tag === 'p' && window.g.times.r.unshift(Math.floor(0));
-      tag === "l" && window.g.times.r.push(Math.ceil(video.duration))
-      window.g.times.r.sort((a, b) => a - b);
-      delete window.g.times.s;
-      delete window.g.times.e
+      g.times.r = g.times.r || [];
+      tag == 'a' && g.times.r.push(Math.floor(video.currentTime));
+      tag === 'p' && g.times.r.unshift(Math.floor(0));
+      tag === "l" && g.times.r.push(Math.ceil(video.duration))
+      g.times.r.sort((a, b) => a - b);
+      delete g.times.s;
+      delete g.times.e
     }
     Success();
     setTitle();
-    console.log(window.g.times)
+    console.log(g.times)
   },
   evalJs(js: string) {
     js && window.eval(js);
   },
 
   resetTime() {
-    window.g.times = {
+    g.times = {
       s: 0,
-      e: 0,
+      e: 999999,
       r: []
     }
 
@@ -235,7 +235,13 @@ contextBridge.exposeInMainWorld('videoApp', {
   },
 
   getWebViewGlobal() {
-    return window.g
+    const video = globalFunction.getVideoEl();
+    return {
+      ...g,
+      vw: video.videoWidth,
+      vh: video.videoHeight,
+      times:video.getAttribute('times')
+    }
   },
 
 });
@@ -299,10 +305,12 @@ function Success() {
 
 function setTitle() {
   const img = document.querySelector('img#result') as HTMLImageElement;
+  const video = globalFunction.getVideoEl();
+  video && video.setAttribute('times', JSON.stringify(g.times));
   if (img == null) return
   img.title = `{\n
-    开始: "${window.g.times.s}",\n
-    结束: "${window.g.times.e}",\n
-    范围: "${window.g.times.r}",\n
+    开始: "${g.times.s}",\n
+    结束: "${g.times.e}",\n
+    范围: "${g.times.r}",\n
   }`
 }
