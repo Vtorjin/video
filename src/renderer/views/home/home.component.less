@@ -7,6 +7,14 @@
     z-index: 6666;
     display: flex;
 
+    .handle {
+        width: 80px;
+        height: 40px;
+        box-sizing: border-box;
+        border: 1px solid #333;
+        color: #333
+    }
+
     &.left {
         top: 0;
         left: 0;
@@ -86,7 +94,7 @@
         margin: 4px 0;
         transition: background-color, color .2s;
 
-        &.handle{
+        &.handle {
             padding: 4px 10px;
         }
 
@@ -99,7 +107,7 @@
         background-color: #333;
     }
 
-    .hasUrl{
+    .hasUrl {
         background-color: #d9f463;
     }
 
@@ -117,5 +125,22 @@
         min-width: 80px;
         cursor: pointer;
         max-width: 120px;
+    }
+}
+
+#preview_video {
+    position: absolute;
+    z-index: 6666;
+    visibility: visible;
+
+    &.hide {
+        visibility: hidden;
+    }
+}
+
+.preview.handle {
+    &.ok {
+        color: red;
+        background-color: #fff;
     }
 }

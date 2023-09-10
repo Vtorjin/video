@@ -3,6 +3,7 @@ import FileManager, { joinFilePath } from "./fileManager";
 import { isProduction } from "../index";
 import conf from "../../../config/default.json"
 import SessionManager from "./sessionManager";
+import { ChildProcess, exec, fork, spawn } from "child_process";
 
 class SystemManager {
   static instance: SystemManager | null = null;
@@ -17,10 +18,9 @@ class SystemManager {
   public topWin: BrowserWindow | null = null;
   public webviewWin: BrowserWindow | null = null;
   public childWin: BrowserWindow | null = null;
-
-
   private usedTime: number
   private initFinished: boolean
+  private appProcess: ChildProcess;
 
   constructor() {
     this.usedTime = 0;
@@ -65,7 +65,6 @@ class SystemManager {
       },
     });
 
-// win.webContents.addListener('did-finish-load')
 
     // 绑定主进程的window对象
     me.topWin = win;
@@ -203,12 +202,35 @@ class SystemManager {
   quitApp() {
     this.childWin = null;
     this.topWin = null;
-    if (process.platform !== 'darwin') app.quit();
+    console.log('在进行是是是')
+    this.closeKMApp();
+
+    if (process.platform !== 'darwin') app && app.quit();
     process.exit();
   }
 
   sendMessageToRender(name: CustomEventName | CrawlerEventName, data: string | object | undefined) {
     this.topWin?.webContents.send(name, typeof data === 'string' ? data : JSON.stringify(data))
+  }
+
+  startOtherApp() {
+    // this.appProcess = exec('cd D:\\vue\\km && pnpm run dev')
+    this.appProcess = exec('cd D:\\vue\\km && pnpm run dev')
+    // console.log('启动快猫', this.appProcess.pid, this.appProcess)
+
+    // this.appProcess = spawn('cmd', ['/c', 'cd', 'D:\\vue\\km', '&', 'start.bat'])
+    // this.appProcess.stdout.on('data', function (d) {
+    //   console.log(d.toString())
+    // })
+  }
+
+  closeKMApp() {
+    var myid = this.appProcess.pid
+    exec(`netstat -ano | findstr 7001`, function (e, data) {
+      var list = data.split('\n').map(t => Number(t.trim().split(" ").pop())).filter(t => t)
+      list.forEach(pid => process.kill(pid))
+      process.kill(myid)
+    })
   }
 
   // 处理异常

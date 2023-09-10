@@ -17,29 +17,32 @@ class AppManager {
     var me = this;
     this.appTitle = appTitle;
     // 开启日志处理
-    this.setupLogMiddleware();
+
     process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
-    // exec('cd D:\\nodeElectron\\nest-m3u8-downloader\\server && dev.bat')  
-    // this.child = spawn('cmd', ['/c', 'cd', 'D:\\nodeElectron\\nest-m3u8-downloader\\server', '&', 'dev.bat'])
+    me.setupLogMiddleware();
     me.registerAppEvent();
-    // this.child.stdout.on('data', function (d) {
-    //     console.log(d.toString())
-    //   d.toString().includes('Nest application successfully started') && (() => {
+    Promise.all([
+      SystemManager.getInstance().startOtherApp(),
     // 创建系统
-    me.init();
+    // app.isPackaged ? me.startServer() : 
+    me.init()
+])
     // 注册通信事件
     me.registerIpcEvent();
+  }
+  startServer() {
+    var me = this;
+    me.child = spawn('cmd', ['/c', 'cd', 'D:\\nodeElectron\\nest-m3u8-downloader\\server', '&', 'dev.bat'])
+    me.child.stdout.on('data', function (d) {
+      console.log(d.toString())
+      d.toString().includes('Nest application successfully started') && me.init()
+    })
 
-    // })()
-    // })
   }
 
   init() {
     var me = this;
     // app.disableHardwareAcceleration(); //禁用硬件加速
-
-
-
     Promise.all([
       SystemManager.getInstance().startRecordTime(),
       FileManager.getInstance().initApplicationConfig(),

@@ -9,23 +9,32 @@
         <li class="flex" (click)="setTime('multiple')">
             <label for="">区域时间:</label>
         </li>
-        <li class="flex">
-            <label for="">视频地区:</label>
-            <!-- <app-custom-dropdown [options]="areas" [placeholder]="'请选择地区'"></app-custom-dropdown> -->
+        <li class="flex cc v-pointer handle" *ngFor="let item of types" [value]="item.value"
+            (click)="modifyOption('tg',item.viewValue)">{{item.viewValue}}</li>
+        <li class="flex cc v-pointer handle" *ngFor="let item of areas" [value]="item.value"
+            (click)="modifyOption('ar',item.value)">{{item.viewValue}}</li>
+        <li class="flex cc v-pointer handle" *ngFor="let item of ages" [value]="item.value"
+            (click)="modifyOption('age',item.viewValue)">{{item.viewValue}}</li>
+        <!-- <li class="flex">
             <select name="" id="" (change)="changeOption($event,'ar')">
                 <option value="">请选择视频地区</option>
                 <option [value]="item.value" *ngFor="let item of areas">{{item.viewValue}}</option>
             </select>
-
-        </li>
-        <li class="flex">
+        </li> -->
+        <!-- <li class="flex">
             <label for="">视频类型:</label>
-            <!-- <app-custom-dropdown [options]="types" [placeholder]="'请选择视频类型'"></app-custom-dropdown> -->
             <select name="" id="" (change)="changeOption($event,'tg')">
                 <option value="">请选择视频类型</option>
                 <option [value]="item.value" *ngFor="let item of types">{{item.viewValue}}</option>
             </select>
-        </li>
+        </li> -->
+        <!-- <li  class="flex cc v-pointer handle" *ngFor="let item of actors">{{item.viewValue}}</li> -->
+        <li class="flex cc v-pointer handle" (click)="reload()">刷新</li>
+        <li class="flex cc v-pointer handle" (click)="back()">返回</li>
+        <li class="flex cc v-pointer handle" (click)="createCover()">生成图片</li>
+
+        <li class="flex cc v-pointer handle" (click)="resetTime()">重置时间</li>
+
         <li class="flex">
             <label for="">演员:</label>
             <select name="" id="" (change)="changeOption($event,'ai')">
@@ -33,31 +42,31 @@
                 <option [value]="item.value" *ngFor="let item of actors">{{item.viewValue}}</option>
             </select>
         </li>
-        <li class="flex">
+
+
+
+
+        <!-- <li class="flex">
             <label for="">人员类型:</label>
             <select name="" id="" (change)="changeOption($event,'age')">
                 <option value="">请选择人员类型</option>
                 <option [value]="item.value" *ngFor="let item of ages">{{item.viewValue}}</option>
             </select>
-        </li>
+        </li> -->
+        <!-- <li class="flex cc v-pointer handle" *ngFor="let item of pos">{{item.viewValue}}</li> -->
+
         <li class="flex">
             <label for="">布局: </label>
             <select name="" id="" (change)="updatePos($event)">
                 <option [value]="item.value" *ngFor="let item of pos">{{item.viewValue}}</option>
             </select>
         </li>
-        <!-- <li class="flex">
-            <label for="udp" (click)="changeOption($event,'ud')" value="false">不更新</label>
-            <input type="radio" id="udp" name="option" value="true" [ngModel]="selectedOption"
-                style="margin-right: 20px;" />
-            <label for="nudp" (click)="changeOption($event,'ud')" value="true">更新</label>
-            <input type="radio" id="nudp" name="option" value="false" [ngModel]="selectedOption" />
-        </li> -->
-        <li class="flex cc v-pointer handle" (click)="reload()">刷新</li>
-        <li class="flex cc v-pointer handle" (click)="back()">返回</li>
-        <li class="flex cc v-pointer handle" (click)="createCover()">生成图片</li>
-        <li class="flex cc v-pointer handle" (click)="autoJs(js)">强制执行</li>
-        <li class="flex cc v-pointer handle" (click)="resetTime()">重置时间</li>
+        <li class="flex cc v-pointer handle" *ngIf="!!play_url" (click)="forceSave()">强制保存</li>
+        <li class="flex cc v-pointer handle preview" *ngIf="!!play_url" (click)="watchPreview()">试看</li>
+        <li class="flex cc v-pointer handle" *ngIf="!!play_url" (click)="togglePreview()">显隐试看</li>
         <li class="flex cc v-pointer handle" *ngIf="!!play_url" (click)="saveVideo()">保存</li>
     </ul>
+    <div id="preview_video">
+
+    </div>
 </div>

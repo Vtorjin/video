@@ -26,6 +26,10 @@ interface CustomWebView extends HTMLElement {
   allowpopups: string
 }
 
+function getTsFileTimeInfo(tsInfo: string): number {
+  let temStr = tsInfo.split(':').pop() || "";
+  return Number(temStr.trim().replace(',', '')) || 0;
+}
 
 @Component({
   selector: 'app-home',
@@ -178,16 +182,18 @@ export class HomeComponent {
   // create a playing video dom
   play() {
     // alert(this.play_url);
-    let js = `globalFunction && globalFunction.createVideoIntoPage('.player-box-main', '${this.play_url}')`;
+    let js = `globalFunction && !!basic && globalFunction.createVideoIntoPage(basic.insertEl, '${this.play_url}')`;
     let webview = document.querySelector('webview') as CustomWebView
     webview.executeJavaScript(js);
     return new Promise((r) => {
-      fetch(this.play_url).then(r => r.text()).then(res => {
+      fetch(this.play_url).then(r => r.text()).then(async (res) => {
         const isMixed = res.includes('http');
         const prefix = this.play_url.slice(0, this.play_url.lastIndexOf('/') + 1)
-        // console.log('本地地址', res, res.indexOf('http'),prefix);
-        r(isMixed ? this.generateLocalM3U8Text(res) : this.generateNetworkRequests(res, prefix))
+        const times = await webview.executeJavaScript('globalFunction.getVideoEl()?.getAttribute("times")')
+        console.log('本地地址', res.indexOf('http'), prefix, times);
+        r(isMixed ? this.generateLocalM3U8Text(res, JSON.parse(times)) : this.generateNetworkRequests(res, prefix, JSON.parse(times)))
       }).catch(e => {
+        console.log(e);
         alert(e.message)
         r('')
       })
@@ -200,16 +206,41 @@ export class HomeComponent {
   }
 
   //生成网络请求地址队列
-  generateNetworkRequests(m3u8Text: string, prefix: string) {
+  generateNetworkRequests(m3u8Text: string, prefix: string, time: { s: number, e: number, r: number[] }) {
     const lines = m3u8Text.split('\n');
     const networkRequests = [];
+    const { s, e, r } = time || { s: 0, e: 999999 };
     let i = 0;
-    for (const line of lines) {
+    let count = 0;
+    let min = 0, max = 0;
+    let last = "";
+    if (e || s == 0) {
+      min = s || 0;
+      max = e;
+    } else if (r.length) {
+      [min, max] = r.splice(0, 2);
+    }
 
+
+    for (const line of lines) {
       if (line.includes('.ts')) {
-        const filename = line.trim();
-        networkRequests.push(`${prefix}${filename}`);
-        ++i;
+        if (count > max) {
+
+          if (!r || r.length === 0) {
+            networkRequests.pop();
+            continue
+          };
+          [min, max] = r.splice(0, 2)
+        }
+        count += getTsFileTimeInfo(last);
+        if (count >= min && max >= count) {
+          const filename = line.trim();
+          networkRequests.push(`${prefix}${filename}`);
+          ++i;
+        } else {
+          networkRequests.pop();
+        }
+
       } else if (line.includes('.key')) {
         const uriMatch = line.match(/URI="([^"]+)"/);
         if (uriMatch) {
@@ -223,6 +254,7 @@ export class HomeComponent {
           }
         }
       } else {
+        last = line;
         networkRequests.push(line)
       }
     }
@@ -232,7 +264,7 @@ export class HomeComponent {
     return networkRequests.join('\n');
   }
 
-  generateLocalM3U8Text(m3u8Text: string): string {
+  generateLocalM3U8Text(m3u8Text: string, time: { s: number, e: number, r: number[] }): string {
     const lines = m3u8Text.split('\n');
     const rewrittenLines: string[] = [];
     let i = 0;
@@ -267,15 +299,26 @@ export class HomeComponent {
     webview && webview.executeJavaScript(`globalFunction.setTime('${str}','${str === 'multiple' ? 'a' : ''}')`)
   }
 
-  createGlobal() {
-    return `
-    var my_setting = {
-      start:0,
-      end: 0,
-      times:[] 
-    }
-    `
+  watchPreview() {
+    this.play_url && new window.DPlayer({
+      container: document.querySelector('#preview_video'),
+      theme: '#4C8FE8',
+      volume: 1.0,
+      preload: 'auto',
+      // logo: logo,
+      autoplay: true,
+      video: {
+        url: this.play_url,
+        // pic: pics,
+        type: 'auto'
+      }
+    })
   }
+
+  togglePreview() {
+    document.querySelector('#preview_video')?.classList.toggle('hide')
+  }
+
 
   changeOption(e: any, type: "ar" | 'ai' | 'tg' | 'age' | 'ud') {
     const val = e.target.value
@@ -288,7 +331,7 @@ export class HomeComponent {
       }
       case "ar": {
         if (val == '') return;
-
+        console.log(val, 'ar')
         this.ar = val;
         return;
       }
@@ -298,6 +341,7 @@ export class HomeComponent {
         const desc = this.types.find(t => t.value === val)?.viewValue || ''
         if (desc) {
           this.tags.push(desc);
+          console.log(val, 'age', desc)
         }
         return
       }
@@ -320,7 +364,31 @@ export class HomeComponent {
     }
   }
 
-  async saveVideo() {
+  modifyOption(type: "ar" | 'age' | 'tg', val: string) {
+    console.log(type, val)
+    switch (type) {
+      case "ar": {
+        if (val == '') return;
+        console.log(val, 'ar')
+        this.ar = val;
+        return;
+      }
+      case "tg": {
+        if (val == '') return;
+
+        this.tags.push(val)
+        return
+      }
+      case "age": {
+        if (val == '') return;
+        this.tags.push(val)
+        return
+
+      }
+    }
+  }
+
+  async forceSave() {
     const config = await this.autoJs('videoApp.getWebViewGlobal()');
     const info = await this.autoJs('basic');
     const m3u8 = await this.play();
@@ -328,6 +396,7 @@ export class HomeComponent {
     const name = info.nm;
     const code = info.nm.match(/[\w]+[_-][\w]+/gi)?.shift() || info.nm.match(/[\w]{4,}/g)?.shift();
     const body = {
+      id,
       ...config,
       ...info,
       fn: info.fr + info.nm.replace(code + code, code),
@@ -347,24 +416,80 @@ export class HomeComponent {
       // ud: false,
       local: "",
       ok: false,
-      m3u8Mid: id + '.m3u8',
+      md: id + '.m3u8',
+      srcCid: id + 'png',
+    }
+    fetch(`http://localhost:3880/video/add`, {
+      method: "post",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
+    }).then(res => res.json())
+      .then((res: RestfulResponse) => {
+        alert(JSON.stringify(res))
+        console.log(res.status, res)
+        if (res.status == 200) {
+          this.play_url = `http://localhost:3880/video/m3u8/${id}.m3u8`;
+          (document.querySelector('.handle-area') as HTMLElement).classList.toggle('ok');
+          this.resetOption();
+        }
+
+      })
+  }
+
+  async saveVideo() {
+    const config = await this.autoJs('videoApp.getWebViewGlobal()');
+    const info = await this.autoJs('basic');
+    const m3u8 = await this.play();
+    const id = Date.now() + '';
+    const name = info.nm;
+    const code = info.nm.match(/[\w]+[_-][\w]+/gi)?.shift() || info.nm.match(/[\w]{4,}/g)?.shift();
+    const body = {
+      id,
+      ...config,
+      ...info,
+      fn: info.fr + info.nm.replace(code + code, code),
+      text: m3u8,
+      ci: id + '.png', //cover id
+      cd: code || `unknown-${id}`, //code
+      dt: 0,
+      dl: true,
+      ou: this.play_url,
+      sz: 0,
+      tm: JSON.stringify(config.times),
+      tg: this.tags.join(","),
+      qs: this.size,
+      qs_ok: 0,
+      ai: this.ai, //actor id
+      ar: this.ar,  //area
+      // ud: false,
+      local: "",
+      ok: false,
+      md: id + '.m3u8',
       srcCid: id + 'png',
     }
 
-    const query = name.match(/[\w]+[_-][\w]+/gi)?.shift() || name.match(/[\w]{4,}/g)?.shift()?.length >= 5 ? name.match(/[\w]{4,}/g)?.shift() : name;
+    const query = code || (name.match(/[\w]+[_-][\w]+/gi)?.shift() || name.match(/[\w]{4,}/g)?.shift()?.length >= 5 ? name.match(/[\w]{4,}/g)?.shift() : name);
     if (query === '') {
       alert('搜索的内容是空的!')
+      this.resetOption();
       return;
     }
-    fetch(`http://localhost:3880/video/query?name=${query}`)
+    // return;
+    fetch(`http://localhost:3880/video/query?name=${query || name}`)
       .then(res => res.json())
       .then(res => {
         if (res.data.length !== 0) {
-          alert('已存在查看')
+          const first = res.data.shift();
+          console.log(first, '存在的第一个')
+          alert('已存在查看');
+          this.play_url = `http://localhost:3880/video/m3u8/${first.id}.m3u8`;
+          this.resetOption();
           return;
         }
 
-        fetch(`http://localhost:3880/video/save`, {
+        fetch(`http://localhost:3880/video/add`, {
           method: "post",
           headers: {
             'Content-Type': 'application/json',
@@ -374,13 +499,24 @@ export class HomeComponent {
           .then((res: RestfulResponse) => {
             alert(JSON.stringify(res))
             console.log(res.status, res)
+            if (res.status == 200) {
+              this.play_url = `http://localhost:3880/video/m3u8/${id}.m3u8`;
+              (document.querySelector('.handle-area') as HTMLElement).classList.toggle('ok');
+              this.resetOption();
+            }
+
           })
         console.log(res);
       })
 
     console.log(body)
-    // this.autoJs('videoApp.getWebViewGlobal()').then(res => {
-    //   console.log(res);
-    // })
+  }
+
+  resetOption() {
+    this.tags = [];
+    this.ai = "";
+    this.ar = ""
+    this.ud = false;
+    document.querySelectorAll('select').forEach(el => (el.selectedIndex = 0))
   }
 }
