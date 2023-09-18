@@ -2,6 +2,8 @@
   "name": "video",
   "version": "0.0.0",
   "main": "out/src/main/index.js",
+  "author": "victor jin",
+  "description": "this is a video desk app built with angular & electron",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

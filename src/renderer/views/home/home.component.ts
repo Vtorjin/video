@@ -83,7 +83,8 @@ export class HomeComponent {
     const me = this;
     const root = document.querySelector('#webview');
     this.router.queryParams.subscribe((res: any) => {
-      this.url = res.href || localStorage.getItem('url') || "https://www.baidu.com";
+      // this.url = res.href || localStorage.getItem('url') || "https://www.baidu.com";
+      this.url = this.url;
       this.js = res.js || localStorage.getItem('js') || '';
       localStorage.setItem('url', this.url);
       localStorage.setItem('js', this.js)
@@ -150,6 +151,7 @@ export class HomeComponent {
   reload() {
     const webview = document.querySelector('webview') as CustomWebView;
     webview && webview.getAttribute('finish') && webview.executeJavaScript('location.reload()');
+    this.resetOption();
   }
 
   resetTime() {
@@ -364,8 +366,9 @@ export class HomeComponent {
     }
   }
 
-  modifyOption(type: "ar" | 'age' | 'tg', val: string) {
-    console.log(type, val)
+  modifyOption(type: "ar" | 'age' | 'tg', val: string, e: any) {
+    console.log(type, val, e.target)
+    e.target.style.backgroundColor = window.randomColor();
     switch (type) {
       case "ar": {
         if (val == '') return;
@@ -458,7 +461,7 @@ export class HomeComponent {
       ou: this.play_url,
       sz: 0,
       tm: JSON.stringify(config.times),
-      tg: this.tags.join(","),
+      tg: Array.from(new Set(this.tags)).join(","),
       qs: this.size,
       qs_ok: 0,
       ai: this.ai, //actor id
@@ -479,12 +482,22 @@ export class HomeComponent {
     // return;
     fetch(`http://localhost:3880/video/query?name=${query || name}`)
       .then(res => res.json())
-      .then(res => {
+      .then(async res => {
         if (res.data.length !== 0) {
-          const first = res.data.shift();
-          console.log(first, '存在的第一个')
-          alert('已存在查看');
-          this.play_url = `http://localhost:3880/video/m3u8/${first.id}.m3u8`;
+          if (res.data.length !== 1) {
+            const _res = await fetch(`http://localhost:3880/video/query?name=${name}`).then(r => r.json())
+            const first = res.data.shift();
+            if (first) {
+              console.log(first, '存在的第一个')
+              alert('已存在查看');
+              this.play_url = `http://localhost:3880/video/m3u8/${first.id}.m3u8`;
+            }  
+          } else {
+            const first = res.data.shift();
+            console.log(first, '存在的第一个')
+            alert('已存在查看');
+            this.play_url = `http://localhost:3880/video/m3u8/${first.id}.m3u8`;
+          }
           this.resetOption();
           return;
         }
@@ -518,5 +531,6 @@ export class HomeComponent {
     this.ar = ""
     this.ud = false;
     document.querySelectorAll('select').forEach(el => (el.selectedIndex = 0))
+    document.querySelectorAll('li').forEach(el => (el.style.backgroundColor = "transparent"))
   }
 }

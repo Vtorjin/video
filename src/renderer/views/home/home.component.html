@@ -10,11 +10,11 @@
             <label for="">区域时间:</label>
         </li>
         <li class="flex cc v-pointer handle" *ngFor="let item of types" [value]="item.value"
-            (click)="modifyOption('tg',item.viewValue)">{{item.viewValue}}</li>
+            (click)="modifyOption('tg',item.viewValue,$event)">{{item.viewValue}}</li>
         <li class="flex cc v-pointer handle" *ngFor="let item of areas" [value]="item.value"
-            (click)="modifyOption('ar',item.value)">{{item.viewValue}}</li>
+            (click)="modifyOption('ar',item.value,$event)">{{item.viewValue}}</li>
         <li class="flex cc v-pointer handle" *ngFor="let item of ages" [value]="item.value"
-            (click)="modifyOption('age',item.viewValue)">{{item.viewValue}}</li>
+            (click)="modifyOption('age',item.viewValue,$event)">{{item.viewValue}}</li>
         <!-- <li class="flex">
             <select name="" id="" (change)="changeOption($event,'ar')">
                 <option value="">请选择视频地区</option>
