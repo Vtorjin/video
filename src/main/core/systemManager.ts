@@ -214,9 +214,7 @@ class SystemManager {
   }
 
   startOtherApp() {
-    // this.appProcess = exec('cd D:\\vue\\km && pnpm run dev')
     this.appProcess = exec('cd D:\\vue\\km && pnpm run dev')
-    // console.log('启动快猫', this.appProcess.pid, this.appProcess)
 
     // this.appProcess = spawn('cmd', ['/c', 'cd', 'D:\\vue\\km', '&', 'start.bat'])
     // this.appProcess.stdout.on('data', function (d) {
