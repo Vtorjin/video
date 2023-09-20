@@ -1,6 +1,4 @@
-app-root{
-
-}
+app-root {}
 
 #app-header {
     position: fixed;
@@ -32,5 +30,28 @@ app-root{
 .app-system-handle {
     .iconfont {
         margin: 1rem;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        background-position: center center;
+        width: 16px;
+        height: 16px;
+
+        &.setting {
+            background-image: url('../assets/img/sys/setting.svg');
+        }
+
+        &.home {
+            background-image: url('../assets/img/sys/home.svg');
+        }
+        &.mini {
+            background-image: url('../assets/img/sys/mini.svg');
+        }
+        &.max {
+            background-image: url('../assets/img/sys/max.svg');
+        }
+        &.quit {
+            background-image: url('../assets/img/sys/close.svg');
+        }
     }
+
 }

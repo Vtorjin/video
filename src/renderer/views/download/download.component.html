@@ -5,8 +5,8 @@
     <div class="v-sidebar">
         <ul class="flex acc">
             <li class="swiper-slide navbar-item" *ngFor="let item of downloadRouter">
-                <a [routerLink]="item.path" class="flex">
-                    <i [className]="[item.data.icon]"></i>
+                <a [routerLink]="item.path" class="flex navItem">
+                    <div [className]="[item.data.icon]"></div>
                     <span> {{item.title}}</span>
                 </a>
             </li>

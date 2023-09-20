@@ -21,11 +21,11 @@ export const routes: Routes = [
       { path: "", component: DownloadInprogressComponent },
       {
         path: "inprogress", component: DownloadInprogressComponent,
-        title: "下载中", data: { icon: "iconfont icon-yunxiazai" }
+        title: "下载中", data: { icon: "down" }
       },
       {
         path: "local", component: DownloadLocalComponent,
-        title: "已完成", data: { icon: "iconfont icon-wancheng_line" }
+        title: "已完成", data: { icon: "ok" }
       }
     ]
   },
