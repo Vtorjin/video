@@ -27,10 +27,7 @@ export class OnlineBodyComponent {
   currentPage: number = Number(localStorage.getItem('page')) || 1;
   totalPages: number = 0;
 
-  constructor(
-    private http: HttpService,
-    private route: Router
-  ) {
+  constructor(private http: HttpService, private route: Router) {
 
   }
 
@@ -39,7 +36,7 @@ export class OnlineBodyComponent {
   }
 
   getHomeList() {
-    this.mode ="tagMode";
+    this.mode = "tagMode";
     this.http.get("angular/home").subscribe(res => {
       const { data } = res as { data: NavList[] };
       console.log(data);
@@ -49,11 +46,7 @@ export class OnlineBodyComponent {
 
   getTypeList(page = 1) {
     var size = 20;
-    this.http.post('angular/types', {
-      key: localStorage.getItem('videoKey'),
-      page: page,
-      size
-    }).subscribe(res => {
+    this.http.post('angular/types', { key: localStorage.getItem('videoKey'), page: page, size }).subscribe(res => {
       const { data } = res
       const [list, count]: [NavCoverItem[], number] = data;
       // console.log(list, count);
@@ -66,10 +59,10 @@ export class OnlineBodyComponent {
     return `http://localhost:3880/video/img/${id}.png`
   }
 
-  getVideoState(video:NavCoverItem){
+  getVideoState(video: NavCoverItem) {
     // return video.
-    if(video.ok) return 'ok'
-    if(video.ud) return 'err'
+    if (video.ok) return 'ok'
+    if (video.ud) return 'err'
     return 'normal'
   }
 
@@ -97,7 +90,7 @@ export class OnlineBodyComponent {
     var size = 20;
     localStorage.setItem('mode', mode)
     if (key) {
-    
+
       this.totalPages = 0;
       localStorage.setItem('videoKey', key)
       this.key = key;
@@ -110,9 +103,9 @@ export class OnlineBodyComponent {
         const [list, count]: [NavCoverItem[], number] = data;
         console.log(list, count);
         this.allVideos = list;
-        this.totalPages = Math.ceil(count/size); 
+        this.totalPages = Math.ceil(count / size);
       })
-    }else{
+    } else {
       this.getHomeList();
     }
   }

@@ -1,1 +1,29 @@
-<p>download-inprogress works!</p>
+<ul class="video-download-list">
+    <li class="v-video-item" *ngFor="let item of  videos; let key = index">
+        <div class="v-video-thumbnail">
+            <img [src]="item.img" alt="Video Thumbnail">
+        </div>
+        <div class="v-video-info">
+            <h3>{{item.name}}</h3>
+            <div class="v-video-progress-bar">
+                <div class="v-video-progress" [style]='{width:(((item.finish/item.total)*100).toFixed(2))+"%"}'></div>
+            </div>
+            <div class="flex jb">
+                <div class="v-video-file-info flex ja">
+                    <p>时长: {{item.time | videoTime}}</p>
+                    <p>文件大小: {{item.size | videoSize}}</p>
+                    <p>视频格式: {{item.mime}}</p>
+                </div>
+                <div class="v-video-download-info flex ja">
+                    <p>当前下载速度: {{item.speed | videoSize}}/s</p>
+                    <p>完成个数/总数量: {{item.finish}}个 / {{item.completed}}个</p>
+                    <p>已完成进度:{{(((item.finish/item.total)*100).toFixed(2))+"%"}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="v-video-actions flex ja">
+            <button class="v-video-play">播放</button>
+            <button class="v-video-delete">删除</button>
+        </div>
+    </li>
+</ul>

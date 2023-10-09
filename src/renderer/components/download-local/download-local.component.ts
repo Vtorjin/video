@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+ 
 interface VideoItem {
   name: string,
   img: string,
@@ -22,14 +22,14 @@ export class DownloadLocalComponent {
   videos: VideoItem[]
   total = 1220;
   size = 10
+  current = 1
   options = [5, 10, 25, 100]
 
   constructor() {
     this.videos = [
       {
-        name: "画江湖之不良人 第6季 第10话",
-        // img: "http://localhost:3880/video/img/1685985670502.png",
-        img: "https://community.image.video.qpic.cn/app_community_bda48d-0_72566597_1683772537451713?imageView2/2/w/2000",
+        name: "画江湖之不良人 第6季 第100话",
+        img: "https://tse3-mm.cn.bing.net/th/id/OIP-C.f0kH3sNB7HuzeEztDtep4gHaEy?pid=ImgDet&rs=1",
         time: 1350,
         size: 1555022500,
         mime: "mp4",
@@ -41,7 +41,7 @@ export class DownloadLocalComponent {
       },
       {
         name: "画江湖之不良人 第6季 第103话",
-        img: "https://community.image.video.qpic.cn/app_community_bda48d-0_72566597_1683772537451713?imageView2/2/w/2000",
+        img: "https://www.yinhuadm.cc/upload/vod/20230813-5/5cbd4a3f61a2a3f5d98c422edb002690.jpg",
         time: 13501,
         size: 1555022500,
         mime: "mp4",
@@ -51,8 +51,8 @@ export class DownloadLocalComponent {
         completed: 53,
         state: 1
       }, {
-        name: "画江湖之不良人 第6季 第120话",
-        img: "https://community.image.video.qpic.cn/app_community_bda48d-0_72566597_1683772537451713?imageView2/2/w/2000",
+        name: "画江湖之不良人 第6季 第110话",
+        img: "https://www.videofk.com/videofk/images/logo/timeline-video-down.png",
         time: 1350,
         size: 1555022500,
         mime: "mp4",

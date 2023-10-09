@@ -11,6 +11,7 @@ import { PlayerModule } from '../views/player/player.module';
 import { HomeModule } from '../views/home/home.module';
 import { RouteReuseStrategy } from '@angular/router';
 import { RouteStrategyService } from '../service/router.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
  
 
 @NgModule({
@@ -26,7 +27,8 @@ import { RouteStrategyService } from '../service/router.service';
     DownloadModule,
     OnlineModule,
     PlayerModule,
-    HomeModule
+    HomeModule,
+    BrowserAnimationsModule
   ],
   providers: [
     // {

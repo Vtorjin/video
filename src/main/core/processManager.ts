@@ -14,9 +14,14 @@ class TaskManager {
     return this.instance;
   }
 
+  private waitQueue: [] = []
+  private activeQueue: [] = []
+
   constructor() {
 
   }
+
+
 }
 
 

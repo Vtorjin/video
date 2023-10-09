@@ -166,9 +166,8 @@ export class HomeComponent {
   }
 
   back() {
-    let js = `history.back()`;
     let webview = document.querySelector('webview') as CustomWebView
-    webview.executeJavaScript(js);
+    webview.executeJavaScript(`history.back()`);
   }
 
   createCover() {
@@ -491,7 +490,7 @@ export class HomeComponent {
               console.log(first, '存在的第一个')
               alert('已存在查看');
               this.play_url = `http://localhost:3880/video/m3u8/${first.id}.m3u8`;
-            }  
+            }
           } else {
             const first = res.data.shift();
             console.log(first, '存在的第一个')

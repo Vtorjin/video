@@ -6,6 +6,7 @@ import { DownloadLocalComponent } from '../../components/download-local/download
 import { DownloadInprogressComponent } from '../../components/download-inprogress/download-inprogress.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { SharedPipesModule } from '../../pipe/share.module';
+ 
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SharedPipesModule } from '../../pipe/share.module';
     BrowserModule,
     DownloadRoutingModule,
     MatPaginatorModule,
-    SharedPipesModule
+    SharedPipesModule,
+ 
   ],
 })
 export class DownloadModule { }

@@ -78,9 +78,9 @@ class AppManager {
       ]).then(([hls, css, js]) => {
         // console.log(res);
         event.sender.send('insertLibrary', JSON.stringify({
-          hls: (hls as any).value.data,
-          css: (css as any).value.data,
-          js: (js as any).value.data,
+          hls: (hls as any).value?.data,
+          css: (css as any).value?.data,
+          js: (js as any).value?.data,
         }))
       })
     })
